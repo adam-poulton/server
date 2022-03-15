@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Users Details</title>
+</head>
+
+<body>
+<table border="1">
+    <tr>
+        <td>firstName</td>
+        <td>lastName</td>
+        <td>email</td>
+        <td>password</td>
+    </tr>
+    {% for user in userDetails %}
+    <tr>
+        <td>{</td>
+        <td>{{user[1]}}</td>
+        <td>{{user[2]}}</td>
+        <td>{{user[3]}}</td>
+        <td>{{user[4]}}</td>
+    </tr>
+    {% endfor %}
+</table>
+</body>
+</html>
