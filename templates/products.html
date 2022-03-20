@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Details</title>
+</head>
+
+<body>
+<table border="1">
+    <tr>
+        <td>id</td>
+        <td>Brand</td>
+        <td>Name</td>
+        <td>barcode</td>
+        <td>cate</td>
+    </tr>
+    {% for product in Products %}
+    <tr>
+        <td>{{product.product_id}}</td>
+        <td>{{product.product_brand}}</td>
+        <td>{{product.product_name}}</td>
+        <td>{{product.product_barcode}}</td>
+        <td>{{product.product_cate}}</td>
+    </tr>
+    {% endfor %}
+</table>
+</body>
+</html>
