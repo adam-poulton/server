@@ -1,15 +1,17 @@
-from flask import Blueprint, render_template, url_for
+from flask import Blueprint, render_template, url_for, request
 from werkzeug.utils import redirect
 import json
 product = Blueprint('products', __name__)
 from ..models import Product, db
 
 
-@product.route("/barcode/<barcode_id>")
-def barcode(barcode_id):
-    return json.dumps({'barcode': barcode_id,
-                       'name': 'peanut butter',
-                       'brand': 'kraft'})
+@product.route("/new", methods=['PUT'])
+def new_product():
+    """
+    Create a new product based on the supplied data unless barcode already exists
+    :return: json containing the
+    """
+
 
 
 @product.route('/')
