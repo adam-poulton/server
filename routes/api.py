@@ -1,7 +1,11 @@
 from flask import jsonify, Blueprint
 
-api = Blueprint('api', __name__)
+from server.routes.products import product
+from server.routes.user import user
 
+api = Blueprint('api', __name__)
+api.register_blueprint(user, url_prefix='/user')
+api.register_blueprint(product, url_prefix='/product')
 
 @api.route("/products", methods=['POST'])
 def new_product():
@@ -51,7 +55,7 @@ def get_product(barcode):
     pass
 
 
-@api.route("/products/<barcode>", methods=['PUT'])
+@api.route("/products", methods=['PUT'])
 def update_product(barcode):
     """
     Update details for product with matching barcode or return not found

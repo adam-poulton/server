@@ -15,8 +15,6 @@ REMOTE_DB_URL = "mysql://b7a9fd2de96090:7dd6df63@us-cdbr-east-05.cleardb.net/her
 def create_app():
     app = Flask(__name__)
     app.config['SQLALCHEMY_DATABASE_URI'] = REMOTE_DB_URL
-    app.register_blueprint(user, url_prefix='/user')
-    app.register_blueprint(product, url_prefix='/product')
     app.register_blueprint(api, url_prefix='/api')
     db.init_app(app)
 
