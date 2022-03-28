@@ -1,12 +1,15 @@
 from ..models import Product, db
 from flask import Blueprint, render_template, url_for, request, jsonify
 from werkzeug.utils import redirect
+from pathlib import Path
 import json
 product = Blueprint('products', __name__)
 
-with open("data/products.json") as f:
+data_folder = Path("data/")
+data_file = data_folder / "products.json"
+with open(data_file) as f:
     # load the test data from the json file
-    data = json.load(f)
+    product_test_data = json.load(f)
 
 
 @product.route('/display')
@@ -28,7 +31,7 @@ def query_all_records():
     Returns all products in the database in json form
     :return: json containing all the products
     """
-    return jsonify(data)
+    return jsonify(product_test_data)
 
 
 @product.route("/", methods=['POST'])
@@ -37,7 +40,22 @@ def new_product():
     Create a new product based on the supplied data unless barcode already exists
     :return: json containing the product information of the newly created product
     """
-    pass
+    # parse the request data
+    r_data = request.args
+    name = r_data.get('name')
+    brand = r_data.get('brand')
+    category = r_data.get('category')
+    barcode = r_data.get('barcode')
+
+    # TODO: add check to ensure that barcode does not yet exist
+
+    # create the new database object
+    new_prod = Product(
+        product_name=name,
+        product_brand=brand,
+        product_cate=category,
+        product_barcode=barcode)
+
 
 
 @product.route("/all", methods=['PUT'])
@@ -67,7 +85,7 @@ def get_product(barcode):
     :param barcode: barcode of the product
     :return: json response containing product info or not found error
     """
-    for item in data:
+    for item in product_test_data:
         if item['barcode'] == barcode:
             return jsonify(item)
     return jsonify({"status": "product not found"})
