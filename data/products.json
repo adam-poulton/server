@@ -1,0 +1,106 @@
+[
+  {
+  "name" : "Savoy Original",
+  "brand" : "Arnott's",
+  "barcode" : "9310072026428",
+  "category": "",
+  "nutrition" :
+    {
+      "energy" : [1970.0, "kJ"],
+      "protein" : [7.9, "g"],
+      "fat-total" : [20.0, "g"],
+      "fat-saturated" : [3.9, "g"],
+      "carbohydrate" : [62.6, "g"],
+      "sugars" : [1.3, "g"],
+      "sodium" : [848, "mg"]
+    }
+  },
+  {
+    "name" : "Lindor Extra Dark 18pc",
+    "brand" : "Lindt",
+    "barcode" : "7610400074193",
+    "category": "",
+    "nutrition" :
+      {
+        "energy" : [2670.0, "kJ"],
+        "protein" : [4.9, "g"],
+        "fat-total" : [53.0, "g"],
+        "fat-saturated" : [39.0, "g"],
+        "carbohydrate" : [34.0, "g"],
+        "sugars" : [31.0, "g"],
+        "sodium" : [16, "mg"]
+      }
+  },
+  {
+    "name" : "Mi Goreng Fried Noodles Cup",
+    "brand" : "Indo mie",
+    "barcode" : "08968618065",
+    "category": "",
+    "nutrition" :
+      {
+        "energy" : [942.0, "kJ"],
+        "protein" : [3.4, "g"],
+        "fat-total" : [10.4, "g"],
+        "fat-saturated" : [4.9, "g"],
+        "carbohydrate" : [29.3, "g"],
+        "sugars" : [3.8, "g"],
+        "sodium" : [450, "mg"]
+      }
+  },
+  {
+    "name" : "Sweet Potato & Roasted Cashews Dip",
+    "brand" : "Yumi's",
+    "barcode" : "93174440001168",
+    "category": "",
+    "nutrition" :
+      {
+        "energy" : [1050, "kJ"],
+        "protein" : [3.7, "g"],
+        "fat-total" : [21.0, "g"],
+        "fat-saturated" : [2.4, "g"],
+        "carbohydrate" : [11.0, "g"],
+        "sugars" : [5.1, "g"],
+        "sodium" : [394, "mg"]
+      }
+  },
+  {
+    "name" : "Sea Salt & Balsamic Vinegar Flavoured Potato Chips",
+    "brand" : "Red Rock Deli",
+    "barcode" : "9310015240638",
+    "category": "",
+    "nutrition" :
+      {
+        "energy" : [2050, "kJ"],
+        "protein" : [7.6, "g"],
+        "fat-total" : [23.8, "g"],
+        "fat-saturated" : [1.9, "g"],
+        "fat-trans" : [0.1, "g"],
+        "fat-poly" : [2.3, "g"],
+        "fat-mono" : [5.4, "g"],
+        "carbohydrate" : [11.0, "g"],
+        "sugars" : [5.1, "g"],
+        "sodium" : [394, "mg"]
+      }
+  },
+  {
+    "name" : "Spelt & Sprouted Grain Bread",
+    "brand" : "Alpine Breads",
+    "barcode" : "9312743010521",
+    "category": "",
+    "nutrition" :
+      {
+        "energy" : [988, "kJ"],
+        "protein" : [11.9, "g"],
+        "fat-total" : [1.6, "g"],
+        "fat-saturated" : [0.6, "g"],
+        "fat-trans" : [0.1, "g"],
+        "fat-poly" : [2.3, "g"],
+        "fat-mono" : [5.4, "g"],
+        "carbohydrate" : [39.7, "g"],
+        "sugars" : [5.1, "g"],
+        "sodium" : [394, "mg"]
+      }
+  }
+]
+
+

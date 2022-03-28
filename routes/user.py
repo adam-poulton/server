@@ -5,12 +5,13 @@ from ..models import User, db
 
 user = Blueprint('users', __name__)
 
+
 @user.route('/display', methods= ['GET'])
 def getUsers():
     return render_template('users.html', Users=User.query.all())
 
 
-@user.route('/', methods=['POST','GET'])
+@user.route('/', methods=['POST', 'GET'])
 def addUser():
 
     if request.method == 'GET':
@@ -24,17 +25,18 @@ def addUser():
         email = data.get('email')
         password = data.get('password')
 
-        user = User(user_fName =fname,user_lName = lname,user_email=email ,user_password= password)
+        user = User(user_fName=fname, user_lName=lname, user_email=email, user_password=password)
         db.session.add(user)
         db.session.commit()
         return redirect(url_for('api.users.getUsers'))
+
 
 @user.route('/update/<id>', methods=['PUT', 'GET'])
 def update(id):
     user = User.query.get(id)
     users = User.query.all()
 
-    lName = request.args.get('lname',None)
+    lName = request.args.get('lname', None)
     fName = request.args.get('fname', None)
     email = request.args.get('email', None)
     password = request.args.get('password', None)
@@ -53,6 +55,7 @@ def update(id):
 
     return jsonify(user)
 
+
 @user.route('/delete/<id>',methods=['DELETE', 'GET'])
 def delete(id):
     user = User.query.get(id)
@@ -62,6 +65,7 @@ def delete(id):
         return redirect(url_for('api.users.getUsers'))
     else:
         return jsonify({"message": "user not found"})
+
 
 @user.route('/deleteAll', methods=['DELETE', 'GET'])
 def deleteAll():

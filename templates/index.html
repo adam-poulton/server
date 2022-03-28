@@ -37,19 +37,34 @@
 
             </header>
             <div class="p-5 mb-4 bg-light rounded-3">
-                <div class="container-fluid py-5 text-center">
-                    <h1 class="display-5 fw-bold">Bucket List App</h1>
+                <div class="container-fluid py-5 text-left">
+                    <h1 class="display-5 fw-bold">API Reference</h1>
 
-                    <p>
-                        <a class="btn btn-lg btn-success" href="#" role="button"
-                            >Sign up today</a
-                        >
-
-                    </p>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">URL</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Method</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row"><a href="api/product/">/api/product/</a></th>
+                                <td>Returns all products</td>
+                                <td>GET</td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><a href="api/product/9310015240638">/api/product/9310015240638</a></th>
+                                <td>Returns a specific product with barcode: 9310015240638</td>
+                                <td>GET</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         <footer class="footer">
-            <p>&copy; Company 2022</p>
+            <p></p>
         </footer>
  </div>
 </body>
