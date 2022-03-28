@@ -5,7 +5,7 @@ from pathlib import Path
 import json
 product = Blueprint('products', __name__)
 
-data_folder = Path("data/")
+data_folder = Path("data/").resolve()
 data_file = data_folder / "products.json"
 with open(data_file) as f:
     # load the test data from the json file
@@ -56,6 +56,9 @@ def new_product():
         product_cate=category,
         product_barcode=barcode)
 
+    db.session.add(new_prod)
+    db.session.commit()
+    return redirect(url_for('api.products.{}'.format(barcode)))
 
 
 @product.route("/all", methods=['PUT'])
