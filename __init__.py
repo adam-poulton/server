@@ -22,5 +22,4 @@ def create_app():
     def main():
         return render_template('index.html')
 
-
     return app
