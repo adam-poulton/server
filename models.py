@@ -15,8 +15,10 @@ class User(db.Model):
     user_fName: str
     user_lName:str
     user_email:str
+    # user_userName: str
 
     user_id = db.Column(db.Integer, primary_key=True)
+    # user_userName = db.Column(db.String(20))
     user_fName = db.Column(db.String(20))
     user_lName = db.Column(db.String(20))
     user_email = db.Column(db.String(35))
