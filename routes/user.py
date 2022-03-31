@@ -7,28 +7,35 @@ user = Blueprint('users', __name__)
 
 
 @user.route('/display', methods= ['GET'])
-def getUsers():
+def getUsers_inTable():
     return render_template('users.html', Users=User.query.all())
 
 
-@user.route('/', methods=['POST', 'GET'])
+@user.route('/get', methods=['GET'])
+def getUsers():
+    users = User.query.all()
+    return jsonify(users)
+
+
+@user.route('/get/<id>', methods=['GET'])
+def getUserByID(id):
+    user = User.query.get(id)
+    return jsonify(user)
+
+
+@user.route('/add', methods=['POST'])
 def addUser():
+    # if bcrypt.hashpw(password, user['password'].encode('utf-8')) == user['password'].encode('utf-8'):
+    data = request.args
+    lname = data.get('lname')
+    fname = data.get('fname')
+    email = data.get('email')
+    password = data.get('password')
 
-    if request.method == 'GET':
-        users = User.query.all()
-        return jsonify(users)
-    else:
-        # if bcrypt.hashpw(password, user['password'].encode('utf-8')) == user['password'].encode('utf-8'):
-        data = request.args
-        lname = data.get('lname')
-        fname = data.get('fname')
-        email = data.get('email')
-        password = data.get('password')
-
-        user = User(user_fName=fname, user_lName=lname, user_email=email, user_password=password)
-        db.session.add(user)
-        db.session.commit()
-        return redirect(url_for('api.users.getUsers'))
+    user = User(user_fName=fname, user_lName=lname, user_email=email, user_password=password)
+    db.session.add(user)
+    db.session.commit()
+    return redirect(url_for('api.users.getUsers'))
 
 
 @user.route('/update/<id>', methods=['PUT', 'GET'])
@@ -58,6 +65,7 @@ def update(id):
 
 @user.route('/delete/<id>',methods=['DELETE', 'GET'])
 def delete(id):
+
     user = User.query.get(id)
     if user:
         db.session.delete(user)

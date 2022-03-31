@@ -50,18 +50,50 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <th scope="row"><a href="api/product/get">/api/product/</a></th>
+                                <th scope="row"><a href="api/product/get">/api/product/get</a></th>
                                 <td>Returns all products</td>
                                 <td>GET</td>
                             </tr>
                             <tr>
-                                <th scope="row"><a href="api/product/get/9310015240638">/api/product/9310015240638</a></th>
+                                <th scope="row"><a href="api/product/get/9310015240638">/api/product/get/9310015240638</a></th>
                                 <td>Returns a specific product with barcode: 9310015240638</td>
                                 <td>GET</td>
                             </tr>
                             <tr>
                                 <th scope="row"><a href="/api/product/new?name=Cookies&brand=Arnotts&category=Biscuits&barcode=123456789">/api/product/new?name=Cookies&brand=Arnotts&category=Biscuits&barcode=123456789</a></th>
                                 <td>Creates a new product with barcode: 123456789</td>
+                                <td>POST</td>
+                            </tr>
+                            <tr>
+                                <td><br/></td>
+                                <td><br/></td>
+                                <td><br/></td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><a href="/api/user/display">/api/user/display</a></th>
+                                <td>User records for display</td>
+                                <td>GET</td>
+                            </tr>
+
+                            <tr>
+                                <th scope="row"><a href="/api/user/get/224">/api/user/get/224</a></th>
+                                <td>Returns a specific user with id: 224</td>
+                                <td>GET</td>
+                            </tr>
+
+                            <tr>
+                                <th scope="row"><a href="/api/user/get">/api/user/get</a></th>
+                                <td>Returns all users</td>
+                                <td>GET</td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><a href="/api/user/update/224?lname=chen">/api/user/update/224?lname=chen</a></th>
+                                <td>Update last name with norman of the user with id 224 </td>
+                                <td>PUT</td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><a href="/api/user/add?fname=Tony&lname=Young&email=hghgh@gmail.com&password=oro">/api/user/add?fname=Tony&lname=Young&email=hghgh@gmail.com&password=oro</a></th>
+                                <td>Creates a new user with name Tony Young, with some info</td>
                                 <td>POST</td>
                             </tr>
                         </tbody>
