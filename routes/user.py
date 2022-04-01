@@ -63,7 +63,7 @@ def update(id):
     return jsonify(user)
 
 
-@user.route('/delete/<id>',methods=['DELETE', 'GET'])
+@user.route('/delete/<id>', methods=['DELETE', 'GET'])
 def delete(id):
 
     user = User.query.get(id)
