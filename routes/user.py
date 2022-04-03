@@ -25,12 +25,12 @@ def getUserByEmail(email):
 @user.route('/add', methods=['POST'])
 def addUser():
     # if bcrypt.hashpw(password, user['password'].encode('utf-8')) == user['password'].encode('utf-8'):
-    data = request.args
-    userName = data.get('userName')
-    lname = data.get('lname')
-    fname = data.get('fname')
-    email = data.get('email')
-    password = data.get('password')
+    data = request.form
+    userName = data['userName']
+    lname = data['lname']
+    fname = data['fname']
+    email = data['email']
+    password = data['password']
 
 
     user = User(user_userName=userName, user_fName=fname, user_lName=lname, user_email=email, user_password=password, user_contributionScore=0)
@@ -42,13 +42,11 @@ def addUser():
 @user.route('/update/<id>', methods=['PUT', 'GET'])
 def update(id):
     user = User.query.get(id)
-    users = User.query.all()
 
     lName = request.args.get('lname', None)
     fName = request.args.get('fname', None)
     email = request.args.get('email', None)
     password = request.args.get('password', None)
-
 
     if lName != None:
         user.user_lName = lName
