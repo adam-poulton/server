@@ -16,23 +16,24 @@ def getUsers():
     users = User.query.all()
     return jsonify(users)
 
-
-@user.route('/get/<id>', methods=['GET'])
-def getUserByID(id):
-    user = User.query.get(id)
-    return jsonify(user)
-
+@user.route('/getbyEmail/<email>', methods=['GET'])
+def getUserByEmail(email):
+    # params = [i for i in request.args.keys()]
+    user = User.query.filter_by(user_email=email)
+    return jsonify(user.first())
 
 @user.route('/add', methods=['POST'])
 def addUser():
     # if bcrypt.hashpw(password, user['password'].encode('utf-8')) == user['password'].encode('utf-8'):
     data = request.args
+    userName = data.get('userName')
     lname = data.get('lname')
     fname = data.get('fname')
     email = data.get('email')
     password = data.get('password')
 
-    user = User(user_fName=fname, user_lName=lname, user_email=email, user_password=password)
+
+    user = User(user_userName=userName, user_fName=fname, user_lName=lname, user_email=email, user_password=password, user_contributionScore=0)
     db.session.add(user)
     db.session.commit()
     return redirect(url_for('api.users.getUsers'))

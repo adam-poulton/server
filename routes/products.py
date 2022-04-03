@@ -63,6 +63,7 @@ def new_product():
     category = r_data.get('category')
     barcode = r_data.get('barcode')
 
+
     # check to ensure that there are no illegal characters in the barcode
     if not valid_barcode(barcode):
         return jsonify({"error": "invalid barcode"})
@@ -82,7 +83,9 @@ def new_product():
             product_name=name,
             product_brand=brand,
             product_cate=category,
-            product_barcode=barcode)
+            product_barcode=barcode
+
+        )
 
         db.session.add(new_prod)
         db.session.commit()

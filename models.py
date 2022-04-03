@@ -15,14 +15,17 @@ class User(db.Model):
     user_fName: str
     user_lName:str
     user_email:str
-    # user_userName: str
+    user_password:str
+    user_userName: str
+    user_contributionScore: int
 
     user_id = db.Column(db.Integer, primary_key=True)
-    # user_userName = db.Column(db.String(20))
+    user_userName = db.Column(db.String(20))
     user_fName = db.Column(db.String(20))
     user_lName = db.Column(db.String(20))
     user_email = db.Column(db.String(35))
     user_password = db.Column(db.String(50))
+    user_contributionScore = db.Column(db.Integer)
     # scan_record = db.relationship('Scan_record')
 
 
@@ -33,9 +36,14 @@ class Product(db.Model):
     product_name:str
     product_cate:str
     product_brand:str
+    product_nutrition:str
 
     product_id = db.Column(db.Integer, primary_key=True)
     product_barcode = db.Column(db.String(45))
     product_name = db.Column(db.String(45))
     product_cate = db.Column(db.String(45))
     product_brand = db.Column(db.String(45))
+    product_nutrition = db.Column(db.String(300))
+
+# @dataclass
+# class Starred_Product(db.Model):
