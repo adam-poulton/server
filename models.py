@@ -12,20 +12,20 @@ db = SQLAlchemy()
 @dataclass
 class User(db.Model):
     user_id: int
-    user_fName: str
-    user_lName:str
+    user_username: str
+    user_firstname: str
+    user_lastname:str
     user_email:str
     user_password:str
-    user_userName: str
-    user_contributionScore: int
+    user_contributionscore: int
 
     user_id = db.Column(db.Integer, primary_key=True)
-    user_userName = db.Column(db.String(20))
-    user_fName = db.Column(db.String(20))
-    user_lName = db.Column(db.String(20))
+    user_username = db.Column(db.String(20))
+    user_firstname = db.Column(db.String(20))
+    user_lastname = db.Column(db.String(20))
     user_email = db.Column(db.String(35))
     user_password = db.Column(db.String(50))
-    user_contributionScore = db.Column(db.Integer)
+    user_contributionscore = db.Column(db.Integer)
     # scan_record = db.relationship('Scan_record')
 
 
@@ -45,5 +45,12 @@ class Product(db.Model):
     product_brand = db.Column(db.String(45))
     product_nutrition = db.Column(db.String(300))
 
-# @dataclass
-# class Starred_Product(db.Model):
+@dataclass
+class Starred_Product(db.Model):
+    sp_id:int
+    product_id:int
+    user_id:int
+
+    sp_id = db.Column(db.Integer, primary_key=True)
+    product_id = db.Column(db.Integer)
+    user_id = db.Column(db.Integer)

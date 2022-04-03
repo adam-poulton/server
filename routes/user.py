@@ -26,14 +26,14 @@ def getUserByEmail(email):
 def addUser():
     # if bcrypt.hashpw(password, user['password'].encode('utf-8')) == user['password'].encode('utf-8'):
     data = request.form
-    userName = data['userName']
-    lname = data['lname']
-    fname = data['fname']
+    userName = data['username']
+    lname = data['lastname']
+    fname = data['firstname']
     email = data['email']
     password = data['password']
 
 
-    user = User(user_userName=userName, user_fName=fname, user_lName=lname, user_email=email, user_password=password, user_contributionScore=0)
+    user = User(user_username=userName, user_firstname=fname, user_lastname=lname, user_email=email, user_password=password, user_contributionscore=0)
     db.session.add(user)
     db.session.commit()
     return redirect(url_for('api.users.getUsers'))
@@ -49,9 +49,9 @@ def update(id):
     password = request.args.get('password', None)
 
     if lName != None:
-        user.user_lName = lName
+        user.user_lastname = lName
     if fName != None:
-        user.user_fName = fName
+        user.user_firstname = fName
     if email != None:
         user.user_email = email
     if password != None:
