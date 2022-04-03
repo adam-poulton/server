@@ -17,14 +17,6 @@ def get_products():
     return render_template('products.html', Products=Product.query.all())
 
 
-@product.route('/addProduct')
-def add_product():
-    entry = Product(product_barcode="steven", product_name="peanut butter", product_brand="kraft")
-    db.session.add(entry)
-    db.session.commit()
-    return redirect(url_for('products.getProducts'))
-
-
 @product.route("/get", methods=['GET'])
 def query_all_records():
     """
@@ -60,6 +52,7 @@ def new_product():
     category = r_data.get('category')
     barcode = r_data.get('barcode')
 
+
     # check to ensure that there are no illegal characters in the barcode
     if not valid_barcode(barcode):
         return jsonify({"error": "invalid barcode"})
@@ -72,7 +65,9 @@ def new_product():
             product_name=name,
             product_brand=brand,
             product_cate=category,
-            product_barcode=barcode)
+            product_barcode=barcode
+
+        )
 
         db.session.add(new_prod)
         db.session.commit()
