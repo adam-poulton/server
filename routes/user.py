@@ -6,7 +6,7 @@ from ..models import User, db
 user = Blueprint('users', __name__)
 
 
-@user.route('/display', methods= ['GET'])
+@user.route('/display', methods=['GET'])
 def getUsers_inTable():
     return render_template('users.html', Users=User.query.all())
 
@@ -48,14 +48,13 @@ def update(id):
     email = request.args.get('email', None)
     password = request.args.get('password', None)
 
-
-    if lName != None:
+    if lName is not None:
         user.user_lName = lName
-    if fName != None:
+    if fName is not None:
         user.user_fName = fName
-    if email != None:
+    if email is not None:
         user.user_email = email
-    if password != None:
+    if password is not None:
         user.user_password = password
 
     db.session.commit()

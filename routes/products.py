@@ -42,6 +42,11 @@ def get_product(barcode):
     for item in product_test_data:
         if item['barcode'] == barcode:
             return jsonify(item)
+
+    prod = Product.query.filter_by(barcode=barcode).first()
+    if prod is not None:
+        return jsonify(prod)
+
     return jsonify({"status": "product not found"})
 
 
@@ -93,6 +98,13 @@ def update_product(barcode):
     :param barcode: barcode of the product
     :return: json response containing product info or not found error
     """
+    # parse the request data
+    r_data = request.args
+    name = r_data.get('name')
+    brand = r_data.get('brand')
+    category = r_data.get('category')
+    barcode = r_data.get('barcode')
+
     return jsonify({"status": "update_product"})
 
 
@@ -113,5 +125,7 @@ def valid_barcode(barcode):
     :return: True if the barcode string contains only numerical characters and is non-empty
                 otherwise, False
     """
+    if len(barcode) == 0:
+        return False
     barcode_num = re.sub('[^0-9]', '', barcode)
     return 0 < len(barcode_num) == len(barcode)
