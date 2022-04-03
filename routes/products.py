@@ -1,11 +1,17 @@
-from ..models import Product, db
-from flask import Blueprint, render_template, url_for, request, jsonify
-from werkzeug.utils import redirect
+import json
+import re
+import time
 from pathlib import Path
-import json, re
+
+from flask import Blueprint, render_template, url_for, request, jsonify
+from werkzeug.utils import redirect, secure_filename
+
+from ..models import Product, db
+
 product = Blueprint('products', __name__)
 
 data_folder = Path("data/").resolve()
+image_folder = data_folder / "images/"
 data_file = data_folder / "products.json"
 with open(data_file) as f:
     # load the test data from the json file
@@ -60,6 +66,13 @@ def new_product():
     # check to ensure record for barcode does not exist in database
     match = Product.query.filter_by(barcode=barcode).first()
     if match is None:
+        # capture the image files
+        files_ids = list(request.files)
+        for file_id in files_ids:
+            image_file = request.files[file_id]
+            filename = secure_filename(image_file.filename)
+            time_str = time.strftime("%Y%m%d-%H%M%S")
+            image_file.save("{}{}_{}".format(image_folder, time_str, filename))
         # create the new database object
         new_prod = Product(
             product_name=name,
