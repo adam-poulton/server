@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Details</title>
+</head>
+
+<body>
+<table border="1">
+    <tr>
+        <td>sp_id</td>
+        <td>product_id</td>
+        <td>user_id</td>
+    </tr>
+    {% for product in Starred_Products %}
+    <tr>
+        <td>{{product.sp_id}}</td>
+        <td>{{product.product_id}}</td>
+        <td>{{product.user_id}}</td>
+    </tr>
+    {% endfor %}
+</table>
+</body>
+</html>
