@@ -18,7 +18,8 @@ class User(db.Model):
     user_lastname:str
     user_email:str
     user_password:str
-    user_contributionscore: int
+    user_contribution_score: int
+    user_pimg_url:str
 
     user_id = db.Column(db.Integer, primary_key=True)
     user_username = db.Column(db.String(20))
@@ -26,7 +27,8 @@ class User(db.Model):
     user_lastname = db.Column(db.String(20))
     user_email = db.Column(db.String(35))
     user_password = db.Column(db.String(50))
-    user_contributionscore = db.Column(db.Integer)
+    user_contribution_score = db.Column(db.Integer)
+    user_pimg_url = db.Column(db.String(100))
     # scan_record = db.relationship('Scan_record')
 
 

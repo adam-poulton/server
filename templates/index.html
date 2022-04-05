@@ -74,7 +74,6 @@
                                 <td>User records for display</td>
                                 <td>GET</td>
                             </tr>
-
                             <tr>
                                 <th scope="row"><a href="/api/user/get/224">/api/user/get/224</a></th>
                                 <td>Returns a specific user with id: 224</td>
@@ -84,6 +83,11 @@
                             <tr>
                                 <th scope="row"><a href="/api/user/get">/api/user/get</a></th>
                                 <td>Returns all users</td>
+                                <td>GET</td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><a href="/api/user/getByEmail/adam@gmail.com">/api/user/getByEmail/adam@gmail.com</a></th>
+                                <td>Returns user by given email</td>
                                 <td>GET</td>
                             </tr>
                             <tr>
@@ -99,6 +103,11 @@
                             <tr>
                                 <th scope="row"><a href="/api/user/delete">/api/user/delete</a></th>
                                 <td>Deletes the user given by 'user_id' key in request form. Return {"success": "user deleted"} or {"error": "user not found"}.</td>
+                                <td>DELETE</td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><a href="/api/user/deleteByEmail">/api/user/delete</a></th>
+                                <td>Deletes the user given by 'email' key in request form. Return {"success": "user deleted"} or {"error": "user not found"}.</td>
                                 <td>DELETE</td>
                             </tr>
                         </tbody>
