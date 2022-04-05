@@ -53,18 +53,6 @@ def get_user_by_username(username):
     return jsonify(user_match)
 
 
-@user.route('/getByUsername/<username>', methods=['GET'])
-def get_user_by_username(username):
-    """
-    Return a matched user in json form with matching email or return not found
-    :param username: the user username
-    :return: json response containing user info or not found error
-    """
-    # params = [i for i in request.args.keys()]
-    user_match = User.query.filter_by(user_username=username).first()
-    return jsonify(user_match)
-
-
 @user.route('/getBy/<login>', methods=['GET'])
 def get_user_by(login):
     """
