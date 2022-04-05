@@ -106,6 +106,8 @@ def update():
         updated_user.user_firstname = firstname
     if email is not None:
         updated_user.user_email = email
+    if username is not None:
+        updated_user.user_username = username
     if password is not None:
         updated_user.user_password = password
     if contributionscore is not None:
