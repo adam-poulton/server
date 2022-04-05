@@ -62,9 +62,9 @@ def get_user_by(login):
     """
     # check if login string is a username or email address
     if '@' in login:
-        return redirect(url_for('api.users.get_user_by_email', email=login))
+        return redirect(url_for('api.users.get_user_by_email', user_email=login))
     else:
-        return redirect(url_for('api.users.get_user_by_username', username=login))
+        return redirect(url_for('api.users.get_user_by_username', user_username=login))
 
 
 @user.route('/add', methods=['POST'])
