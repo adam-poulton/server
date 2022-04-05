@@ -53,13 +53,27 @@ def add_user():
     return redirect(url_for('api.users.get_user_by_id', user_id=new_user.user_id))
 
 
-@user.route('/update/<id>', methods=['PUT'])
-def update(user_id):
+@user.route('/update', methods=['PUT'])
+def update():
+    # get the request form data with the updated attributes
+    data = request.form
+    user_id = data.get('user_id')
+    username = data.get('username')
+    firstname = data.get('firstname')
+    lastname = data.get('lastname')
+    email = data.get('email')
+    password = data.get('password')
+    contributionscore = data.get('contributionscore')
+
     # get the user object to update
-    updated_user = User.query.get(user_id)
+    if user_id is not None:
+        updated_user = User.query.get(user_id)
+    else:
+        return jsonify({"error": "user_id not supplied"})
+
     # check if the user exists, if not return None
     if updated_user is None:
-        return None
+        return jsonify({"error": "user not found"})
     # get the request form data with the updated attributes
     data = request.form
     username = data.get('username')

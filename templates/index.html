@@ -60,7 +60,7 @@
                                 <td>GET</td>
                             </tr>
                             <tr>
-                                <th scope="row"><a href="/api/product/new?name=Cookies&brand=Arnotts&category=Biscuits&barcode=123456789">/api/product/new?name=Cookies&brand=Arnotts&category=Biscuits&barcode=123456789</a></th>
+                                <th scope="row"><a href="/api/product/new">/api/product/new</a></th>
                                 <td>Creates a new product with barcode: 123456789</td>
                                 <td>POST</td>
                             </tr>
@@ -87,8 +87,8 @@
                                 <td>GET</td>
                             </tr>
                             <tr>
-                                <th scope="row"><a href="/api/user/update/224?lname=chen">/api/user/update/224?lname=chen</a></th>
-                                <td>Update last name with norman of the user with id 224 </td>
+                                <th scope="row"><a href="/api/user/update">/api/user/update</a></th>
+                                <td>Updates the user given by 'user_id' key in request form. Return updated user object or {"error": "user not found"}.</td>
                                 <td>PUT</td>
                             </tr>
                             <tr>
@@ -96,7 +96,7 @@
                                 <td>Creates a new user with the data included in the POST form. Returns created user.</td>
                                 <td>POST</td>
                             </tr>
-                         <tr>
+                            <tr>
                                 <th scope="row"><a href="/api/user/delete">/api/user/delete</a></th>
                                 <td>Deletes the user given by 'user_id' key in request form. Return {"success": "user deleted"} or {"error": "user not found"}.</td>
                                 <td>DELETE</td>

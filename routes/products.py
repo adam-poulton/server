@@ -47,7 +47,7 @@ def get_product(barcode):
     if prod is not None:
         return jsonify(prod)
 
-    return jsonify({"status": "product not found"})
+    return jsonify({"error": "product not found"})
 
 
 @product.route("/new", methods=['POST'])
@@ -57,7 +57,7 @@ def new_product():
     :return: json containing the product information of the newly created product
     """
     # parse the request data
-    r_data = request.args
+    r_data = request.form
     name = r_data.get('name')
     brand = r_data.get('brand')
     category = r_data.get('category')
@@ -94,14 +94,13 @@ def new_product():
 
 
 @product.route("/update", methods=['PUT'])
-def update_product(barcode):
+def update_product():
     """
     Update details for product with matching barcode or return not found
-    :param barcode: barcode of the product
     :return: json response containing product info or not found error
     """
     # parse the request data
-    r_data = request.args
+    r_data = request.form
     name = r_data.get('name')
     brand = r_data.get('brand')
     category = r_data.get('category')
