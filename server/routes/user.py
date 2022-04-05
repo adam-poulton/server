@@ -53,6 +53,32 @@ def get_user_by_username(username):
     return jsonify(user_match)
 
 
+@user.route('/getByUsername/<username>', methods=['GET'])
+def get_user_by_username(username):
+    """
+    Return a matched user in json form with matching email or return not found
+    :param username: the user username
+    :return: json response containing user info or not found error
+    """
+    # params = [i for i in request.args.keys()]
+    user_match = User.query.filter_by(user_username=username).first()
+    return jsonify(user_match)
+
+
+@user.route('/getBy/<login>', methods=['GET'])
+def get_user_by(login):
+    """
+    Return a matched user in json form with matching email or return not found
+    :param login: the user username or email
+    :return: json response containing user info or not found error
+    """
+    # check if login string is a username or email address
+    if '@' in login:
+        return redirect(url_for('api.users.get_user_by_email', email=login))
+    else:
+        return redirect(url_for('api.users.get_user_by_username', username=login))
+
+
 @user.route('/add', methods=['POST'])
 def add_user():
     """
