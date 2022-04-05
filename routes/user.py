@@ -58,7 +58,7 @@ def add_user():
 
     # test if any required fields are empty or not supplied
     if not (username and firstname and lastname and email and password):
-        return jsonify({"error": "missing required field(s)"})
+        return jsonify({"status": "error", "message": "missing required field(s)"})
 
     new_user = User(user_username=username,
                     user_firstname=firstname,
@@ -91,11 +91,11 @@ def update():
     if user_id is not None:
         updated_user = User.query.get(user_id)
     else:
-        return jsonify({"error": "user_id missing"})
+        return jsonify({"status": "error", "message": "user_id missing"})
 
     # check if the user exists, if not return None
     if updated_user is None:
-        return jsonify({"error": "user not found"})
+        return jsonify({"status": "error", "message": "user not found"})
     # get the request form data with the updated attributes
     data = request.form
     username = data.get('username')
@@ -128,14 +128,14 @@ def update():
 def delete():
     user_id = request.form.get('user_id')
     if user_id is None:
-        return jsonify({"error": "user_id missing"})
+        return jsonify({"status": "error", "message": "user_id missing"})
     user_delete = User.query.get(user_id)
     if user_delete:
         db.session.delete(user_delete)
         db.session.commit()
-        return jsonify({"success": "user deleted"})
+        return jsonify({"status": "success", "message": "user deleted"})
     else:
-        return jsonify({"error": "user not found"})
+        return jsonify({"status": "error", "message": "user not found"})
 
 
 @user.route('/deleteByEmail', methods=['DELETE'])
@@ -146,14 +146,14 @@ def delete():
     """
     user_email = request.form.get('email')
     if user_email is None:
-        return jsonify({"error": "email missing"})
+        return jsonify({"status": "error", "message": "email missing"})
     delete_user = User.query.filter_by(user_email=user_email).first()
     if delete_user:
         db.session.delete(user)
         db.session.commit()
-        return jsonify({"success": "user deleted"})
+        return jsonify({"status": "success", "message": "user deleted"})
     else:
-        return jsonify({"error": "user not found"})
+        return jsonify({"status": "error", "message": "user not found"})
 
 
 @user.route('/deleteAll', methods=['DELETE', 'GET'])

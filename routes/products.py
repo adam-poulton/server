@@ -47,7 +47,7 @@ def get_product(barcode):
     if prod is not None:
         return jsonify(prod)
 
-    return jsonify({"error": "product not found"})
+    return jsonify({"status": "error", "message": "product not found"})
 
 
 @product.route("/new", methods=['POST'])
@@ -65,7 +65,7 @@ def new_product():
 
     # check to ensure that there are no illegal characters in the barcode
     if not valid_barcode(barcode):
-        return jsonify({"error": "invalid barcode"})
+        return jsonify({"status": "error", "message": "invalid barcode"})
 
     # check to ensure record for barcode does not exist in database
     match = Product.query.filter_by(barcode=barcode).first()
@@ -90,7 +90,7 @@ def new_product():
         db.session.commit()
         return redirect(url_for('api.products.get_product', barcode=barcode))
     else:
-        return jsonify({"error": "barcode already exists"})
+        return jsonify({"status": "error", "message": "barcode already exists"})
 
 
 @product.route("/update", methods=['PUT'])
@@ -107,12 +107,12 @@ def update_product():
     barcode = r_data.get('barcode')
 
     if barcode is None:
-        return jsonify({"error": "barcode missing"})
+        return jsonify({"status": "error", "message": "barcode missing"})
 
     updated_product = Product.query.filter_by(product_barcode=barcode).first()
 
     if updated_product is None:
-        return jsonify({"error": "product not found"})
+        return jsonify({"status": "error", "message": "product not found"})
 
     if name is not None:
         updated_product.product_name = name
@@ -130,13 +130,19 @@ def update_product():
 
 
 @product.route("/delete", methods=['DELETE'])
-def delete_product(barcode):
+def delete_product():
     """
     Deletes a product corresponding to a given barcode
-    :param barcode: the product barcode
     :return: json response corresponding to success / fail
     """
-    return jsonify({"status": "delete_product", "barcode": "{}".format(barcode)})
+    # parse the request data
+    barcode = request.form.get('barcode')
+    _product = Product.query.filter_by(product_barcode=barcode).first()
+    if not _product:
+        return jsonify({"status": "error", "message": "product not found"})
+    db.session.delete(_product)
+    db.session.commit()
+    return jsonify({"status": "success", "message": "product deleted"})
 
 
 def valid_barcode(barcode):
