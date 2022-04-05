@@ -10,13 +10,6 @@ from ..models import Product, db
 
 product = Blueprint('products', __name__)
 
-data_folder = Path("data/").resolve()
-image_folder = data_folder / "images/"
-data_file = data_folder / "products.json"
-with open(data_file) as f:
-    # load the test data from the json file
-    product_test_data = json.load(f)
-
 
 @product.route('/display')
 def get_products():
@@ -29,7 +22,8 @@ def query_all_records():
     Returns all products in the database in json form
     :return: json containing all the products
     """
-    return jsonify(product_test_data)
+    products = Product.query.all()
+    return jsonify(products)
 
 
 @product.route("/get/<barcode>", methods=['GET'])
@@ -39,10 +33,6 @@ def get_product(barcode):
     :param barcode: barcode of the product
     :return: json response containing product info or not found error
     """
-    for item in product_test_data:
-        if item['barcode'] == barcode:
-            return jsonify(item)
-
     prod = Product.query.filter_by(barcode=barcode).first()
     if prod is not None:
         return jsonify(prod)
@@ -62,6 +52,7 @@ def new_product():
     brand = r_data.get('brand')
     category = r_data.get('category')
     barcode = r_data.get('barcode')
+    nutrition = r_data.get('nutrition')
 
     # check to ensure that there are no illegal characters in the barcode
     if not valid_barcode(barcode):
@@ -70,19 +61,20 @@ def new_product():
     # check to ensure record for barcode does not exist in database
     match = Product.query.filter_by(barcode=barcode).first()
     if match is None:
-        # capture the image files
-        files_ids = list(request.files)
-        for file_id in files_ids:
-            image_file = request.files[file_id]
-            filename = secure_filename(image_file.filename)
-            time_str = time.strftime("%Y%m%d-%H%M%S")
-            image_file.save("{}{}_{}".format(image_folder, time_str, filename))
+        # # capture the image files
+        # files_ids = list(request.files)
+        # for file_id in files_ids:
+        #     image_file = request.files[file_id]
+        #     filename = secure_filename(image_file.filename)
+        #     time_str = time.strftime("%Y%m%d-%H%M%S")
+        #     image_file.save("{}{}_{}".format(image_folder, time_str, filename))
         # create the new database object
         new_prod = Product(
             product_name=name,
             product_brand=brand,
             product_cate=category,
-            product_barcode=barcode
+            product_barcode=barcode,
+            product_nutrition=nutrition
 
         )
 
@@ -105,6 +97,7 @@ def update_product():
     brand = r_data.get('brand')
     category = r_data.get('category')
     barcode = r_data.get('barcode')
+    nutrition = r_data.get('nutrition')
 
     if barcode is None:
         return jsonify({"status": "error", "message": "barcode missing"})
@@ -122,6 +115,8 @@ def update_product():
         updated_product.product_cate = category
     if brand is not None:
         updated_product.product_brand = brand
+    if nutrition is not None:
+        updated_product.product_nutrition = nutrition
 
     db.session.commit()
 
