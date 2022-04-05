@@ -139,7 +139,7 @@ def delete():
 
 
 @user.route('/deleteByEmail', methods=['DELETE'])
-def delete():
+def delete_by_email():
     """
     Deletes a user corresponding to a given email
     :return: json response corresponding to success / fail
