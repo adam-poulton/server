@@ -80,12 +80,6 @@ def update():
     # get the request form data with the updated attributes
     data = request.form
     user_id = data.get('user_id')
-    username = data.get('username')
-    firstname = data.get('firstname')
-    lastname = data.get('lastname')
-    email = data.get('email')
-    password = data.get('password')
-    contribution_score = data.get('contribution_score')
 
     # get the user object to update
     if user_id is not None:
