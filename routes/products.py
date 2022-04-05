@@ -106,7 +106,27 @@ def update_product():
     category = r_data.get('category')
     barcode = r_data.get('barcode')
 
-    return jsonify({"status": "update_product"})
+    if barcode is None:
+        return jsonify({"error": "barcode missing"})
+
+    updated_product = Product.query.filter_by(product_barcode=barcode).first()
+
+    if updated_product is None:
+        return jsonify({"error": "product not found"})
+
+    if name is not None:
+        updated_product.product_name = name
+    if brand is not None:
+        updated_product.product_brand = brand
+    if category is not None:
+        updated_product.product_cate = category
+    if brand is not None:
+        updated_product.product_brand = brand
+
+    db.session.commit()
+
+    return redirect(url_for('api.products.get_product',
+                            barcode=updated_product.product_barcode))
 
 
 @product.route("/delete", methods=['DELETE'])

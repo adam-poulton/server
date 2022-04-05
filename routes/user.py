@@ -67,7 +67,8 @@ def add_user():
     db.session.add(new_user)
     db.session.commit()
 
-    return redirect(url_for('api.users.get_user_by_id', user_id=new_user.user_id))
+    return redirect(url_for('api.users.get_user_by_id',
+                            user_id=new_user.user_id))
 
 
 @user.route('/update', methods=['PUT'])
@@ -98,7 +99,7 @@ def update():
     lastname = data.get('lastname')
     email = data.get('email')
     password = data.get('password')
-    contributionscore = data.get('contributionscore')
+    contribution_score = data.get('contribution_score')
     # if no attribute given it defaults to None so don't update
     if lastname is not None:
         updated_user.user_lastname = lastname
@@ -111,11 +112,12 @@ def update():
     if password is not None:
         updated_user.user_password = password
     if contributionscore is not None:
-        updated_user.user_contributionscore = contributionscore
+        updated_user.user_contribution_score = contribution_score
 
     db.session.commit()
 
-    return redirect(url_for('api.users.get_user_by_id', user_id=updated_user.user_id))
+    return redirect(url_for('api.users.get_user_by_id',
+                            user_id=updated_user.user_id))
 
 
 @user.route('/delete', methods=['DELETE'])
