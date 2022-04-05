@@ -63,7 +63,6 @@ def new_product():
     category = r_data.get('category')
     barcode = r_data.get('barcode')
 
-
     # check to ensure that there are no illegal characters in the barcode
     if not valid_barcode(barcode):
         return jsonify({"error": "invalid barcode"})
@@ -124,7 +123,7 @@ def delete_product(barcode):
 def valid_barcode(barcode):
     """
     Validates a barcode submitted to the server
-    :param barcode:
+    :param barcode: the barcode string to check
     :return: True if the barcode string contains only numerical characters and is non-empty
                 otherwise, False
     """
