@@ -38,7 +38,7 @@ def get_user_by_email(email):
     """
     # params = [i for i in request.args.keys()]
     user_match = User.query.filter_by(user_email=email).first()
-    return jsonify(user_match.first())
+    return jsonify(user_match)
 
 
 @user.route('/add', methods=['POST'])
