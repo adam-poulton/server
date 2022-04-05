@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, url_for, request, jsonify, json
+from flask import Blueprint, render_template, url_for, request, jsonify, json, Response
 from werkzeug.utils import redirect
 
 from ..models import User, db
@@ -85,6 +85,20 @@ def add_user():
     # test if any required fields are empty or not supplied
     if not (username and firstname and lastname and email and password):
         return jsonify({"status": "error", "message": "missing required field(s)"})
+
+    # test if username and email are unique
+    new_username = User.query.filter_by(user_username=username).first()
+    new_email = User.query.filter_by(user_email=email).first()
+    if new_username is not None:
+        return Response(
+            str(jsonify({"status": "error", "message": "username already exists"})),
+            status=405,
+            mimetype='application/json')
+    if new_email is not None:
+        return Response(
+            str(jsonify({"status": "error", "message": "email already exists"})),
+            status=406,
+            mimetype='application/json')
 
     new_user = User(user_username=username,
                     user_firstname=firstname,
