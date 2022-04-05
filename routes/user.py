@@ -50,11 +50,15 @@ def add_user():
     # if bcrypt.hashpw(password, user['password'].encode('utf-8')) == user['password'].encode('utf-8'):
     data = request.form
     username = data.get('username')
-    lastname = data.get('lastname')
     firstname = data.get('firstname')
+    lastname = data.get('lastname')
     email = data.get('email')
     password = data.get('password')
     pimg_url = data.get('pimg_url')
+
+    # test if any required fields are empty or not supplied
+    if not (username and firstname and lastname and email and password):
+        return jsonify({"error": "missing required field(s)"})
 
     new_user = User(user_username=username,
                     user_firstname=firstname,
@@ -81,7 +85,7 @@ def update():
     lastname = data.get('lastname')
     email = data.get('email')
     password = data.get('password')
-    contributionscore = data.get('contributionscore')
+    contribution_score = data.get('contribution_score')
 
     # get the user object to update
     if user_id is not None:
@@ -111,7 +115,7 @@ def update():
         updated_user.user_username = username
     if password is not None:
         updated_user.user_password = password
-    if contributionscore is not None:
+    if contribution_score is not None:
         updated_user.user_contribution_score = contribution_score
 
     db.session.commit()
