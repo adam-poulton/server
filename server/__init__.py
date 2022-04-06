@@ -278,7 +278,7 @@ def create_app():
             )
         db.session.commit()
 
-    # Drop and repopulate the database
+    # Drop and repopulate the database, for development
     # with app.app_context():
     #     db.drop_all()
     #     db.create_all()
