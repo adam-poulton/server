@@ -1,4 +1,5 @@
 from sqlalchemy.sql import func
+from sqlalchemy.types import JSON
 from flask_sqlalchemy import SQLAlchemy
 from dataclasses import dataclass
 
@@ -46,7 +47,7 @@ class Product(db.Model):
     product_name = db.Column(db.String(45))
     product_cate = db.Column(db.String(45))
     product_brand = db.Column(db.String(45))
-    product_nutrition = db.Column(db.String(300))
+    product_nutrition = db.Column(JSON, nullable=True)
 
 
 @dataclass
