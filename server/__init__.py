@@ -19,19 +19,15 @@ def create_app():
     db.init_app(app)
 
     # Drop and repopulate the database
-    seed_app(app)
+    db.drop_all(app=app)
+    db.create_all(app=app)
+    insert_data()
 
     @app.route('/')
     def main():
         return render_template('index.html')
 
     return app
-
-
-def seed_app(app):
-    db.drop_all(app)
-    db.create_all(app)
-    insert_data()
 
 
 def insert_data():
