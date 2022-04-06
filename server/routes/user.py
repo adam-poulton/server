@@ -83,7 +83,7 @@ def add_user():
     pimg_url = data.get('pimg_url')
 
     # test if any required fields are empty or not supplied
-    if not (username and firstname and lastname and email and password):
+    if not (username and firstname and lastname and email):
         return jsonify({"status": "error", "message": "missing required field(s)"})
 
     # test if username and email are unique
