@@ -181,9 +181,9 @@ def delete_by_email():
     user_email = request.form.get('email')
     if user_email is None:
         return jsonify({"status": "error", "message": "email missing"})
-    delete_user = User.query.filter_by(user_email=user_email).first()
-    if delete_user:
-        db.session.delete(user)
+    user_delete = User.query.filter_by(user_email=user_email).first()
+    if user_delete:
+        db.session.delete(user_delete)
         db.session.commit()
         return jsonify({"status": "success", "message": "user deleted"})
     else:
