@@ -45,24 +45,24 @@ class Product(db.Model):
     product_nutrition = db.Column(JSON)
 
 
-@dataclass
-class Favourite(db.Model):
-    favourite_id: int
-    product_id: int
-    user_id: int
-
-    favourite_id = db.Column(db.Integer, primary_key=True)
-    product_id = db.Column(db.Integer, ForeignKey("Product.product_id"), nullable=False)
-    user_id = db.Column(db.Integer, ForeignKey("User.user_id"), nullable=False)
-
-
-@dataclass
-class Scan(db.Model):
-    scan_id: int
-    product_id: int
-    user_id: int
-
-    scan_id = db.Column(db.Integer, primary_key=True)
-    product_id = db.Column(db.Integer, ForeignKey("Product.product_id"), nullable=False)
-    user_id = db.Column(db.Integer, ForeignKey("User.user_id"), nullable=False)
-    timestamp = db.Column(db.DateTime(timezone=True), default=func.now())
+# @dataclass
+# class Favourite(db.Model):
+#     favourite_id: int
+#     product_id: int
+#     user_id: int
+#
+#     favourite_id = db.Column(db.Integer, primary_key=True)
+#     product_id = db.Column(db.Integer, ForeignKey("Product.product_id"), nullable=False)
+#     user_id = db.Column(db.Integer, ForeignKey("User.user_id"), nullable=False)
+#
+#
+# @dataclass
+# class Scan(db.Model):
+#     scan_id: int
+#     product_id: int
+#     user_id: int
+#
+#     scan_id = db.Column(db.Integer, primary_key=True)
+#     product_id = db.Column(db.Integer, ForeignKey("Product.product_id"), nullable=False)
+#     user_id = db.Column(db.Integer, ForeignKey("User.user_id"), nullable=False)
+#     timestamp = db.Column(db.DateTime(timezone=True), default=func.now())
