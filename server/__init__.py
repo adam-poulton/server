@@ -280,16 +280,16 @@ def create_app():
         db.session.commit()
 
     # Drop and repopulate the database, for development
-    with app.app_context():
-        try:
-            db.drop_all()
-            try:
-                db.create_all()
-                insert_data()
-            except Exception:
-                pass
-        except Exception:
-            pass
+    # with app.app_context():
+    #     try:
+    #         db.drop_all()
+    #         try:
+    #             db.create_all()
+    #             insert_data()
+    #         except Exception:
+    #             pass
+    #     except Exception:
+    #         pass
 
 
 
