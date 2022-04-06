@@ -9,6 +9,7 @@ db = SQLAlchemy()
 
 @dataclass
 class User(db.Model):
+    __tablename__ = 'user'
     user_id: int
     user_username: str
     user_firstname: str
@@ -30,6 +31,7 @@ class User(db.Model):
 
 @dataclass
 class Product(db.Model):
+    __tablename__ = 'product'
     product_id: int
     product_barcode: str
     product_name: str
@@ -47,17 +49,19 @@ class Product(db.Model):
 
 @dataclass
 class Favourite(db.Model):
+    __tablename__ = 'favourite'
     favourite_id: int
     product_id: int
     user_id: int
 
     favourite_id = db.Column(db.Integer, primary_key=True)
-    product_id = db.Column(db.Integer, ForeignKey("Product.product_id"), nullable=False)
-    user_id = db.Column(db.Integer, ForeignKey("User.user_id"), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey("product.product_id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"), nullable=False)
 
 
 @dataclass
 class Scan(db.Model):
+    __tablename__ = 'scan'
     scan_id: int
     product_id: int
     user_id: int
