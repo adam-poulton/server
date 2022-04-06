@@ -74,7 +74,7 @@ def new_product():
             product_brand=brand,
             product_cate=category,
             product_barcode=barcode,
-            product_nutrition=json.loads(nutrition)
+            product_nutrition=nutrition
 
         )
 
