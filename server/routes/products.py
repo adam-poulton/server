@@ -33,7 +33,7 @@ def get_product(barcode):
     :param barcode: barcode of the product
     :return: json response containing product info or not found error
     """
-    prod = Product.query.filter_by(barcode=barcode).first()
+    prod = Product.query.filter_by(product_barcode=barcode).first()
     if prod is not None:
         return jsonify(prod)
 
@@ -59,7 +59,7 @@ def new_product():
         return jsonify({"status": "error", "message": "invalid barcode"})
 
     # check to ensure record for barcode does not exist in database
-    match = Product.query.filter_by(barcode=barcode).first()
+    match = Product.query.filter_by(product_barcode=barcode).first()
     if match is None:
         # # capture the image files
         # files_ids = list(request.files)
