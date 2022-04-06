@@ -19,8 +19,9 @@ def create_app():
     db.init_app(app)
 
     # Drop and repopulate the database
-    db.drop_all()
-    db.create_all()
+    with app.app_context():
+        db.drop_all()
+        db.create_all()
     insert_data()
 
     @app.route('/')
