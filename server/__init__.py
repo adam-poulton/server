@@ -283,10 +283,15 @@ def create_app():
     with app.app_context():
         try:
             db.drop_all()
+            try:
+                db.create_all()
+                insert_data()
+            except Exception:
+                pass
         except Exception:
             pass
-        db.create_all()
-        insert_data()
+
+
 
     @app.route('/')
     def main():
