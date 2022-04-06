@@ -77,9 +77,15 @@ def new_product():
             product_nutrition=nutrition
 
         )
+        try:
+            db.session.add(new_prod)
+            db.session.commit()
+        except Exception:
+            db.session.rollback()
+            return jsonify({"status": "error", "message": "database session rollback"})
+        finally:
+            db.session.close()
 
-        db.session.add(new_prod)
-        db.session.commit()
         return redirect(url_for('api.products.get_product', barcode=barcode))
     else:
         return jsonify({"status": "error", "message": "barcode already exists"})
@@ -118,7 +124,13 @@ def update_product():
     if nutrition is not None:
         updated_product.product_nutrition = nutrition
 
-    db.session.commit()
+    try:
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+        return jsonify({"status": "error", "message": "database session rollback"})
+    finally:
+        db.session.close()
 
     return redirect(url_for('api.products.get_product',
                             barcode=updated_product.product_barcode))
@@ -135,8 +147,15 @@ def delete_product():
     _product = Product.query.filter_by(product_barcode=barcode).first()
     if not _product:
         return jsonify({"status": "error", "message": "product not found"})
-    db.session.delete(_product)
-    db.session.commit()
+    try:
+        db.session.delete(_product)
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+        return jsonify({"status": "error", "message": "database session rollback"})
+    finally:
+        db.session.close()
+
     return jsonify({"status": "success", "message": "product deleted"})
 
 

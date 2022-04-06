@@ -107,9 +107,14 @@ def add_user():
                     user_password=password,
                     user_contribution_score=0,
                     user_pimg_url=pimg_url)
-
-    db.session.add(new_user)
-    db.session.commit()
+    try:
+        db.session.add(new_user)
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+        return jsonify({"status": "error", "message": "database session rollback"})
+    finally:
+        db.session.close()
 
     return redirect(url_for('api.users.get_user_by_id',
                             user_id=new_user.user_id))
@@ -152,7 +157,13 @@ def update():
     if contribution_score is not None:
         updated_user.user_contribution_score = contribution_score
 
-    db.session.commit()
+    try:
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+        return jsonify({"status": "error", "message": "database session rollback"})
+    finally:
+        db.session.close()
 
     return redirect(url_for('api.users.get_user_by_id',
                             user_id=updated_user.user_id))
