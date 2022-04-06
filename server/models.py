@@ -18,13 +18,13 @@ class User(db.Model):
     user_contribution_score: int
     user_pimg_url:str
 
-    user_id = db.Column(db.Integer(11), autoincrement=True, primary_key=True)
+    user_id = db.Column(db.Integer(), autoincrement=True, primary_key=True)
     user_username = db.Column(db.String(30), nullable=False, unique=True)
     user_firstname = db.Column(db.String(30), nullable=False)
     user_lastname = db.Column(db.String(30), nullable=False)
     user_email = db.Column(db.String(40), nullable=False, unique=True)
     user_password = db.Column(db.String(50))
-    user_contribution_score = db.Column(db.Integer(11), default=0)
+    user_contribution_score = db.Column(db.Integer(), default=0)
     user_pimg_url = db.Column(db.String(256))
 
 
