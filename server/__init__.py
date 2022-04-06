@@ -280,7 +280,7 @@ def create_app():
 
     # Drop and repopulate the database
     with app.app_context():
-        # db.drop_all()
+        db.drop_all()
         db.create_all()
         insert_data()
 
