@@ -281,7 +281,10 @@ def create_app():
 
     # Drop and repopulate the database, for development
     with app.app_context():
-        db.drop_all()
+        try:
+            db.drop_all()
+        except Exception:
+            pass
         db.create_all()
         insert_data()
 

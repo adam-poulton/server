@@ -44,7 +44,7 @@ class Product(db.Model):
     product_name = db.Column(db.String(45), nullable=False)
     product_cate = db.Column(db.String(45))
     product_brand = db.Column(db.String(45), nullable=False)
-    product_nutrition = db.Column(db.JSON)
+    product_nutrition = db.Column(db.String(300))
 
 
 @dataclass
