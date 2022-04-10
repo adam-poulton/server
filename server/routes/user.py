@@ -117,7 +117,7 @@ def add_user():
                     user_password=password,
                     user_contribution_score=0,
                     user_pimg_url=pimg_url)
-
+    session = db_session()
     session.add(new_user)
     session.commit()
 
@@ -160,11 +160,10 @@ def update():
         updated_user.user_password = password
     if contribution_score is not None:
         updated_user.user_contribution_score = contribution_score
-
+    session = db_session()
     session.commit()
 
-    return redirect(url_for('api.user.get_user_by_id',
-                            user_id=updated_user.user_id))
+    return jsonify(updated_user)
 
 
 @user.route('/delete', methods=['DELETE'])
@@ -190,6 +189,7 @@ def delete_by_email():
     Deletes a user corresponding to a given email
     :return: json response corresponding to success / fail
     """
+    session = db_session()
     user_email = request.form.get('email')
     if user_email is None:
         return jsonify({"status": "error", "message": "email missing"})
@@ -207,6 +207,7 @@ def delete_all():
     """
     Delete all users, mainly used for development
     """
+    session = db_session()
     session.query(User).delete()
     session.commit()
     return redirect(url_for('api.user.get_users'))
