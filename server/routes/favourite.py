@@ -6,11 +6,14 @@ from pathlib import Path
 from flask import Blueprint, render_template, url_for, request, jsonify
 from werkzeug.utils import redirect, secure_filename
 
-from ..application import db, db_session
-from ..models import Favourite
-
+from server.database import db_session
+from server.models import Favourite
 
 favourites = Blueprint('favourites', __name__)
+api.register_blueprint(favourites, url_prefix='/favourite')
+
+# Create a session object
+session = db_session()
 
 
 @favourites.route('/display')
@@ -20,8 +23,8 @@ def display_products():
 
 @favourites.route('/get', methods='GET')
 def get_all_favourites():
-    favourites = Favourite.query.all()
-    return jsonify(favourites)
+    results = Favourite.query.all()
+    return jsonify(results)
 
 
 @favourites.route('/get/<favourite_id>', methods='GET')
@@ -38,7 +41,8 @@ def add_favourite():
     if user_id and product_id:
         if not Favourite.query.filter_by(user_id=user_id, product_id=product_id).first():
             favourite = Favourite(user_id=user_id, product_id=product_id)
-            db.session.add(favourite)
+            session.add(favourite)
+            session.commit()
             return redirect(url_for('api.starProducts.get_favourite', favourite_id=favourite.favourite_id))
         return jsonify({"status": "error", "message": "missing parameter(s)"})
     else:

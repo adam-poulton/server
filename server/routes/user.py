@@ -1,10 +1,14 @@
 from flask import Blueprint, render_template, url_for, request, jsonify, json, Response
 from werkzeug.utils import redirect
 
-from ..application import db, db_session
-from ..models import User
+from server.database import db_session
+from server.models import User
 
 user = Blueprint('users', __name__)
+api.register_blueprint(user, url_prefix='/user')
+
+# Create a session object
+session = db_session()
 
 
 @user.route('/display', methods=['GET'])
@@ -33,6 +37,7 @@ def get_user_by_id(user_id):
 @user.route('/get/<user_id>/favourite', methods=['GET'])
 def get_user_favourites(user_id):
     user_match = User.query.get(user_id)
+    return jsonify(user_match)
 
 
 @user.route('/getByEmail/<email>', methods=['GET'])
@@ -113,14 +118,9 @@ def add_user():
                     user_password=password,
                     user_contribution_score=0,
                     user_pimg_url=pimg_url)
-    try:
-        db.session.add(new_user)
-        db.session.commit()
-    except Exception:
-        db.session.rollback()
-        return jsonify({"status": "error", "message": "database session rollback"})
-    finally:
-        db.session.close()
+
+    session.add(new_user)
+    session.commit()
 
     return redirect(url_for('api.users.get_user_by_id',
                             user_id=new_user.user_id))
@@ -163,13 +163,7 @@ def update():
     if contribution_score is not None:
         updated_user.user_contribution_score = contribution_score
 
-    try:
-        db.session.commit()
-    except Exception:
-        db.session.rollback()
-        return jsonify({"status": "error", "message": "database session rollback"})
-    finally:
-        db.session.close()
+    db.session.commit()
 
     return redirect(url_for('api.users.get_user_by_id',
                             user_id=updated_user.user_id))
@@ -182,8 +176,8 @@ def delete():
         return jsonify({"status": "error", "message": "user_id missing"})
     user_delete = User.query.get(user_id)
     if user_delete:
-        db.session.delete(user_delete)
-        db.session.commit()
+        session.delete(user_delete)
+        session.commit()
         return jsonify({"status": "success", "message": "user deleted"})
     else:
         return jsonify({"status": "error", "message": "user not found"})
@@ -200,8 +194,8 @@ def delete_by_email():
         return jsonify({"status": "error", "message": "email missing"})
     user_delete = User.query.filter_by(user_email=user_email).first()
     if user_delete:
-        db.session.delete(user_delete)
-        db.session.commit()
+        session.delete(user_delete)
+        session.commit()
         return jsonify({"status": "success", "message": "user deleted"})
     else:
         return jsonify({"status": "error", "message": "user not found"})
@@ -212,7 +206,7 @@ def delete_all():
     """
     Delete all users, mainly used for development
     """
-    db.session.query(User).delete()
-    db.session.commit()
+    session.query(User).delete()
+    session.commit()
     return redirect(url_for('api.users.get_users'))
 
