@@ -107,15 +107,14 @@ def add_user():
             status=406,
             mimetype='application/json')
 
-    new_user = User(user_username=username,
-                    user_firstname=firstname,
-                    user_lastname=lastname,
-                    user_email=email,
-                    user_password=password,
-                    user_contribution_score=0,
-                    user_pimg_url=pimg_url)
-
     with db_session() as session:
+        new_user = User(user_username=username,
+                        user_firstname=firstname,
+                        user_lastname=lastname,
+                        user_email=email,
+                        user_password=password,
+                        user_contribution_score=0,
+                        user_pimg_url=pimg_url)
         session.add(new_user)
         session.commit()
 
@@ -145,21 +144,21 @@ def update():
     email = data.get('email')
     password = data.get('password')
     contribution_score = data.get('contribution_score')
-    # if no attribute given it defaults to None so don't update
-    if lastname is not None:
-        updated_user.user_lastname = lastname
-    if firstname is not None:
-        updated_user.user_firstname = firstname
-    if email is not None:
-        updated_user.user_email = email
-    if username is not None:
-        updated_user.user_username = username
-    if password is not None:
-        updated_user.user_password = password
-    if contribution_score is not None:
-        updated_user.user_contribution_score = contribution_score
 
     with db_session() as session:
+        # if no attribute given it defaults to None so don't update
+        if lastname is not None:
+            updated_user.user_lastname = lastname
+        if firstname is not None:
+            updated_user.user_firstname = firstname
+        if email is not None:
+            updated_user.user_email = email
+        if username is not None:
+            updated_user.user_username = username
+        if password is not None:
+            updated_user.user_password = password
+        if contribution_score is not None:
+            updated_user.user_contribution_score = contribution_score
         session.commit()
 
     return jsonify(updated_user)
