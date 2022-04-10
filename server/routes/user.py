@@ -6,9 +6,6 @@ from server.models import User
 
 user = Blueprint('user', __name__)
 
-# Create a session object
-session = db_session()
-
 
 @user.route('/display', methods=['GET'])
 def get_users_display():
@@ -117,9 +114,10 @@ def add_user():
                     user_password=password,
                     user_contribution_score=0,
                     user_pimg_url=pimg_url)
-    session = db_session()
-    session.add(new_user)
-    session.commit()
+
+    with db_session() as session:
+        session.add(new_user)
+        session.commit()
 
     return jsonify(new_user)
 
@@ -160,8 +158,9 @@ def update():
         updated_user.user_password = password
     if contribution_score is not None:
         updated_user.user_contribution_score = contribution_score
-    session = db_session()
-    session.commit()
+
+    with db_session() as session:
+        session.commit()
 
     return jsonify(updated_user)
 
@@ -174,13 +173,13 @@ def delete():
         return jsonify({"status": "error", "message": "user_id missing"})
     user_delete = User.query.get(user_id)
     if user_delete:
-        session.delete(user_delete)
-        session.commit()
-        session.close()
+        with db_session() as session:
+            session.delete(user_delete)
+            session.commit()
+
         return jsonify({"status": "success", "message": "user deleted"})
     else:
         return jsonify({"status": "error", "message": "user not found"})
-
 
 
 @user.route('/deleteByEmail', methods=['DELETE'])
@@ -195,8 +194,9 @@ def delete_by_email():
         return jsonify({"status": "error", "message": "email missing"})
     user_delete = User.query.filter_by(user_email=user_email).first()
     if user_delete:
-        session.delete(user_delete)
-        session.commit()
+        with db_session() as session:
+            session.delete(user_delete)
+            session.commit()
         return jsonify({"status": "success", "message": "user deleted"})
     else:
         return jsonify({"status": "error", "message": "user not found"})
@@ -207,8 +207,8 @@ def delete_all():
     """
     Delete all users, mainly used for development
     """
-    session = db_session()
-    session.query(User).delete()
-    session.commit()
+    with db_session() as session:
+        session.query(User).delete()
+        session.commit()
     return redirect(url_for('api.user.get_users'))
 

@@ -11,9 +11,6 @@ from server.models import Product
 
 product = Blueprint('products', __name__)
 
-# Create a session object
-session = db_session()
-
 
 @product.route('/display')
 def get_products():
@@ -81,9 +78,9 @@ def new_product():
             product_nutrition=nutrition
 
         )
-
-        session.add(new_prod)
-        session.commit()
+        with db_session() as session:
+            session.add(new_prod)
+            session.commit()
 
         return redirect(url_for('api.products.get_product', barcode=barcode))
     else:
@@ -123,7 +120,8 @@ def update_product():
     if nutrition is not None:
         updated_product.product_nutrition = nutrition
 
-    session.commit()
+    with db_session() as session:
+        session.commit()
 
     return redirect(url_for('api.products.get_product',
                             barcode=updated_product.product_barcode))
@@ -141,8 +139,9 @@ def delete_product():
     if not _product:
         return jsonify({"status": "error", "message": "product not found"})
 
-    session.delete(_product)
-    session.commit()
+    with db_session() as session:
+        session.delete(_product)
+        session.commit()
 
     return jsonify({"status": "success", "message": "product deleted"})
 
