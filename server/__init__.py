@@ -1,5 +1,6 @@
 from flask import Flask, render_template, Blueprint
 from server.database import db_session, init_db
+from server.routes import routes
 
 
 def main():
