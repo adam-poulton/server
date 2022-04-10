@@ -2,7 +2,7 @@ from sqlalchemy.sql import func
 from sqlalchemy.schema import ForeignKey
 from sqlalchemy.types import JSON
 from dataclasses import dataclass
-from app import db
+from server.app import db
 
 
 @dataclass
