@@ -18,5 +18,5 @@ def main():
         db_session.remove()
 
     init_db()
-    app.run()
+    app.run(debug=True)
 
