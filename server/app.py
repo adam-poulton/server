@@ -1,5 +1,4 @@
 from server import create_app
-from .models import db, Product, User
 
 app = create_app()
 

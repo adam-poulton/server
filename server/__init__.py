@@ -2,6 +2,7 @@ from flask import Flask, render_template
 from server.routes.user import user
 from server.routes.products import product
 from server.routes.api import api
+from server.Test.test import test
 from .models import db, Product, User
 
 # Data for local database server
@@ -17,6 +18,7 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = REMOTE_DB_URL
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.register_blueprint(api, url_prefix='/api')
+    app.register_blueprint(test, url_prefix='/test')
     db.init_app(app)
     app.app_context().push()
 
