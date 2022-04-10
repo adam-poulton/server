@@ -4,7 +4,7 @@ from werkzeug.utils import redirect
 from server.database import db_session
 from server.models import User
 
-user = Blueprint('user', __name__, url_prefix='')
+user = Blueprint('user', __name__)
 
 # Create a session object
 session = db_session()
