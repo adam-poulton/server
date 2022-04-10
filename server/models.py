@@ -1,12 +1,13 @@
 from sqlalchemy.sql import func
 from sqlalchemy.schema import ForeignKey
-from sqlalchemy.types import JSON
 from dataclasses import dataclass
 from flask_sqlalchemy import SQLAlchemy as db
 
+from server.database import Base
+
 
 @dataclass
-class User(db.Model):
+class User(Base):
     __tablename__ = 'User'
     user_id: int
     user_username: str
@@ -28,7 +29,7 @@ class User(db.Model):
 
 
 @dataclass
-class Product(db.Model):
+class Product(Base):
     __tablename__ = 'Product'
     product_id: int
     product_barcode: str
@@ -46,7 +47,7 @@ class Product(db.Model):
 
 
 @dataclass
-class Favourite(db.Model):
+class Favourite(Base):
     __tablename__ = 'Favourite'
     favourite_id: int
     product_id: int
@@ -58,7 +59,7 @@ class Favourite(db.Model):
 
 
 @dataclass
-class Scan(db.Model):
+class Scan(Base):
     __tablename__ = 'Scan'
     scan_id: int
     product_id: int
