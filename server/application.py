@@ -8,7 +8,7 @@ from server.database import db_session
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {"pool_size": 20}
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {}
 
 api = Blueprint('api', __name__)
 app.register_blueprint(api, url_prefix='/api')
