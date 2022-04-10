@@ -9,6 +9,10 @@ def main():
 
     api = Blueprint('api', __name__)
     app.register_blueprint(api, url_prefix='/api')
+    product = Blueprint('products', __name__)
+    api.register_blueprint(product, url_prefix='/product')
+    user = Blueprint('users', __name__)
+    api.register_blueprint(user, url_prefix='/user')
 
     @app.route('/')
     def index():
