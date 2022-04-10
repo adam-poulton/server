@@ -126,26 +126,25 @@ def update():
     # get the request form data with the updated attributes
     data = request.form
     user_id = data.get('user_id')
-
-    # get the user object to update
-    if user_id is not None:
-        updated_user = User.query.get(user_id)
-    else:
-        return jsonify({"status": "error", "message": "user_id missing"})
-
-    # check if the user exists, if not return None
-    if updated_user is None:
-        return jsonify({"status": "error", "message": "user not found"})
-    # get the request form data with the updated attributes
-    data = request.form
-    username = data.get('username')
-    firstname = data.get('firstname')
-    lastname = data.get('lastname')
-    email = data.get('email')
-    password = data.get('password')
-    contribution_score = data.get('contribution_score')
-
     with db_session() as session:
+        # get the user object to update
+        if user_id is not None:
+            updated_user = session.query(User).get(user_id)
+        else:
+            return jsonify({"status": "error", "message": "user_id missing"})
+
+        # check if the user exists, if not return None
+        if updated_user is None:
+            return jsonify({"status": "error", "message": "user not found"})
+        # get the request form data with the updated attributes
+        data = request.form
+        username = data.get('username')
+        firstname = data.get('firstname')
+        lastname = data.get('lastname')
+        email = data.get('email')
+        password = data.get('password')
+        contribution_score = data.get('contribution_score')
+
         # if no attribute given it defaults to None so don't update
         if lastname is not None:
             updated_user.user_lastname = lastname
