@@ -121,8 +121,7 @@ def add_user():
     session.add(new_user)
     session.commit()
 
-    return redirect(url_for('api.user.get_user_by_id',
-                            user_id=new_user.user_id))
+    return jsonify(new_user)
 
 
 @user.route('/update', methods=['PUT'])
