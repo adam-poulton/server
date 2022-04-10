@@ -18,20 +18,30 @@ def display_products():
 
 
 @favourites.route('/get', methods='GET')
-def get_favourite():
-    favourite = Favourite.query.all()
+def get_all_favourites():
+    favourites = Favourite.query.all()
+    return jsonify(favourites)
+
+
+@favourites.route('/get/<favourite_id>', methods='GET')
+def get_favourite(favourite_id):
+    favourite = Favourite.query.get(favourite_id)
     return jsonify(favourite)
 
 
-@favourites.route('/add/<product_id>', methods='POST')
-def add_favourite(product_id):
-    favourite = Favourite(product_id = product_id)
-    db.session.add(favourite)
-    return redirect(url_for('api.starProducts.get_favourite', favourite_id=favourite.favourite_id))
+@favourites.route('/add', methods='POST')
+def add_favourite():
+    data = request.form
+    user_id = data.get('user_id')
+    product_id = data.get('product_id')
+    if user_id and product_id:
+        if not Favourite.query.filter_by(user_id=user_id, product_id=product_id).first():
+            favourite = Favourite(user_id=user_id, product_id=product_id)
+            db.session.add(favourite)
+            return redirect(url_for('api.starProducts.get_favourite', favourite_id=favourite.favourite_id))
+        return jsonify({"status": "error", "message": "missing parameter(s)"})
+    else:
+        return jsonify({"status": "error", "message": "missing parameter(s)"})
 
-
-@favourites.route('/productDetails')
-def get_products():
-    starredProducts = Favourite.query.all()
 
 

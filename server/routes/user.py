@@ -29,6 +29,11 @@ def get_user_by_id(user_id):
     return jsonify(user_match)
 
 
+@user.route('/get/<user_id>/favourite', methods=['GET'])
+def get_user_favourites(user_id):
+    user_match = User.query.get(user_id)
+
+
 @user.route('/getByEmail/<email>', methods=['GET'])
 def get_user_by_email(email):
     """

@@ -6,9 +6,13 @@ from pathlib import Path
 from flask import Blueprint, render_template, url_for, request, jsonify
 from werkzeug.utils import redirect, secure_filename
 
-from ..models import Product, db
+from app import db, db_session
+from ..models import Product
 
 product = Blueprint('products', __name__)
+
+# Create a session object
+session = db_session()
 
 
 @product.route('/display')
@@ -33,7 +37,7 @@ def get_product(barcode):
     :param barcode: barcode of the product
     :return: json response containing product info or not found error
     """
-    prod = Product.query.filter_by(product_barcode=barcode).first()
+    prod = session.execute(Product.query.filter_by(product_barcode=barcode)).first()
     if prod is not None:
         return jsonify(prod)
 

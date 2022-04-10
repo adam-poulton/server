@@ -1,10 +1,8 @@
 from sqlalchemy.sql import func
 from sqlalchemy.schema import ForeignKey
 from sqlalchemy.types import JSON
-from flask_sqlalchemy import SQLAlchemy
 from dataclasses import dataclass
-
-db = SQLAlchemy()
+from app import db
 
 
 @dataclass
@@ -65,6 +63,7 @@ class Scan(db.Model):
     scan_id: int
     product_id: int
     user_id: int
+    timestamp: str
 
     scan_id = db.Column(db.Integer, primary_key=True)
     product_id = db.Column(db.Integer, ForeignKey("Product.product_id"), nullable=False)

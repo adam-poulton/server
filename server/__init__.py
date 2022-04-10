@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+from flask_sqlalchemy import SQLAlchemy
 from server.routes.user import user
 from server.routes.products import product
 from server.routes.api import api
