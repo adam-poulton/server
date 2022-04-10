@@ -72,9 +72,9 @@ def get_user_by(login):
     """
     # check if login string is a username or email address
     if '@' in login:
-        return redirect(url_for('api.users.get_user_by_email', email=login))
+        return redirect(url_for('api.user.get_user_by_email', email=login))
     else:
-        return redirect(url_for('api.users.get_user_by_username', username=login))
+        return redirect(url_for('api.user.get_user_by_username', username=login))
 
 
 @user.route('/add', methods=['POST'])
@@ -121,7 +121,7 @@ def add_user():
     session.add(new_user)
     session.commit()
 
-    return redirect(url_for('api.users.get_user_by_id',
+    return redirect(url_for('api.user.get_user_by_id',
                             user_id=new_user.user_id))
 
 
@@ -164,7 +164,7 @@ def update():
 
     session.commit()
 
-    return redirect(url_for('api.users.get_user_by_id',
+    return redirect(url_for('api.user.get_user_by_id',
                             user_id=updated_user.user_id))
 
 
@@ -207,5 +207,5 @@ def delete_all():
     """
     session.query(User).delete()
     session.commit()
-    return redirect(url_for('api.users.get_users'))
+    return redirect(url_for('api.user.get_users'))
 
