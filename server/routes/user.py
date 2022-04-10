@@ -162,7 +162,7 @@ def update():
     if contribution_score is not None:
         updated_user.user_contribution_score = contribution_score
 
-    db.session.commit()
+    session.commit()
 
     return redirect(url_for('api.users.get_user_by_id',
                             user_id=updated_user.user_id))
