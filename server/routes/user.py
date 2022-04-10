@@ -117,8 +117,7 @@ def add_user():
                         user_pimg_url=pimg_url)
         session.add(new_user)
         session.commit()
-
-    return jsonify(new_user)
+        return jsonify(new_user)
 
 
 @user.route('/update', methods=['PUT'])
@@ -126,13 +125,11 @@ def update():
     # get the request form data with the updated attributes
     data = request.form
     user_id = data.get('user_id')
+    if user_id is None:
+        return jsonify({"status": "error", "message": "user_id missing"})
     with db_session() as session:
         # get the user object to update
-        if user_id is not None:
-            updated_user = session.query(User).get(user_id)
-        else:
-            return jsonify({"status": "error", "message": "user_id missing"})
-
+        updated_user = session.query(User).get(user_id)
         # check if the user exists, if not return None
         if updated_user is None:
             return jsonify({"status": "error", "message": "user not found"})
@@ -144,7 +141,6 @@ def update():
         email = data.get('email')
         password = data.get('password')
         contribution_score = data.get('contribution_score')
-
         # if no attribute given it defaults to None so don't update
         if lastname is not None:
             updated_user.user_lastname = lastname
@@ -158,26 +154,25 @@ def update():
             updated_user.user_password = password
         if contribution_score is not None:
             updated_user.user_contribution_score = contribution_score
+        # commit changes
         session.commit()
-
-    return jsonify(updated_user)
+        return jsonify(updated_user)
 
 
 @user.route('/delete', methods=['DELETE'])
 def delete():
-    session = db_session()
     user_id = request.form.get('user_id')
     if user_id is None:
         return jsonify({"status": "error", "message": "user_id missing"})
-    user_delete = User.query.get(user_id)
-    if user_delete:
-        with db_session() as session:
-            session.delete(user_delete)
-            session.commit()
-
+    with db_session() as session:
+        user_delete = session.query(User).get(user_id)
+        if user_delete is None:
+            return jsonify({"status": "error", "message": "user not found"})
+        session.delete(user_delete)
+        session.commit()
         return jsonify({"status": "success", "message": "user deleted"})
-    else:
-        return jsonify({"status": "error", "message": "user not found"})
+
+
 
 
 @user.route('/deleteByEmail', methods=['DELETE'])
