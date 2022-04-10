@@ -6,7 +6,8 @@ from pathlib import Path
 from flask import Blueprint, render_template, url_for, request, jsonify
 from werkzeug.utils import redirect, secure_filename
 
-from ..models import Favourite, db
+from ..app import db, db_session
+from ..models import Favourite
 
 
 favourites = Blueprint('favourites', __name__)

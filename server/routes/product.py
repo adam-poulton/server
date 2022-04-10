@@ -6,7 +6,7 @@ from pathlib import Path
 from flask import Blueprint, render_template, url_for, request, jsonify
 from werkzeug.utils import redirect, secure_filename
 
-from server.app import db, db_session
+from ..app import db, db_session
 from ..models import Product
 
 product = Blueprint('products', __name__)
