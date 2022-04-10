@@ -2,7 +2,7 @@ from sqlalchemy.sql import func
 from sqlalchemy.schema import ForeignKey
 from sqlalchemy.types import JSON
 from dataclasses import dataclass
-from .app import db
+from flask_sqlalchemy import SQLAlchemy as db
 
 
 @dataclass
@@ -11,11 +11,11 @@ class User(db.Model):
     user_id: int
     user_username: str
     user_firstname: str
-    user_lastname:str
-    user_email:str
-    user_password:str
+    user_lastname: str
+    user_email: str
+    user_password: str
     user_contribution_score: int
-    user_pimg_url:str
+    user_pimg_url: str
 
     user_id = db.Column(db.Integer(), autoincrement=True, primary_key=True)
     user_username = db.Column(db.String(30), nullable=False, unique=True)

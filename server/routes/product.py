@@ -6,11 +6,12 @@ from pathlib import Path
 from flask import Blueprint, render_template, url_for, request, jsonify
 from werkzeug.utils import redirect, secure_filename
 
-from ..app import db, db_session
+from ..application import db, db_session
 from ..models import Product
 
 product = Blueprint('products', __name__)
-
+api.register_blueprint(user, url_prefix='/user')
+api.register_blueprint(product, url_prefix='/product')
 # Create a session object
 session = db_session()
 

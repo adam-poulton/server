@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, url_for, request, jsonify, json, Response
 from werkzeug.utils import redirect
 
-from ..app import db, db_session
+from ..application import db, db_session
 from ..models import User
 
 user = Blueprint('users', __name__)
