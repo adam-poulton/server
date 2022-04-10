@@ -169,6 +169,7 @@ def update():
 
 @user.route('/delete', methods=['DELETE'])
 def delete():
+    session = db_session()
     user_id = request.form.get('user_id')
     if user_id is None:
         return jsonify({"status": "error", "message": "user_id missing"})
@@ -176,9 +177,11 @@ def delete():
     if user_delete:
         session.delete(user_delete)
         session.commit()
+        session.close()
         return jsonify({"status": "success", "message": "user deleted"})
     else:
         return jsonify({"status": "error", "message": "user not found"})
+
 
 
 @user.route('/deleteByEmail', methods=['DELETE'])
