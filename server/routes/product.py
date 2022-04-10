@@ -9,6 +9,7 @@ from werkzeug.utils import redirect, secure_filename
 from server.database import db_session
 from server.models import Product
 
+product = Blueprint('products', __name__)
 
 # Create a session object
 session = db_session()

@@ -1,18 +1,13 @@
 from flask import Flask, render_template, Blueprint
 from server.database import db_session, init_db
-from server.routes import routes
+from server.routes import api
 
 
-def main():
+def create_app():
     app = Flask(__name__)
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-    api = Blueprint('api', __name__)
     app.register_blueprint(api, url_prefix='/api')
-    product = Blueprint('products', __name__)
-    api.register_blueprint(product, url_prefix='/product')
-    user = Blueprint('users', __name__)
-    api.register_blueprint(user, url_prefix='/user')
 
     @app.route('/')
     def index():
