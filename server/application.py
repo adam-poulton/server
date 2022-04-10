@@ -3,19 +3,14 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from server.database import db_session
+from server.database import db_session, init_db
 
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {}
 
 api = Blueprint('api', __name__)
 app.register_blueprint(api, url_prefix='/api')
-
-
-db = SQLAlchemy(app)
-db.create_all()
 
 
 @app.route('/')
@@ -28,5 +23,7 @@ def shutdown_session(exception=None):
     db_session.remove()
 
 
-app.run()
+if __name__ == "__main__":
+    init_db()
+    app.run()
 
