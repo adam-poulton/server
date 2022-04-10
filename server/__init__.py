@@ -1,6 +1,6 @@
 from flask import Flask, render_template, Blueprint
 from server.database import db_session, init_db
-from server.routes import api
+from server.routes.api import api
 
 
 def create_app():
