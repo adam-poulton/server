@@ -19,6 +19,8 @@ def main():
 
     init_db()
 
+    return app
+
 
 if __name__ == "__main__":
     app.run(debug=True)
