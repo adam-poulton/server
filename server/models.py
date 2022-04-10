@@ -1,7 +1,7 @@
+from sqlalchemy import Integer, Column, String
 from sqlalchemy.sql import func
 from sqlalchemy.schema import ForeignKey
 from dataclasses import dataclass
-from flask_sqlalchemy import SQLAlchemy as db
 
 from server.database import Base
 
@@ -18,14 +18,14 @@ class User(Base):
     user_contribution_score: int
     user_pimg_url: str
 
-    user_id = db.Column(db.Integer(), autoincrement=True, primary_key=True)
-    user_username = db.Column(db.String(30), nullable=False, unique=True)
-    user_firstname = db.Column(db.String(30), nullable=False)
-    user_lastname = db.Column(db.String(30), nullable=False)
-    user_email = db.Column(db.String(40), nullable=False, unique=True)
-    user_password = db.Column(db.String(50))
-    user_contribution_score = db.Column(db.Integer(), default=0)
-    user_pimg_url = db.Column(db.String(256))
+    user_id = Column(Integer(), autoincrement=True, primary_key=True)
+    user_username = Column(String(30), nullable=False, unique=True)
+    user_firstname = Column(String(30), nullable=False)
+    user_lastname = Column(String(30), nullable=False)
+    user_email = Column(String(40), nullable=False, unique=True)
+    user_password = Column(String(50))
+    user_contribution_score = Column(Integer(), default=0)
+    user_pimg_url = Column(String(256))
 
 
 @dataclass
@@ -38,12 +38,12 @@ class Product(Base):
     product_brand: str
     product_nutrition: str
 
-    product_id = db.Column(db.Integer, primary_key=True)
-    product_barcode = db.Column(db.String(45), unique=True, nullable=False)
-    product_name = db.Column(db.String(45), nullable=False)
-    product_cate = db.Column(db.String(45))
-    product_brand = db.Column(db.String(45), nullable=False)
-    product_nutrition = db.Column(db.String(300))
+    product_id = Column(Integer, primary_key=True)
+    product_barcode = Column(String(45), unique=True, nullable=False)
+    product_name = Column(String(45), nullable=False)
+    product_cate = Column(String(45))
+    product_brand = Column(String(45), nullable=False)
+    product_nutrition = Column(String(300))
 
 
 @dataclass
@@ -53,9 +53,9 @@ class Favourite(Base):
     product_id: int
     user_id: int
 
-    favourite_id = db.Column(db.Integer, primary_key=True)
-    product_id = db.Column(db.Integer, ForeignKey("Product.product_id"), nullable=False)
-    user_id = db.Column(db.Integer, ForeignKey("User.user_id"), nullable=False)
+    favourite_id = Column(Integer, primary_key=True)
+    product_id = Column(Integer, ForeignKey("Product.product_id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("User.user_id"), nullable=False)
 
 
 @dataclass
@@ -66,7 +66,7 @@ class Scan(Base):
     user_id: int
     timestamp: str
 
-    scan_id = db.Column(db.Integer, primary_key=True)
-    product_id = db.Column(db.Integer, ForeignKey("Product.product_id"), nullable=False)
-    user_id = db.Column(db.Integer, ForeignKey("User.user_id"), nullable=False)
-    timestamp = db.Column(db.DateTime(timezone=True), default=func.now())
+    scan_id = Column(Integer, primary_key=True)
+    product_id = Column(Integer, ForeignKey("Product.product_id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("User.user_id"), nullable=False)
+    timestamp = Column(DateTime(timezone=True), default=func.now())
