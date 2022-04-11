@@ -173,26 +173,22 @@ def delete():
         return jsonify({"status": "success", "message": "user deleted"})
 
 
-
-
 @user.route('/deleteByEmail', methods=['DELETE'])
 def delete_by_email():
     """
     Deletes a user corresponding to a given email
     :return: json response corresponding to success / fail
     """
-    session = db_session()
     user_email = request.form.get('email')
     if user_email is None:
         return jsonify({"status": "error", "message": "email missing"})
-    user_delete = User.query.filter_by(user_email=user_email).first()
-    if user_delete:
-        with db_session() as session:
-            session.delete(user_delete)
-            session.commit()
+    with db_session() as session:
+        user_delete = session.query(User).filter_by(user_email=user_email).first()
+        if user_delete is None:
+            return jsonify({"status": "error", "message": "user not found"})
+        session.delete(user_delete)
+        session.commit()
         return jsonify({"status": "success", "message": "user deleted"})
-    else:
-        return jsonify({"status": "error", "message": "user not found"})
 
 
 @user.route('/deleteAll', methods=['DELETE', 'GET'])

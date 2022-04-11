@@ -70,19 +70,20 @@ def new_product():
         #     time_str = time.strftime("%Y%m%d-%H%M%S")
         #     image_file.save("{}{}_{}".format(image_folder, time_str, filename))
         # create the new database object
-        new_prod = Product(
-            product_name=name,
-            product_brand=brand,
-            product_cate=category,
-            product_barcode=barcode,
-            product_nutrition=nutrition
 
-        )
         with db_session() as session:
+            new_prod = Product(
+                product_name=name,
+                product_brand=brand,
+                product_cate=category,
+                product_barcode=barcode,
+                product_nutrition=nutrition
+
+            )
             session.add(new_prod)
             session.commit()
 
-        return redirect(url_for('api.products.get_product', barcode=barcode))
+            return redirect(url_for('api.products.get_product', barcode=barcode))
     else:
         return jsonify({"status": "error", "message": "barcode already exists"})
 
@@ -104,27 +105,28 @@ def update_product():
     if barcode is None:
         return jsonify({"status": "error", "message": "barcode missing"})
 
-    updated_product = Product.query.filter_by(product_barcode=barcode).first()
-
-    if updated_product is None:
-        return jsonify({"status": "error", "message": "product not found"})
-
-    if name is not None:
-        updated_product.product_name = name
-    if brand is not None:
-        updated_product.product_brand = brand
-    if category is not None:
-        updated_product.product_cate = category
-    if brand is not None:
-        updated_product.product_brand = brand
-    if nutrition is not None:
-        updated_product.product_nutrition = nutrition
-
     with db_session() as session:
+
+        updated_product = session.query(Product).filter_by(product_barcode=barcode).first()
+
+        if updated_product is None:
+            return jsonify({"status": "error", "message": "product not found"})
+
+        if name is not None:
+            updated_product.product_name = name
+        if brand is not None:
+            updated_product.product_brand = brand
+        if category is not None:
+            updated_product.product_cate = category
+        if brand is not None:
+            updated_product.product_brand = brand
+        if nutrition is not None:
+            updated_product.product_nutrition = nutrition
+
         session.commit()
 
-    return redirect(url_for('api.products.get_product',
-                            barcode=updated_product.product_barcode))
+        return redirect(url_for('api.products.get_product',
+                                barcode=updated_product.product_barcode))
 
 
 @product.route("/delete", methods=['DELETE'])
@@ -135,15 +137,17 @@ def delete_product():
     """
     # parse the request data
     barcode = request.form.get('barcode')
-    _product = Product.query.filter_by(product_barcode=barcode).first()
-    if not _product:
-        return jsonify({"status": "error", "message": "product not found"})
-
+    if barcode is None:
+        return jsonify({"status": "error", "message": "barcode missing"})
     with db_session() as session:
+        _product = session.query(Product).filter_by(product_barcode=barcode).first()
+        if not _product:
+            return jsonify({"status": "error", "message": "product not found"})
+
         session.delete(_product)
         session.commit()
 
-    return jsonify({"status": "success", "message": "product deleted"})
+        return jsonify({"status": "success", "message": "product deleted"})
 
 
 def valid_barcode(barcode):
