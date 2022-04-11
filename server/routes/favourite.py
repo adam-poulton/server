@@ -9,7 +9,7 @@ from werkzeug.utils import redirect, secure_filename
 from server.database import db_session
 from server.models import Favourite
 
-favourite = Blueprint('favourites', __name__)
+favourite = Blueprint('favourite', __name__)
 
 
 @favourite.route('/display')
