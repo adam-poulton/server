@@ -29,7 +29,7 @@ def query_all_records():
         match_user = User.query.get(user_id)
         if match_user is None:
             return jsonify({"status": "error", "message": "user not found"})
-        favourites = Favourite.query(Favourite.product_id).filter_by(user_id=user_id)
+        favourites = Favourite.query(Favourite.product_id).filter_by(user_id=user_id).all()
         response = json.dumps(products)
         response = json.loads(response)
         for item in response:
