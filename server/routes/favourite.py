@@ -13,7 +13,7 @@ favourite = Blueprint('favourite', __name__)
 
 
 @favourite.route('/display')
-def display_products():
+def display_favourites():
     return render_template('favourites.html', Favourites=Favourite.query.all())
 
 
