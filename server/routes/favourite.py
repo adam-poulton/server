@@ -40,7 +40,7 @@ def add_favourite():
                 new_fav = Favourite(user_id=user_id, product_id=product_id)
                 session.add(new_fav)
                 session.commit()
-                return redirect(url_for('api.starProducts.get_favourite', favourite_id=new_fav.favourite_id))
+                return redirect(url_for('api.favourite.get_favourite', favourite_id=new_fav.favourite_id))
         return jsonify({"status": "error", "message": "missing parameter(s)"})
     else:
         return jsonify({"status": "error", "message": "missing parameter(s)"})

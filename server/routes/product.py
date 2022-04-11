@@ -145,18 +145,16 @@ def update_product():
                                 barcode=updated_product.product_barcode))
 
 
-@product.route("/delete", methods=['DELETE'])
-def delete_product():
+@product.route("/delete/<product_id>", methods=['DELETE'])
+def delete_product(product_id=None):
     """
-    Deletes a product corresponding to a given barcode
+    Deletes a product corresponding to a given id
     :return: json response corresponding to success / fail
     """
-    # parse the request data
-    barcode = request.form.get('barcode')
-    if barcode is None:
-        return jsonify({"status": "error", "message": "barcode missing"})
+    if product_id is None:
+        return jsonify({"status": "error", "message": "product_id missing"})
     with db_session() as session:
-        _product = session.query(Product).filter_by(product_barcode=barcode).first()
+        _product = session.query(Product).get(product_id)
         if not _product:
             return jsonify({"status": "error", "message": "product not found"})
 

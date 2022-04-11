@@ -159,9 +159,12 @@ def update():
         return jsonify(updated_user)
 
 
-@user.route('/delete', methods=['DELETE'])
-def delete():
-    user_id = request.form.get('user_id')
+@user.route('/delete/<user_id>', methods=['DELETE'])
+def delete(user_id=None):
+    """
+    Deletes a user corresponding to a given id
+    :return: json response corresponding to success / fail
+    """
     if user_id is None:
         return jsonify({"status": "error", "message": "user_id missing"})
     with db_session() as session:
