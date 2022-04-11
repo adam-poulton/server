@@ -7,7 +7,7 @@ from flask import Blueprint, render_template, url_for, request, jsonify
 from werkzeug.utils import redirect, secure_filename
 
 from server.database import db_session
-from server.models import Product
+from server.models import Product, Favourite
 
 product = Blueprint('products', __name__)
 
@@ -23,8 +23,23 @@ def query_all_records():
     Returns all products in the database in json form
     :return: json containing all the products
     """
+    user_id = request.args.get('user_id')
     products = Product.query.all()
-    return jsonify(products)
+    if user_id:
+        match_user = User.query.get(user_id)
+        if match_user is None:
+            return jsonify({"status": "error", "message": "user not found"})
+        favourites = Favourite.query(Favourite.product_id).filter_by(user_id=user_id)
+        response = json.dumps(products)
+        response = json.loads(response)
+        for item in response:
+            if item['product_id'] in favourites:
+                item['product_is_starred'] = True
+            else:
+                item['product_is_starred'] = False
+        return jsonify(response)
+    else:
+        return jsonify(products)
 
 
 @product.route("/get/<barcode>", methods=['GET'])
