@@ -9,41 +9,38 @@ from werkzeug.utils import redirect, secure_filename
 from server.database import db_session
 from server.models import Favourite
 
-favourites = Blueprint('favourites', __name__)
-api.register_blueprint(favourites, url_prefix='/favourite')
-
-# Create a session object
-session = db_session()
+favourite = Blueprint('favourites', __name__)
 
 
-@favourites.route('/display')
+@favourite.route('/display')
 def display_products():
     return render_template('favourites.html', Favourites=Favourite.query.all())
 
 
-@favourites.route('/get', methods='GET')
+@favourite.route('/get', methods='GET')
 def get_all_favourites():
     results = Favourite.query.all()
     return jsonify(results)
 
 
-@favourites.route('/get/<favourite_id>', methods='GET')
+@favourite.route('/get/<favourite_id>', methods='GET')
 def get_favourite(favourite_id):
-    favourite = Favourite.query.get(favourite_id)
-    return jsonify(favourite)
+    match = Favourite.query.get(favourite_id)
+    return jsonify(match)
 
 
-@favourites.route('/add', methods='POST')
+@favourite.route('/add', methods='POST')
 def add_favourite():
     data = request.form
     user_id = data.get('user_id')
     product_id = data.get('product_id')
     if user_id and product_id:
         if not Favourite.query.filter_by(user_id=user_id, product_id=product_id).first():
-            favourite = Favourite(user_id=user_id, product_id=product_id)
-            session.add(favourite)
-            session.commit()
-            return redirect(url_for('api.starProducts.get_favourite', favourite_id=favourite.favourite_id))
+            with db_session() as session:
+                new_fav = Favourite(user_id=user_id, product_id=product_id)
+                session.add(new_fav)
+                session.commit()
+                return redirect(url_for('api.starProducts.get_favourite', favourite_id=new_fav.favourite_id))
         return jsonify({"status": "error", "message": "missing parameter(s)"})
     else:
         return jsonify({"status": "error", "message": "missing parameter(s)"})
