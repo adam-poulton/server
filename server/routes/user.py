@@ -93,21 +93,21 @@ def add_user():
     if not (username and firstname and lastname and email):
         return jsonify({"status": "error", "message": "missing required field(s)"})
 
-    # test if username and email are unique
-    new_username = User.query.filter_by(user_username=username).first()
-    new_email = User.query.filter_by(user_email=email).first()
-    if new_username is not None:
-        return Response(
-            str(jsonify({"status": "error", "message": "username already exists"})),
-            status=405,
-            mimetype='application/json')
-    if new_email is not None:
-        return Response(
-            str(jsonify({"status": "error", "message": "email already exists"})),
-            status=406,
-            mimetype='application/json')
-
     with db_session() as session:
+        # test if username and email are unique
+        new_username = session.query(User).filter_by(user_username=username).first()
+        new_email = session.query(User).filter_by(user_email=email).first()
+        if new_username is not None:
+            return Response(
+                json.dumps({"status": "error", "message": "username already exists"}),
+                status=405,
+                mimetype='application/json')
+        if new_email is not None:
+            return Response(
+                json.dumps({"status": "error", "message": "email already exists"}),
+                status=406,
+                mimetype='application/json')
+
         new_user = User(user_username=username,
                         user_firstname=firstname,
                         user_lastname=lastname,
