@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, url_for, request, jsonify, json, Response
 from werkzeug.utils import redirect
+import bcrypt
 
 from server.database import db_session
 from server.models import User
@@ -13,6 +14,58 @@ def get_users_display():
     Returns all users in the database in html table form, mainly used for development
     """
     return render_template('users.html', Users=User.query.all())
+
+
+@user.route('/login', methods=['POST'])
+def login():
+    """
+    Validates a user login by a given username and password
+    Returns the logged in user object or an error
+    """
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    if not username:
+        return 'missing username', 405
+    if not password:
+        return 'missing password', 406
+
+    hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+
+@user.route('/register', methods=['POST'])
+def register():
+    """
+    Registers a user by a given username and password
+    Returns the logged in user object or an error
+    """
+    data = request.form
+    username = data.get('username')
+    password = data.get('password')
+    email = data.get('email')
+    firstname = data.get('firstname')
+    lastname = data.get('lastname')
+    pimg_url = data.get('pimg_url')
+
+    if not username:
+        return 'missing username', 405
+    if not password:
+        return 'missing password', 406
+
+    hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+    with db_session() as session:
+        new_user = User(user_username=username,
+                        user_email=email,
+                        user_firstname=firstname,
+                        user_hash=hashed,
+                        user_lastname=lastname,
+                        user_pimg_url=pimg_url,
+                        user_contribution_score=0
+                        )
+        session.add(new_user)
+        session.commit()
+        return jsonify(new_user.to_dict())
 
 
 @user.route('/get', methods=['GET'])
