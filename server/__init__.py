@@ -5,9 +5,10 @@ from server.routes.api import api
 
 def create_app():
     app = Flask(__name__)
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Disable the event notification system since we don't need it
+    # and disable it for saving system resources
 
-    app.register_blueprint(api, url_prefix='/api')
+    app.register_blueprint(api, url_prefix='/api')   # Register a blueprint on an application at a URL prefix '/api/'
 
     @app.route('/')
     def index():
