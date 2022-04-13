@@ -33,7 +33,8 @@ def new_feedback(user_id):
     Create a new feedback based on the supplied data
     :return: json containing the feedback description of the newly created feedback
     """
-    fdate = datetime.now(tz=None).strftime("%Y%m%d-%H%M%S")  # we define written date of feedback inside server
+    now = datetime.now() # we define written date of feedback inside server
+    # fdate = now.strftime("%Y/%m/%d-%H:%M:%S")
     r_data = request.form
     description = r_data.get("description")
     if user_id:
@@ -43,7 +44,7 @@ def new_feedback(user_id):
                 new_feedback = Feedback(
                     user_id=user_id,
                     feedback_description=description,
-                    feedback_date=fdate
+                    feedback_date=now
                 )
             session.add(new_feedback)
             session.commit()
