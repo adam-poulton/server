@@ -41,6 +41,7 @@ class User(Base):
 @dataclass
 class Product(Base):
     __tablename__ = 'Product'
+    product_id: str
     product_barcode: str
     product_name: str
     product_cate: str
