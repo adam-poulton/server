@@ -27,7 +27,7 @@ def query_all_feedback():
     return jsonify(feedbacks)
 
 
-@feedback.route("/new/<user_id>", methods=['POST'])
+@feedback.route("/new", methods=['POST'])
 def new_feedback():
     """
     Create a new feedback based on the supplied data
