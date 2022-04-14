@@ -152,6 +152,26 @@
                                 <td>Creates a new feedback written from user with given id in the request body</td>
                                 <td>POST</td>
                             </tr>
+                            <tr>
+                                <td><h2>Favourite</h2></td>
+                                <td><br/></td>
+                                <td><br/></td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><a href="/api/favourite/get">/api/favourite/get</a></th>
+                                <td>Returns all products that have been starred</td>
+                                <td>GET</td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><a href="/api/favourite/add">/api/favourite/add</a></th>
+                                <td>Sets a product starred given by 'user_id' key and 'product_id' in request form. <br>Return {JSON of the added starred product} or {"status": "error", "message": "already a favourite"} or {"status": "error", "message": "missing parameter(s)"} </td>
+                                <td>POST</td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><a href="/api/favourite/remove">/api/favourite/remove</a></th>
+                                <td>Deletes a product given by 'user_id' key and 'product_id' in request form.  <br>Return {"status": "success", "message": "favourite removed"} or {"status": "error", "message": "already a favourite"} or {"status": "error", "message": "missing parameter(s)"}</td>
+                                <td>DELETE</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
