@@ -17,6 +17,7 @@ class User(Base):
     user_password: str
     user_contribution_score: int
     user_pimg_url: str
+    user_hash: str
 
     user_id = Column(Integer(), autoincrement=True, primary_key=True)
     user_username = Column(String(30), nullable=False, unique=True)
@@ -26,6 +27,15 @@ class User(Base):
     user_password = Column(String(50))
     user_contribution_score = Column(Integer(), default=0)
     user_pimg_url = Column(String(256))
+    user_hash = Column(String(150))
+
+    def to_dict(self):
+        d = {}
+        hidden = ['user_hash', 'user_password']
+        for column in self.__table__.columns.keys():
+            if column.name not in hidden:
+                d[column.name] = str(getattr(self, column.name))
+        return d
 
 
 @dataclass
