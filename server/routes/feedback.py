@@ -28,7 +28,7 @@ def query_all_feedback():
 
 
 @feedback.route("/new/<user_id>", methods=['POST'])
-def new_feedback(user_id):
+def new_feedback():
     """
     Create a new feedback based on the supplied data
     :return: json containing the feedback description of the newly created feedback
@@ -36,7 +36,10 @@ def new_feedback(user_id):
     now = datetime.now() # we define written date of feedback inside server
     # fdate = now.strftime("%Y/%m/%d-%H:%M:%S")
     r_data = request.form
+    user_id = r_data.get("user_id")
+    rating = r_data.get("rating")
     description = r_data.get("description")
+
     if user_id:
         match_user = User.query.get(user_id)
         if match_user is not None:
@@ -44,7 +47,8 @@ def new_feedback(user_id):
                 new_feedback = Feedback(
                     user_id=user_id,
                     feedback_description=description,
-                    feedback_date=now
+                    feedback_date=now,
+                    feedBack_rating=float(rating),
                 )
                 session.add(new_feedback)
                 session.commit()

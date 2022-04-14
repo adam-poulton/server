@@ -1,4 +1,4 @@
-from sqlalchemy import Integer, Column, String, DateTime
+from sqlalchemy import Integer, Column, String, DateTime, Numeric
 from sqlalchemy.sql import func
 from sqlalchemy.schema import ForeignKey
 from dataclasses import dataclass
@@ -27,15 +27,15 @@ class User(Base):
     user_password = Column(String(50))
     user_contribution_score = Column(Integer(), default=0)
     user_pimg_url = Column(String(256))
-    user_hash = Column(String(150))
-
-    def to_dict(self):
-        d = {}
-        hidden = ['user_hash', 'user_password']
-        for column in self.__table__.columns.keys():
-            if column.name not in hidden:
-                d[column.name] = str(getattr(self, column.name))
-        return d
+    user_hash = Column(String(150), nullable=True)
+    #
+    # def to_dict(self):
+    #     d = {}
+    #     hidden = ['user_hash', 'user_password']
+    #     for column in self.__table__.columns.keys():
+    #         if column.name not in hidden:
+    #             d[column.name] = str(getattr(self, column.name))
+    #     return d
 
 
 @dataclass
@@ -89,8 +89,10 @@ class Feedback(Base):
     user_id: int
     feedback_description: str
     feedback_date: str
+    feedback_rating: float
 
     feedback_id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey("User.user_id"), nullable=False)
     feedback_description = Column(String(300),  nullable=False)
     feedback_date = Column(DateTime(timezone=True), default=func.now(), nullable=False)
+    feedback_rating = Column(Numeric(1,2), nullable=False)
