@@ -17,19 +17,19 @@ def display_favourites():
     return render_template('favourites.html', Favourites=Favourite.query.all())
 
 
-@favourite.route('/get', methods='GET')
+@favourite.route('/get', methods=['GET'])
 def get_all_favourites():
     results = Favourite.query.all()
     return jsonify(results)
 
 
-@favourite.route('/get/<favourite_id>', methods='GET')
+@favourite.route('/get/<favourite_id>', methods=['GET'])
 def get_favourite(favourite_id):
     match = Favourite.query.get(favourite_id)
     return jsonify(match)
 
 
-@favourite.route('/add', methods='POST')
+@favourite.route('/add', methods=['POST'])
 def add_favourite():
     data = request.form
     user_id = data.get('user_id')
