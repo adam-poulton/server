@@ -31,6 +31,7 @@ def add_favourite():
     product_id = data.get('product_id')
     if user_id and product_id:
         with db_session() as session:
+            # check that the favourite doesn't already exist
             if not session.query(Favourite).filter_by(user_id=user_id, product_id=product_id).first():
                 new_fav = Favourite(user_id=user_id, product_id=product_id)
                 session.add(new_fav)
@@ -42,7 +43,7 @@ def add_favourite():
         return jsonify({"status": "error", "message": "missing parameter(s)"})
 
 
-@favourite.route('/remove', methods='POST')
+@favourite.route('/remove', methods=['POST'])
 def remove_favourite():
     data = request.form
     user_id = data.get('user_id')
