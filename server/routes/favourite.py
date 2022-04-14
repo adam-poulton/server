@@ -30,15 +30,32 @@ def add_favourite():
     user_id = data.get('user_id')
     product_id = data.get('product_id')
     if user_id and product_id:
-        if not Favourite.query.filter_by(user_id=user_id, product_id=product_id).first():
-            with db_session() as session:
+        with db_session() as session:
+            if not session.query(Favourite).filter_by(user_id=user_id, product_id=product_id).first():
                 new_fav = Favourite(user_id=user_id, product_id=product_id)
                 session.add(new_fav)
                 session.commit()
-                return redirect(url_for('api.favourite.get_favourite', favourite_id=new_fav.favourite_id))
-        return jsonify({"status": "error", "message": "missing parameter(s)"})
+                return jsonify(new_fav)
+            else:
+                return jsonify({"status": "error", "message": "already a favourite"})
     else:
         return jsonify({"status": "error", "message": "missing parameter(s)"})
 
 
+@favourite.route('/remove', methods='POST')
+def remove_favourite():
+    data = request.form
+    user_id = data.get('user_id')
+    product_id = data.get('product_id')
+    if user_id and product_id:
+        with db_session() as session:
+            match = session.query(Favourite).filter_by(user_id=user_id, product_id=product_id).first()
+            if match:
+                session.delete(match)
+                session.commit()
+                return jsonify({"status": "success", "message": "favourite removed"})
+            else:
+                return jsonify({"status": "error", "message": "already a favourite"})
+    else:
+        return jsonify({"status": "error", "message": "missing parameter(s)"})
 
