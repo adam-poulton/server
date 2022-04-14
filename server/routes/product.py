@@ -30,13 +30,19 @@ def query_all_records():
             return jsonify({"status": "error", "message": "user not found"})
         with db_session() as session:
             favourites = session.query(Favourite.product_id).filter_by(user_id=user_id).all()
-        response = json.dumps(products)
-        response = json.loads(response)
-        for item in response:
+        response = []
+        for item in products:
+            d = {'product_id': item['product_id'],
+                 'product_barcode': item['product_barcode'],
+                 'product_name': item['product_name'],
+                 'product_cate': item['product_cate'],
+                 'product_brand': item['product_brand'],
+                 'product_nutrition': item['product_nutrition']}
             if item['product_id'] in favourites:
-                item['product_is_starred'] = True
+                d['product_is_starred'] = True
             else:
-                item['product_is_starred'] = False
+                d['product_is_starred'] = False
+            response.append(d)
         return jsonify(response)
     else:
         return jsonify(products)
