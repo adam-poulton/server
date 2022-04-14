@@ -46,7 +46,7 @@ def new_feedback(user_id):
                     feedback_description=description,
                     feedback_date=now
                 )
-            session.add(new_feedback)
-            session.commit()
+                session.add(new_feedback)
+                session.commit()
             return redirect(url_for('api.feedback.query_all_feedback'))
     return jsonify({"status": "error", "message": "user not found"})
