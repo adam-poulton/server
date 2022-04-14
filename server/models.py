@@ -80,3 +80,17 @@ class Scan(Base):
     product_id = Column(Integer, ForeignKey("Product.product_id"), nullable=False)
     user_id = Column(Integer, ForeignKey("User.user_id"), nullable=False)
     timestamp = Column(DateTime(timezone=True), default=func.now())
+
+
+@dataclass
+class Feedback(Base):
+    __tablename__ = 'Feedback'
+    feedback_id: int
+    user_id: int
+    feedback_description: str
+    feedback_date: str
+
+    feedback_id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("User.user_id"), nullable=False)
+    feedback_description = Column(String(300),  nullable=False)
+    feedback_date = Column(DateTime(timezone=True), default=func.now(), nullable=False)

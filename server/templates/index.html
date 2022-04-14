@@ -50,6 +50,11 @@
                         </thead>
                         <tbody>
                             <tr>
+                                <td><h2>Product</h2></td>
+                                <td><br/></td>
+                                <td><br/></td>
+                            </tr>
+                            <tr>
                                 <th scope="row"><a href="api/product/get">/api/product/get</a></th>
                                 <td>Returns all products</td>
                                 <td>GET</td>
@@ -70,7 +75,7 @@
                                 <td>PUT</td>
                             </tr>
                             <tr>
-                                <td><br/></td>
+                                <td><h2>USER</h2></td>
                                 <td><br/></td>
                                 <td><br/></td>
                             </tr>
@@ -116,14 +121,36 @@
                                 <td>POST</td>
                             </tr>
                             <tr>
-                                <th scope="row"><a href="/api/user/delete">/api/user/delete</a></th>
+                                <th scope="row"><a href="/api/user/delete/">/api/user/delete/(user_id)</a></th>
                                 <td>Deletes the user given by 'user_id' key in request form. Return {"success": "user deleted"} or {"error": "user not found"}.</td>
                                 <td>DELETE</td>
                             </tr>
                             <tr>
-                                <th scope="row"><a href="/api/user/deleteByEmail">/api/user/delete</a></th>
+                                <th scope="row"><a href="/api/user/deleteByEmail">/api/user/deleteByEmail</a></th>
                                 <td>Deletes the user given by 'email' key in request form. Return {"success": "user deleted"} or {"error": "user not found"}.</td>
                                 <td>DELETE</td>
+                            </tr>
+
+                            <tr>
+                                <td><h2>Feedback</h2></td>
+                                <td><br/></td>
+                                <td><br/></td>
+                            </tr>
+
+                            <tr>
+                                <th scope="row"><a href="/api/feedback/get">/api/feedback/get</a></th>
+                                <td>Returns all users' feedback</td>
+                                <td>GET</td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><a href="/api/feedback/get?224">/api/feedback/get?224</a></th>
+                                <td>Returns feedback that is from user with id: 224</td>
+                                <td>GET</td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><a href="/api/feedback/new/224">/api/feedback/new/224</a></th>
+                                <td>Creates a new feedback written from user with id: 224</td>
+                                <td>POST</td>
                             </tr>
                         </tbody>
                     </table>
