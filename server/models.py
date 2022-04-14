@@ -41,7 +41,6 @@ class User(Base):
 @dataclass
 class Product(Base):
     __tablename__ = 'Product'
-    product_id: int
     product_barcode: str
     product_name: str
     product_cate: str
@@ -95,4 +94,4 @@ class Feedback(Base):
     user_id = Column(Integer, ForeignKey("User.user_id"), nullable=False)
     feedback_description = Column(String(300),  nullable=False)
     feedback_date = Column(DateTime(timezone=True), default=func.now(), nullable=False)
-    feedback_rating = Column(DECIMAL(4, 2), nullable=False)
+    feedback_rating = Column(DECIMAL(2, 1), nullable=False)
