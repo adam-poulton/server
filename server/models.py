@@ -1,4 +1,4 @@
-from sqlalchemy import Integer, Column, String, DateTime, Numeric
+from sqlalchemy import Integer, Column, String, DateTime, DECIMAL
 from sqlalchemy.sql import func
 from sqlalchemy.schema import ForeignKey
 from dataclasses import dataclass
@@ -17,7 +17,7 @@ class User(Base):
     user_password: str
     user_contribution_score: int
     user_pimg_url: str
-    user_hash: str
+    # user_hash: str
 
     user_id = Column(Integer(), autoincrement=True, primary_key=True)
     user_username = Column(String(30), nullable=False, unique=True)
@@ -27,7 +27,7 @@ class User(Base):
     user_password = Column(String(50))
     user_contribution_score = Column(Integer(), default=0)
     user_pimg_url = Column(String(256))
-    user_hash = Column(String(150), nullable=True)
+    # user_hash = Column(String(150), nullable=True)
     #
     # def to_dict(self):
     #     d = {}
@@ -84,15 +84,15 @@ class Scan(Base):
 
 @dataclass
 class Feedback(Base):
-    __tablename__ = 'Feedback'
     feedback_id: int
     user_id: int
     feedback_description: str
     feedback_date: str
     feedback_rating: float
 
+    __tablename__ = 'Feedback'
     feedback_id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey("User.user_id"), nullable=False)
     feedback_description = Column(String(300),  nullable=False)
     feedback_date = Column(DateTime(timezone=True), default=func.now(), nullable=False)
-    feedback_rating = Column(Numeric(1,2), nullable=False)
+    feedback_rating = Column(DECIMAL(4, 2), nullable=False)

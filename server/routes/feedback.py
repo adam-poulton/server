@@ -48,7 +48,7 @@ def new_feedback():
                     user_id=user_id,
                     feedback_description=description,
                     feedback_date=now,
-                    feedBack_rating=float(rating),
+                    feedback_rating=rating,
                 )
                 session.add(new_feedback)
                 session.commit()
