@@ -36,11 +36,11 @@ def add_favourite():
                 new_fav = Favourite(user_id=user_id, product_id=product_id)
                 session.add(new_fav)
                 session.commit()
-                return jsonify(new_fav)
+                return jsonify({"status": "success", "message": "favourite removed"})
             else:
-                return jsonify({"status": "error", "message": "already a favourite"})
+                return jsonify({"status": "error", "message": "already a favourite"}), 405
     else:
-        return jsonify({"status": "error", "message": "missing parameter(s)"})
+        return jsonify({"status": "error", "message": "missing parameter(s)"}), 405
 
 
 @favourite.route('/remove', methods=['POST'])
@@ -56,7 +56,7 @@ def remove_favourite():
                 session.commit()
                 return jsonify({"status": "success", "message": "favourite removed"})
             else:
-                return jsonify({"status": "error", "message": "already a favourite"})
+                return jsonify({"status": "error", "message": "already a favourite"}), 405
     else:
-        return jsonify({"status": "error", "message": "missing parameter(s)"})
+        return jsonify({"status": "error", "message": "missing parameter(s)"}), 405
 
