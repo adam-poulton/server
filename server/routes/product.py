@@ -85,8 +85,7 @@ def get_product(barcode):
             d['product_is_starred'] = True
         else:
             d['product_is_starred'] = False
-        response.append(d)
-        return jsonify(response)
+        return jsonify(d)
     else:
         return jsonify(prod)
 
