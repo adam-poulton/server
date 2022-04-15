@@ -5,7 +5,7 @@ from server.database import db_session
 from server.models import Product
 
 basedir = os.getcwd()
-data = os.path.join(basedir, 'data', 'products.json')
+data = os.path.join(basedir, 'server', 'data', 'products.json')
 
 
 def insert_products():

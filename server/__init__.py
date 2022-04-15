@@ -20,7 +20,7 @@ def create_app():
         db_session.remove()
 
     # uncomment to drop all the db tables
-    drop_db()
+    # drop_db()
 
     # initialises any db tables that aren't already created
     init_db()
