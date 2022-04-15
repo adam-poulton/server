@@ -60,11 +60,37 @@ def get_product(barcode):
     :param barcode: barcode of the product
     :return: json response containing product info or not found error
     """
+    user_id = request.args.get('user_id')
     prod = Product.query.filter_by(product_barcode=barcode).first()
-    if prod is not None:
+    if prod is None:
+        return jsonify({"status": "error", "message": "product not found"}), 405
+    elif user_id:
+        match_user = User.query.get(user_id)
+        if match_user is None:
+            return jsonify({"status": "error", "message": "user not found"}), 405
+        with db_session() as session:
+            favourites = session.query(Favourite.product_id).filter_by(user_id=user_id).all()
+            if favourites:
+                # unpack all the ids from the returned list of row tuples
+                favourites = [item[0] for item in favourites]
+        response = []
+        # iterate over the products and insert the is_starred value
+        # TODO: implement this kind of serialisation using Marshmallow
+        for item in products:
+            d = {'product_id': item.product_id,
+                 'product_barcode': item.product_barcode,
+                 'product_name': item.product_name,
+                 'product_cate': item.product_cate,
+                 'product_brand': item.product_brand,
+                 'product_nutrition': item.product_nutrition}
+            if favourites is None or item.product_id in favourites:
+                d['product_is_starred'] = True
+            else:
+                d['product_is_starred'] = False
+            response.append(d)
+        return jsonify(response)
+    else:
         return jsonify(prod)
-
-    return jsonify({"status": "error", "message": "product not found"})
 
 
 @product.route("/new", methods=['POST'])
