@@ -36,7 +36,7 @@ def add_favourite():
                 new_fav = Favourite(user_id=user_id, product_id=product_id)
                 session.add(new_fav)
                 session.commit()
-                return jsonify({"status": "success", "message": "favourite removed"})
+                return jsonify({"status": "success", "message": "favourite added"})
             else:
                 return jsonify({"status": "error", "message": "already a favourite"}), 405
     else:
