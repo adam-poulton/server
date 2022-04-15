@@ -1,34 +1,36 @@
 [
   {
-  "name" : "Savoy Original",
-  "brand" : "Arnott's",
-  "barcode" : "9310072026428",
-  "category": "",
-  "nutrition" :
-    {
-      "energy" : [1970.0, "kJ"],
-      "protein" : [7.9, "g"],
-      "fat-total" : [20.0, "g"],
-      "fat-saturated" : [3.9, "g"],
-      "carbohydrate" : [62.6, "g"],
-      "sugars" : [1.3, "g"],
-      "sodium" : [848, "mg"]
-    }
+    "name" : "Savoy Original",
+    "brand" : "Arnott's",
+    "barcode" : "9310072026428",
+    "category": "",
+    "price": 2.50,
+    "nutrition" :
+      {
+        "energy" : {"value": 1970.0, "unit": "kJ"},
+        "protein" : {"value": 7.9, "unit": "g"},
+        "fat-total" : {"value": 20.0, "unit": "g"},
+        "fat-saturated" : {"value": 3.9, "unit": "g"},
+        "carbohydrate" : {"value": 62.6, "unit": "g"},
+        "sugars" : {"value": 1.3, "unit": "g"},
+        "sodium" : {"value": 848, "unit": "mg"}
+      }
   },
   {
     "name" : "Lindor Extra Dark 18pc",
     "brand" : "Lindt",
     "barcode" : "7610400074193",
     "category": "",
+    "price": 3.00,
     "nutrition" :
       {
-        "energy" : [2670.0, "kJ"],
-        "protein" : [4.9, "g"],
-        "fat-total" : [53.0, "g"],
-        "fat-saturated" : [39.0, "g"],
-        "carbohydrate" : [34.0, "g"],
-        "sugars" : [31.0, "g"],
-        "sodium" : [16, "mg"]
+        "energy" : {"value": 2670.0, "unit": "kJ"},
+        "protein" : {"value": 4.9, "unit": "g"},
+        "fat-total" : {"value": 53.0, "unit": "g"},
+        "fat-saturated" : {"value": 39.0, "unit": "g"},
+        "carbohydrate" : {"value": 34.0, "unit": "g"},
+        "sugars" : {"value": 31.0, "unit": "g"},
+        "sodium" : {"value": 16, "unit": "mg"}
       }
   },
   {
@@ -36,15 +38,16 @@
     "brand" : "Indo mie",
     "barcode" : "08968618065",
     "category": "",
+    "price": 0.75,
     "nutrition" :
       {
-        "energy" : [942.0, "kJ"],
-        "protein" : [3.4, "g"],
-        "fat-total" : [10.4, "g"],
-        "fat-saturated" : [4.9, "g"],
-        "carbohydrate" : [29.3, "g"],
-        "sugars" : [3.8, "g"],
-        "sodium" : [450, "mg"]
+        "energy" : {"value": 942.0, "unit": "kJ"},
+        "protein" : {"value": 3.4, "unit": "g"},
+        "fat-total" : {"value": 10.4, "unit": "g"},
+        "fat-saturated" : {"value": 4.9, "unit": "g"},
+        "carbohydrate" : {"value": 29.3, "unit": "g"},
+        "sugars" : {"value": 3.8, "unit": "g"},
+        "sodium" : {"value": 450, "unit": "mg"}
       }
   },
   {
@@ -52,15 +55,16 @@
     "brand" : "Yumi's",
     "barcode" : "93174440001168",
     "category": "",
+    "price": 2.99,
     "nutrition" :
       {
-        "energy" : [1050, "kJ"],
-        "protein" : [3.7, "g"],
-        "fat-total" : [21.0, "g"],
-        "fat-saturated" : [2.4, "g"],
-        "carbohydrate" : [11.0, "g"],
-        "sugars" : [5.1, "g"],
-        "sodium" : [394, "mg"]
+        "energy" : {"value": 1050, "unit": "kJ"},
+        "protein" : {"value": 3.7, "unit": "g"},
+        "fat-total" : {"value": 21.0, "unit": "g"},
+        "fat-saturated" : {"value": 2.4, "unit": "g"},
+        "carbohydrate" : {"value": 11.0, "unit": "g"},
+        "sugars" : {"value": 5.1, "unit": "g"},
+        "sodium" : {"value": 394, "unit": "mg"}
       }
   },
   {
@@ -68,18 +72,19 @@
     "brand" : "Red Rock Deli",
     "barcode" : "9310015240638",
     "category": "",
+    "price": 3.50,
     "nutrition" :
       {
-        "energy" : [2050, "kJ"],
-        "protein" : [7.6, "g"],
-        "fat-total" : [23.8, "g"],
-        "fat-saturated" : [1.9, "g"],
-        "fat-trans" : [0.1, "g"],
-        "fat-poly" : [2.3, "g"],
-        "fat-mono" : [5.4, "g"],
-        "carbohydrate" : [11.0, "g"],
-        "sugars" : [5.1, "g"],
-        "sodium" : [394, "mg"]
+        "energy" : {"value": 2050, "unit": "kJ"},
+        "protein" : {"value": 7.6,"unit": "g"},
+        "fat-total" : {"value": 23.8, "unit": "g"},
+        "fat-saturated" : {"value": 1.9, "unit": "g"},
+        "fat-trans" : {"value": 0.1, "unit": "g"},
+        "fat-poly" : {"value": 2.3, "unit": "g"},
+        "fat-mono" : {"value": 5.4, "unit": "g"},
+        "carbohydrate" : {"value": 11.0, "unit": "g"},
+        "sugars" : {"value": 5.1, "unit": "g"},
+        "sodium" : {"value": 394, "unit": "mg"}
       }
   },
   {
@@ -87,18 +92,19 @@
     "brand" : "Alpine Breads",
     "barcode" : "9312743010521",
     "category": "",
+    "price": 4.70,
     "nutrition" :
       {
-        "energy" : [988, "kJ"],
-        "protein" : [11.9, "g"],
-        "fat-total" : [1.6, "g"],
-        "fat-saturated" : [0.6, "g"],
-        "fat-trans" : [0.1, "g"],
-        "fat-poly" : [2.3, "g"],
-        "fat-mono" : [5.4, "g"],
-        "carbohydrate" : [39.7, "g"],
-        "sugars" : [5.1, "g"],
-        "sodium" : [394, "mg"]
+        "energy" : {"value": 988, "unit": "kJ"},
+        "protein" : {"value": 11.9, "unit": "g"},
+        "fat-total" : {"value": 1.6, "unit": "g"},
+        "fat-saturated" : {"value": 0.6, "unit": "g"},
+        "fat-trans" : {"value": 0.1, "unit": "g"},
+        "fat-poly" : {"value": 2.3, "unit": "g"},
+        "fat-mono" : {"value": 5.4, "unit": "g"},
+        "carbohydrate" : {"value": 39.7, "unit": "g"},
+        "sugars" : {"value": 5.1, "unit": "g"},
+        "sodium" : {"value": 394, "unit": "mg"}
       }
   }
 ]

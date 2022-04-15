@@ -17,9 +17,9 @@ class User(Base):
     user_password: str
     user_contribution_score: int
     user_pimg_url: str
-    # user_hash: str
+    user_hash: str
 
-    user_id = Column(Integer(), autoincrement=True, primary_key=True)
+    user_id = Column(Integer, autoincrement=True, primary_key=True)
     user_username = Column(String(30), nullable=False, unique=True)
     user_firstname = Column(String(30), nullable=False)
     user_lastname = Column(String(30), nullable=False)
@@ -27,7 +27,7 @@ class User(Base):
     user_password = Column(String(50))
     user_contribution_score = Column(Integer(), default=0)
     user_pimg_url = Column(String(256))
-    # user_hash = Column(String(150), nullable=True)
+    user_hash = Column(String(150), nullable=True)
     #
     # def to_dict(self):
     #     d = {}
@@ -41,12 +41,13 @@ class User(Base):
 @dataclass
 class Product(Base):
     __tablename__ = 'Product'
-    product_id: str
+    product_id: int
     product_barcode: str
     product_name: str
     product_cate: str
     product_brand: str
     product_nutrition: str
+    product_price: float
 
     product_id = Column(Integer, primary_key=True)
     product_barcode = Column(String(45), unique=True, nullable=False)
@@ -54,6 +55,7 @@ class Product(Base):
     product_cate = Column(String(45))
     product_brand = Column(String(45), nullable=False)
     product_nutrition = Column(String(300))
+    product_price = Column(Float)
 
 
 @dataclass
