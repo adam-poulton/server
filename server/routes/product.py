@@ -27,7 +27,7 @@ def query_all_records():
     if user_id:
         match_user = User.query.get(user_id)
         if match_user is None:
-            return jsonify({"status": "error", "message": "user not found"})
+            return jsonify({"status": "error", "message": "user not found"}), 405
         with db_session() as session:
             favourites = session.query(Favourite.product_id).filter_by(user_id=user_id).all()
             if favourites:

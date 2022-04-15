@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, url_for, request, jsonify
 from werkzeug.utils import redirect, secure_filename
 
 from server.database import db_session
-from server.models import Favourite
+from server.models import Favourite, Product, User
 
 favourite = Blueprint('favourite', __name__)
 
@@ -14,8 +14,29 @@ def display_favourites():
 
 @favourite.route('/get', methods=['GET'])
 def get_all_favourites():
-    results = Favourite.query.all()
-    return jsonify(results)
+    user_id = request.args.get('user_id')
+    if user_id:
+        match_user = User.query.get(user_id)
+        if match_user is None:
+            return jsonify({"status": "error", "message": "user not found"}), 405
+        with db_session() as session:
+            favourite_products = session.query(Product)\
+                .join(Favourite).filter(Favourite.user_id == user_id).all()
+        response = []
+        for item in favourite_products:
+            d = {'product_id': item.product_id,
+                 'product_barcode': item.product_barcode,
+                 'product_name': item.product_name,
+                 'product_cate': item.product_cate,
+                 'product_brand': item.product_brand,
+                 'product_price': item.product_price,
+                 'product_is_starred': True,
+                 'product_nutrition': item.product_nutrition}
+            response.append(d)
+        return jsonify(response)
+    else:
+        results = Favourite.query.all()
+        return jsonify(results)
 
 
 @favourite.route('/get/<favourite_id>', methods=['GET'])
