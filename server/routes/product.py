@@ -43,7 +43,7 @@ def query_all_records():
                  'product_cate': item.product_cate,
                  'product_brand': item.product_brand,
                  'product_nutrition': item.product_nutrition}
-            if favourites is None or item.product_id in favourites:
+            if favourites is not None and item.product_id in favourites:
                 d['product_is_starred'] = True
             else:
                 d['product_is_starred'] = False
@@ -73,21 +73,19 @@ def get_product(barcode):
             if favourites:
                 # unpack all the ids from the returned list of row tuples
                 favourites = [item[0] for item in favourites]
-        response = []
         # iterate over the products and insert the is_starred value
         # TODO: implement this kind of serialisation using Marshmallow
-        for item in products:
-            d = {'product_id': item.product_id,
-                 'product_barcode': item.product_barcode,
-                 'product_name': item.product_name,
-                 'product_cate': item.product_cate,
-                 'product_brand': item.product_brand,
-                 'product_nutrition': item.product_nutrition}
-            if favourites is None or item.product_id in favourites:
-                d['product_is_starred'] = True
-            else:
-                d['product_is_starred'] = False
-            response.append(d)
+        d = {'product_id': prod.product_id,
+             'product_barcode': prod.product_barcode,
+             'product_name': prod.product_name,
+             'product_cate': prod.product_cate,
+             'product_brand': prod.product_brand,
+             'product_nutrition': prod.product_nutrition}
+        if favourites is not None and prod.product_id in favourites:
+            d['product_is_starred'] = True
+        else:
+            d['product_is_starred'] = False
+        response.append(d)
         return jsonify(response)
     else:
         return jsonify(prod)
