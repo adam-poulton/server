@@ -1,4 +1,4 @@
-from sqlalchemy import Integer, Column, String, DateTime, DECIMAL
+from sqlalchemy import Integer, Column, String, DateTime, DECIMAL, Float
 from sqlalchemy.sql import func
 from sqlalchemy.schema import ForeignKey
 from dataclasses import dataclass
