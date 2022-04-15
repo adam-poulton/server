@@ -45,7 +45,7 @@ def query_all_records():
             else:
                 d['product_is_starred'] = False
             response.append(d)
-        return favourites, 200
+        return jsonify(str(favourites))
     else:
         return jsonify(products)
 
