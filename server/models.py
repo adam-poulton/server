@@ -28,14 +28,6 @@ class User(Base):
     user_contribution_score = Column(Integer(), default=0)
     user_pimg_url = Column(String(256))
     user_hash = Column(String(150), nullable=True)
-    #
-    # def to_dict(self):
-    #     d = {}
-    #     hidden = ['user_hash', 'user_password']
-    #     for column in self.__table__.columns.keys():
-    #         if column.name not in hidden:
-    #             d[column.name] = str(getattr(self, column.name))
-    #     return d
 
 
 @dataclass
@@ -50,11 +42,11 @@ class Product(Base):
     product_price: float
 
     product_id = Column(Integer, primary_key=True)
-    product_barcode = Column(String(45), unique=True, nullable=False)
-    product_name = Column(String(45), nullable=False)
-    product_cate = Column(String(45))
-    product_brand = Column(String(45), nullable=False)
-    product_nutrition = Column(String(300))
+    product_barcode = Column(String(20), unique=True, nullable=False)
+    product_name = Column(String(100), nullable=False)
+    product_cate = Column(String(50))
+    product_brand = Column(String(50), nullable=False)
+    product_nutrition = Column(String(900))
     product_price = Column(Float)
 
 

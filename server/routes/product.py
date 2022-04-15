@@ -42,6 +42,7 @@ def query_all_records():
                  'product_name': item.product_name,
                  'product_cate': item.product_cate,
                  'product_brand': item.product_brand,
+                 'product_price': item.product_price,
                  'product_nutrition': item.product_nutrition}
             if favourites is not None and item.product_id in favourites:
                 d['product_is_starred'] = True
@@ -80,6 +81,7 @@ def get_product(barcode):
              'product_name': prod.product_name,
              'product_cate': prod.product_cate,
              'product_brand': prod.product_brand,
+             'product_price': prod.product_price,
              'product_nutrition': prod.product_nutrition}
         if favourites is not None and prod.product_id in favourites:
             d['product_is_starred'] = True
@@ -103,6 +105,7 @@ def new_product():
     category = r_data.get('category')
     barcode = r_data.get('barcode')
     nutrition = r_data.get('nutrition')
+    price = r_data.get('price', 0)
 
     # check to ensure that there are no illegal characters in the barcode
     if not valid_barcode(barcode):
@@ -111,24 +114,14 @@ def new_product():
     # check to ensure record for barcode does not exist in database
     match = Product.query.filter_by(product_barcode=barcode).first()
     if match is None:
-        # # capture the image files
-        # files_ids = list(request.files)
-        # for file_id in files_ids:
-        #     image_file = request.files[file_id]
-        #     filename = secure_filename(image_file.filename)
-        #     time_str = time.strftime("%Y%m%d-%H%M%S")
-        #     image_file.save("{}{}_{}".format(image_folder, time_str, filename))
-        # create the new database object
-
         with db_session() as session:
             new_prod = Product(
                 product_name=name,
                 product_brand=brand,
                 product_cate=category,
                 product_barcode=barcode,
-                product_nutrition=nutrition
-
-            )
+                product_price=price,
+                product_nutrition=nutrition)
             session.add(new_prod)
             session.commit()
 
@@ -150,6 +143,7 @@ def update_product():
     category = r_data.get('category')
     barcode = r_data.get('barcode')
     nutrition = r_data.get('nutrition')
+    price = r_data.get('price')
 
     if barcode is None:
         return jsonify({"status": "error", "message": "barcode missing"})
@@ -169,6 +163,8 @@ def update_product():
             updated_product.product_cate = category
         if brand is not None:
             updated_product.product_brand = brand
+        if price is not None:
+            updated_product.product_price = price
         if nutrition is not None:
             updated_product.product_nutrition = nutrition
 
