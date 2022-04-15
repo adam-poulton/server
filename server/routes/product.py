@@ -25,13 +25,14 @@ def query_all_records():
     user_id = request.args.get('user_id')
     products = Product.query.all()
     if user_id:
-        match_user = User.query().get(user_id).first()
+        match_user = User.query.get(user_id)
         if match_user is None:
             return jsonify({"status": "error", "message": "user not found"})
         with db_session() as session:
             favourites = session.query(Favourite.product_id).filter_by(user_id=user_id).all()
         response = []
         # iterate over the products and insert the is_starred value
+        # TODO: implement this kind of serialisation using Marshmallow
         for item in products:
             d = {'product_id': item['product_id'],
                  'product_barcode': item['product_barcode'],
