@@ -18,6 +18,7 @@ def insert_products():
                                   product_name=product['name'],
                                   product_cate=product['category'],
                                   product_brand=product['brand'],
+                                  product_price=product['price'],
                                   product_nutrition=json.dumps(product['nutrition'])
                                   )
             session.add(new_product)
