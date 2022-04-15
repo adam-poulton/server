@@ -25,7 +25,7 @@ def query_all_records():
     user_id = request.args.get('user_id')
     products = Product.query.all()
     if user_id:
-        match_user = User.query().get(user_id)
+        match_user = User.query().get(user_id).first()
         if match_user is None:
             return jsonify({"status": "error", "message": "user not found"})
         with db_session() as session:
