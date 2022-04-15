@@ -31,6 +31,7 @@ def query_all_records():
         with db_session() as session:
             favourites = session.query(Favourite.product_id).filter_by(user_id=user_id).all()
             if favourites:
+                # unpack all the ids from the returned list of row tuples
                 favourites = [item[0] for item in favourites]
         response = []
         # iterate over the products and insert the is_starred value
@@ -47,7 +48,7 @@ def query_all_records():
             else:
                 d['product_is_starred'] = False
             response.append(d)
-        return jsonify(str(favourites))
+        return jsonify(response)
     else:
         return jsonify(products)
 
