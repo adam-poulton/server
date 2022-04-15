@@ -4,7 +4,7 @@ import os
 from server.database import db_session
 from server.models import Product
 
-basedir = os.path.abspath(__file__)
+basedir = os.path.getcwd()
 data = os.path.join(basedir, 'data', 'products.json')
 
 
