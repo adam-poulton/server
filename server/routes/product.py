@@ -34,13 +34,13 @@ def query_all_records():
         # iterate over the products and insert the is_starred value
         # TODO: implement this kind of serialisation using Marshmallow
         for item in products:
-            d = {'product_id': item['product_id'],
-                 'product_barcode': item['product_barcode'],
-                 'product_name': item['product_name'],
-                 'product_cate': item['product_cate'],
-                 'product_brand': item['product_brand'],
-                 'product_nutrition': item['product_nutrition']}
-            if favourites is None or item['product_id'] in favourites:
+            d = {'product_id': item.product_id,
+                 'product_barcode': item.product_barcode,
+                 'product_name': item.product_name,
+                 'product_cate': item.product_cate,
+                 'product_brand': item.product_brand,
+                 'product_nutrition': item.product_nutrition}
+            if favourites is None or item.product_id in favourites:
                 d['product_is_starred'] = True
             else:
                 d['product_is_starred'] = False
