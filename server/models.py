@@ -58,8 +58,8 @@ class Favourite(Base):
     user_id: int
 
     favourite_id = Column(Integer, primary_key=True)
-    product_id = Column(Integer, ForeignKey("Product.product_id"), nullable=False)
-    user_id = Column(Integer, ForeignKey("User.user_id"), nullable=False)
+    product_id = Column(Integer, ForeignKey("Product.product_id", ondelete='CASCADE'), nullable=False)
+    user_id = Column(Integer, ForeignKey("User.user_id", ondelete='CASCADE'), nullable=False)
 
 
 @dataclass
@@ -71,8 +71,8 @@ class Scan(Base):
     timestamp: str
 
     scan_id = Column(Integer, primary_key=True)
-    product_id = Column(Integer, ForeignKey("Product.product_id"), nullable=False)
-    user_id = Column(Integer, ForeignKey("User.user_id"), nullable=False)
+    product_id = Column(Integer, ForeignKey("Product.product_id", ondelete='CASCADE'), nullable=False)
+    user_id = Column(Integer, ForeignKey("User.user_id", ondelete='CASCADE'), nullable=False)
     timestamp = Column(DateTime(timezone=True), default=func.now())
 
 
@@ -86,7 +86,7 @@ class Feedback(Base):
 
     __tablename__ = 'Feedback'
     feedback_id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey("User.user_id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("User.user_id", ondelete='CASCADE'), nullable=False)
     feedback_description = Column(String(300),  nullable=False)
     feedback_date = Column(DateTime(timezone=True), default=func.now(), nullable=False)
     feedback_rating = Column(DECIMAL(2, 1), nullable=False)
