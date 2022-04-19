@@ -3,6 +3,7 @@ from server.routes.product import product
 from server.routes.user import user
 from server.routes.feedback import feedback
 from server.routes.favourite import favourite
+from server.routes.scan import scan
 
 api = Blueprint('api', __name__)
 api.register_blueprint(product, url_prefix='/product')
