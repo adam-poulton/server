@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, url_for, request, jsonify
 from werkzeug.utils import redirect, secure_filename
 
 from server.database import db_session
-from server.models import Scan, Product, User
+from server.models import Scan, Product, User, Favourite
 
 scan = Blueprint('scan', __name__)
 
