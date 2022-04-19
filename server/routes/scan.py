@@ -45,7 +45,7 @@ def get_scan():
 @scan.route('/add', methods=['POST'])
 def add_scan():
     user_id = request.form.get('user_id')
-    barcode = request.form.get('barcode')
+    barcode = request.form.get('product_barcode')
     if user_id and barcode:
         with db_session() as session:
             # check that user exists
@@ -55,7 +55,7 @@ def add_scan():
             # check that product exists
             match_product = session.query(Product).filter_by(product_barcode=barcode).first()
             if match_product is None:
-                return jsonify({"status": "error", "message": "user not found"}), 405
+                return jsonify({"status": "error", "message": "product not found"}), 405
             # check if previous scan exist for this product and user and delete it if it does
             match_scan = session.query(Scan).filter_by(product_id=match_product.product_id, user_id=user_id).first()
             if match_scan:
