@@ -22,7 +22,7 @@ def get_scan():
             # get the product and scan data combine all into response
             response = []
             for prod, s in session.query(Product, Scan).select_from(Product) \
-                    .join(Scan).filter_by(user_id=user_id).order_by(Scan.timestamp.desc()):
+                    .join(Scan).filter_by(user_id=user_id).order_by(Scan.timestamp.desc()).all():
                 d = {'product_id': prod.product_id,
                      'product_barcode': prod.product_barcode,
                      'product_name': prod.product_name,
