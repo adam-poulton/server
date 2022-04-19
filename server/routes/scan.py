@@ -19,10 +19,10 @@ def get_scan():
             if favourites:
                 # unpack all the ids from the returned list of row tuples
                 favourites = [item[0] for item in favourites]
-            response = []
             # get the product and scan data combine all into response
+            response = []
             for prod, s in session.query(Product, Scan).select_from(Product) \
-                    .join(Scan).filter_by(user_id=user_id):
+                    .join(Scan).filter_by(user_id=user_id).order_by(Scan.timestamp.desc()):
                 d = {'product_id': prod.product_id,
                      'product_barcode': prod.product_barcode,
                      'product_name': prod.product_name,
@@ -35,7 +35,11 @@ def get_scan():
                     d['product_is_starred'] = True
                 else:
                     d['product_is_starred'] = False
-                return jsonify(d)
+                response.append(d)
+            # only return the last 20 scans
+            if len(response) > 20:
+                response = response[0:20]
+            return jsonify(response)
 
 
 @scan.route('/add', methods=['POST'])
