@@ -46,8 +46,8 @@ class Product(Base):
     product_name = Column(String(100), nullable=False)
     product_cate = Column(String(50))
     product_brand = Column(String(50), nullable=False)
-    product_nutrition = Column(String(900))
-    product_price = Column(Float)
+    product_nutrition = Column(String(900), default="{}")
+    product_price = Column(Float, default=0)
 
 
 @dataclass
