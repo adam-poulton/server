@@ -177,7 +177,7 @@ def update_product():
 @product.route("/delete/<product_id>", methods=['DELETE'])
 def delete_product(product_id=None):
     """
-    Deletes a product corresponding to a given id
+    Delete a product corresponding to a given id
     :return: json response corresponding to success / fail
     """
     if product_id is None:
@@ -192,6 +192,22 @@ def delete_product(product_id=None):
 
         return jsonify({"status": "success", "message": "product deleted"})
 
+
+@product.route("/similar/<product_id>", methods=['GET'])
+def similar_product(product_id=None):
+    """
+    Return a list of products in the same category of the product_id parameter
+    :return: json containing a list of products with information or json with response corresponding to parameter missing / not found
+    """
+    if product_id is None:
+        return jsonify({"status": "error", "message": "product_id missing"})
+    with db_session() as session:
+        _product = session.query(Product).get(product_id)
+        if not _product:
+            return jsonify({"status": "error", "message": "product not found"})
+
+        similar_product = session.query(Product).filter_by(product_cate =_product.product_cate).all()
+    return jsonify(similar_product)
 
 def valid_barcode(barcode):
     """
