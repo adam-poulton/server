@@ -190,6 +190,17 @@ def delete_product(product_id=None):
         return jsonify({"status": "success", "message": "product deleted"})
 
 
+@product.route('/deleteAll', methods=['DELETE', 'GET'])
+def delete_all():
+    """
+    Delete all users, mainly used for development
+    """
+    with db_session() as session:
+        session.query(Product).delete()
+        session.commit()
+    return redirect(url_for('api.products.query_all_records'))
+
+
 @product.route("/similar/<product_id>", methods=['GET'])
 def get_similar_product(product_id=None):
     """
@@ -240,6 +251,8 @@ def get_similar_product(product_id=None):
                 d['product_is_starred'] = False
             response.append(d)
         return jsonify(response)
+
+
 
 
 def valid_barcode(barcode):
