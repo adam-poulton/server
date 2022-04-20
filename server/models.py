@@ -53,6 +53,7 @@ class Product(Base):
     product_price = Column(Float, default=0)
 
 
+
 @dataclass
 class Favourite(Base):
     __tablename__ = 'Favourite'
@@ -90,7 +91,7 @@ class Feedback(Base):
     __tablename__ = 'Feedback'
     feedback_id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey("User.user_id", ondelete='CASCADE'), nullable=False)
-    feedback_description = Column(String(300),  nullable=False)
+    feedback_description = Column(String(300), nullable=False)
     feedback_date = Column(DateTime(timezone=True), default=func.now(), nullable=False)
     feedback_rating = Column(DECIMAL(2, 1), nullable=False)
 
@@ -110,6 +111,6 @@ class Review(Base):
     product_id = Column(Integer, ForeignKey("Product.product_id", ondelete='CASCADE'), nullable=False)
     review_rating = Column(DECIMAL(2, 1), nullable=False)
     review_date = Column(DateTime(timezone=True), default=func.now(), nullable=False)
-    review_description = Column(String(300),  nullable=False)
+    review_description = Column(String(300), nullable=False)
 
     users = relationship("User", back_populates="reviews", lazy='select')
