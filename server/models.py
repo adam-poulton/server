@@ -31,7 +31,7 @@ class User(Base):
     user_hash = Column(String(150), nullable=True)
 
     reviews = relationship('Review', back_populates="users", lazy='select',
-                          backref=backref('user', lazy='joined'))
+                           backref=backref('User', lazy='joined'))
     # feedback = relationship('Feedback', lazy='select',
     #                         backref=backref('user', lazy='joined'))
     # scan = relationship('Scan', lazy='select',
@@ -65,6 +65,7 @@ class Product(Base):
                           backref=backref('product', lazy='joined'))
     favourite = relationship('Favourite', lazy='select',
                              backref=backref('product', lazy='joined'))
+
 
 @dataclass
 class Favourite(Base):
@@ -103,7 +104,7 @@ class Feedback(Base):
     __tablename__ = 'Feedback'
     feedback_id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey("User.user_id", ondelete='CASCADE'), nullable=False)
-    feedback_description = Column(String(300),  nullable=False)
+    feedback_description = Column(String(300), nullable=False)
     feedback_date = Column(DateTime(timezone=True), default=func.now(), nullable=False)
     feedback_rating = Column(DECIMAL(2, 1), nullable=False)
 
@@ -123,7 +124,7 @@ class Review(Base):
     product_id = Column(Integer, ForeignKey("Product.product_id", ondelete='CASCADE'), nullable=False)
     review_rating = Column(DECIMAL(2, 1), nullable=False)
     review_date = Column(DateTime(timezone=True), default=func.now(), nullable=False)
-    review_description = Column(String(300),  nullable=False)
+    review_description = Column(String(300), nullable=False)
 
     users = relationship("User", back_populates="reviews", lazy='select',
-                          backref=backref('user', lazy='joined'))
+                         backref=backref('Review', lazy='joined'))
