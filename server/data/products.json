@@ -106,6 +106,26 @@
         "sugars" : {"value": 5.1, "unit": "g"},
         "sodium" : {"value": 394, "unit": "mg"}
       }
+  },
+  {
+    "name" : "Peanut Butter Smooth",
+    "brand" : "Bega",
+    "barcode" : "9321582004899",
+    "category": "Peanut Butter",
+    "price": 5.20,
+    "nutrition" :
+      {
+        "energy" : {"value": 988, "unit": "kJ"},
+        "protein" : {"value": 11.9, "unit": "g"},
+        "fat-total" : {"value": 1.6, "unit": "g"},
+        "fat-saturated" : {"value": 0.6, "unit": "g"},
+        "fat-trans" : {"value": 0.1, "unit": "g"},
+        "fat-poly" : {"value": 2.3, "unit": "g"},
+        "fat-mono" : {"value": 5.4, "unit": "g"},
+        "carbohydrate" : {"value": 39.7, "unit": "g"},
+        "sugars" : {"value": 5.1, "unit": "g"},
+        "sodium" : {"value": 394, "unit": "mg"}
+      }
   }
 ]
 
