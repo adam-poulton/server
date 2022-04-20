@@ -44,3 +44,23 @@ def new_review():
             return jsonify({"status": "error", "message": "user not found"}), 405
     return jsonify({"status": "error", "message": "user_id missing"}), 405
 
+
+@review.route('/get', methods=['GET'])
+def query_all_review():
+    """
+    Query all reviews in the database in json form or all review from the user if user_id is identified in path
+    parameters
+    :return: json response containing a list of reviews joined with user table OR not found error
+    """
+    user_id = request.args.get('user_id')
+    if user_id:
+        match_user = User.query.get(user_id)
+        if match_user is None:
+            return jsonify({"status": "error", "message": "user not found"}), 405
+        with db_session() as session:
+            reviews = session.query(Review)\
+                .join(User).filter(User.user_id == user_id).all()
+        return jsonify(reviews)
+    else:
+        results = Review.query.all()
+        return jsonify(results)
