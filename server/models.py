@@ -30,14 +30,14 @@ class User(Base):
     user_pimg_url = Column(String(256))
     user_hash = Column(String(150), nullable=True)
 
-    review = relationship('Review', lazy='select',
+    reviews = relationship('Review', back_populates="users", lazy='select',
                           backref=backref('user', lazy='joined'))
-    feedback = relationship('Feedback', lazy='select',
-                            backref=backref('user', lazy='joined'))
-    scan = relationship('Scan', lazy='select',
-                        backref=backref('user', lazy='joined'))
-    favourite = relationship('Favourite', lazy='select',
-                             backref=backref('user', lazy='joined'))
+    # feedback = relationship('Feedback', lazy='select',
+    #                         backref=backref('user', lazy='joined'))
+    # scan = relationship('Scan', lazy='select',
+    #                     backref=backref('user', lazy='joined'))
+    # favourite = relationship('Favourite', lazy='select',
+    #                          backref=backref('user', lazy='joined'))
 
 
 @dataclass
@@ -124,3 +124,6 @@ class Review(Base):
     review_rating = Column(DECIMAL(2, 1), nullable=False)
     review_date = Column(DateTime(timezone=True), default=func.now(), nullable=False)
     review_description = Column(String(300),  nullable=False)
+
+    users = relationship("User", back_populates="reviews", lazy='select',
+                          backref=backref('user', lazy='joined'))
