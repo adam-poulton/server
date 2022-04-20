@@ -18,7 +18,7 @@ def query_all_feedback():
     if user_id:
         match_user = User.query.get(user_id)
         if match_user is not None:
-            fb = Feedback.query.filter_by(user_id=user_id)
+            fb = Feedback.query.filter_by(user_id=user_id).all()
             if fb is not None:
                 return jsonify(fb)
         else:
