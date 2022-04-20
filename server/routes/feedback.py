@@ -3,6 +3,7 @@ from werkzeug.utils import redirect
 from server.database import db_session
 from flask import Blueprint, render_template, url_for, request, jsonify
 from server.models import Feedback, User
+import pytz
 
 feedback = Blueprint('feedback', __name__)
 
@@ -33,7 +34,7 @@ def new_feedback():
     Create a new feedback based on the supplied data
     :return: json containing the feedback description of the newly created feedback
     """
-    now = datetime.now() # we define written date of feedback inside server
+    now = datetime.now(pytz.timezone('Australia/Sydney')) # we define written date of feedback inside server
     # fdate = now.strftime("%Y/%m/%d-%H:%M:%S")
     r_data = request.form
     user_id = r_data.get("user_id")
