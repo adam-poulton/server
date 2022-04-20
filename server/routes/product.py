@@ -197,17 +197,53 @@ def delete_product(product_id=None):
 def similar_product(product_id=None):
     """
     Return a list of products in the same category of the product_id parameter
-    :return: json containing a list of products with information or json with response corresponding to parameter missing / not found
+    :return: json containing a list of products with information containing is_starred attribute
+             or json with response corresponding to parameter missing / not found
     """
+    user_id = request.args.get('user_id')
+    if user_id is None:
+        return jsonify({"status": "error", "message": "user_id missing"}), 405
+    else:
+        # Get the specific user's starred products
+
+        match_user = User.query.get(user_id)
+        if match_user is None:
+            return jsonify({"status": "error", "message": "user not found"}), 404
+        with db_session() as session:
+            favourites = session.query(Favourite.product_id).filter_by(user_id=user_id).all()
+            if favourites is not None:
+                # unpack all the ids from the returned list of row tuples
+                favourites = [item[0] for item in favourites]
+
     if product_id is None:
         return jsonify({"status": "error", "message": "product_id missing"}), 405
+
     with db_session() as session:
         _product = session.query(Product).get(product_id)
         if not _product:
             return jsonify({"status": "error", "message": "product not found"}), 405
 
-        similar_product = session.query(Product).filter_by(product_cate =_product.product_cate).all()
-    return jsonify(similar_product)
+        similar_products = session.query(Product).filter_by(product_cate=_product.product_cate).all()
+
+        response = []  # the response is a list of product with info containing is_starred attribute
+
+        # Iterate over the products and insert the is_starred value
+        # TODO: implement this kind of serialisation using Marshmallow
+        for item in similar_products:
+            d = {'product_id': item.product_id,
+                 'product_barcode': item.product_barcode,
+                 'product_name': item.product_name,
+                 'product_cate': item.product_cate,
+                 'product_brand': item.product_brand,
+                 'product_price': item.product_price,
+                 'product_nutrition': item.product_nutrition}
+            if favourites is not None and item.product_id in favourites:
+                d['product_is_starred'] = True
+            else:
+                d['product_is_starred'] = False
+            response.append(d)
+        return jsonify(response)
+
 
 def valid_barcode(barcode):
     """
