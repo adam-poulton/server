@@ -109,7 +109,7 @@ def new_product():
 
     # check to ensure that there are no illegal characters in the barcode
     if not valid_barcode(barcode):
-        return jsonify({"status": "error", "message": "invalid barcode"})
+        return jsonify({"status": "error", "message": "invalid barcode"}), 405
 
     # check to ensure record for barcode does not exist in database
     match = Product.query.filter_by(product_barcode=barcode).first()
@@ -146,14 +146,14 @@ def update_product():
     price = r_data.get('price')
 
     if barcode is None:
-        return jsonify({"status": "error", "message": "barcode missing"})
+        return jsonify({"status": "error", "message": "barcode missing"}), 405
 
     with db_session() as session:
 
         updated_product = session.query(Product).filter_by(product_barcode=barcode).first()
 
         if updated_product is None:
-            return jsonify({"status": "error", "message": "product not found"})
+            return jsonify({"status": "error", "message": "product not found"}), 404
 
         if name is not None:
             updated_product.product_name = name
@@ -185,7 +185,7 @@ def delete_product(product_id=None):
     with db_session() as session:
         _product = session.query(Product).get(product_id)
         if not _product:
-            return jsonify({"status": "error", "message": "product not found"}), 404
+            return jsonify({"status": "error", "message": "product not found"}), 405
 
         session.delete(_product)
         session.commit()
@@ -200,11 +200,11 @@ def similar_product(product_id=None):
     :return: json containing a list of products with information or json with response corresponding to parameter missing / not found
     """
     if product_id is None:
-        return jsonify({"status": "error", "message": "product_id missing"})
+        return jsonify({"status": "error", "message": "product_id missing"}), 405
     with db_session() as session:
         _product = session.query(Product).get(product_id)
         if not _product:
-            return jsonify({"status": "error", "message": "product not found"})
+            return jsonify({"status": "error", "message": "product not found"}), 405
 
         similar_product = session.query(Product).filter_by(product_cate =_product.product_cate).all()
     return jsonify(similar_product)
