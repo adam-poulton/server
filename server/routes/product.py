@@ -181,11 +181,11 @@ def delete_product(product_id=None):
     :return: json response corresponding to success / fail
     """
     if product_id is None:
-        return jsonify({"status": "error", "message": "product_id missing"})
+        return jsonify({"status": "error", "message": "product_id missing"}), 405
     with db_session() as session:
         _product = session.query(Product).get(product_id)
         if not _product:
-            return jsonify({"status": "error", "message": "product not found"})
+            return jsonify({"status": "error", "message": "product not found"}), 404
 
         session.delete(_product)
         session.commit()
