@@ -30,14 +30,7 @@ class User(Base):
     user_pimg_url = Column(String(256))
     user_hash = Column(String(150), nullable=True)
 
-    reviews = relationship('Review', back_populates="users", lazy='select',
-                          backref=backref('user', lazy='joined'))
-    # feedback = relationship('Feedback', lazy='select',
-    #                         backref=backref('user', lazy='joined'))
-    # scan = relationship('Scan', lazy='select',
-    #                     backref=backref('user', lazy='joined'))
-    # favourite = relationship('Favourite', lazy='select',
-    #                          backref=backref('user', lazy='joined'))
+    reviews = relationship('Review', back_populates="users", lazy='select')
 
 
 @dataclass
@@ -59,12 +52,6 @@ class Product(Base):
     product_nutrition = Column(String(900), default="{}")
     product_price = Column(Float, default=0)
 
-    scan = relationship('Scan', lazy='select',
-                        backref=backref('product', lazy='joined'))
-    review = relationship('Review', lazy='select',
-                          backref=backref('product', lazy='joined'))
-    favourite = relationship('Favourite', lazy='select',
-                             backref=backref('product', lazy='joined'))
 
 @dataclass
 class Favourite(Base):
@@ -125,5 +112,4 @@ class Review(Base):
     review_date = Column(DateTime(timezone=True), default=func.now(), nullable=False)
     review_description = Column(String(300),  nullable=False)
 
-    users = relationship("User", back_populates="reviews", lazy='select',
-                          backref=backref('user', lazy='joined'))
+    users = relationship("User", back_populates="reviews", lazy='select')
