@@ -97,6 +97,7 @@ class Review(Base):
     review_id: int
     user_id: int
     product_id: int
+    review_rating: float
     review_date: str
     review_description: str
 
@@ -104,5 +105,6 @@ class Review(Base):
     review_id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey("User.user_id", ondelete='CASCADE'), nullable=False)
     product_id = Column(Integer, ForeignKey("Product.product_id", ondelete='CASCADE'), nullable=False)
+    review_rating = Column(DECIMAL(2, 1), nullable=False)
     review_date = Column(DateTime(timezone=True), default=func.now(), nullable=False)
     review_description = Column(String(300),  nullable=False)
