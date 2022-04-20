@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template, url_for, request, jsonify
 from werkzeug.utils import redirect, secure_filename
+from pytz import timezone
+from datetime import datetime
 
 from server.database import db_session
 from server.models import Scan, Product, User, Favourite
@@ -61,7 +63,11 @@ def add_scan():
             if match_scan:
                 session.delete(match_scan)
             # create the new scan record
-            new_scan = Scan(product_id=match_product.product_id, user_id=user_id)
+            new_scan = Scan(
+                product_id=match_product.product_id,
+                user_id=user_id,
+                timestamp=datetime.now(timezone('Australia/Sydney'))
+            )
             session.add(new_scan)
             # commit the changes
             session.commit()
