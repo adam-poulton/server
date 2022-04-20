@@ -34,7 +34,7 @@ def new_feedback():
     Create a new feedback based on the supplied data
     :return: json containing the feedback description of the newly created feedback
     """
-    now = datetime.now(pytz.timezone('Australia/Sydney')) # we define written date of feedback inside server
+    now = datetime.now(pytz.timezone('Australia/Sydney')) # we define written date of feedback locally
     # fdate = now.strftime("%Y/%m/%d-%H:%M:%S")
     r_data = request.form
     user_id = r_data.get("user_id")
