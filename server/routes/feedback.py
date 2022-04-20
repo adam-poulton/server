@@ -37,9 +37,11 @@ def new_feedback():
     # fdate = now.strftime("%Y/%m/%d-%H:%M:%S")
     r_data = request.form
     user_id = r_data.get("user_id")
-    rating = r_data.get("rating")
-    description = r_data.get("description")
+    rating = r_data.get("feedback_rating")
+    description = r_data.get("feedback_description")
 
+    if not rating or not description:
+        return jsonify({"status": "error", "message": "missing parameter(s)"}), 405
     if user_id:
         match_user = User.query.get(user_id)
         if match_user is not None:
@@ -52,5 +54,7 @@ def new_feedback():
                 )
                 session.add(new_feedback)
                 session.commit()
-            return redirect(url_for('api.feedback.query_all_feedback'))
-    return jsonify({"status": "error", "message": "user not found"})
+            return jsonify({"status": "success", "message": "feedback created"})
+        else:
+            return jsonify({"status": "error", "message": "user not found"}), 405
+    return jsonify({"status": "error", "message": "user_id missing"}), 405
