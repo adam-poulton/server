@@ -109,7 +109,7 @@ def new_product():
 
     # check to ensure that there are no illegal characters in the barcode
     if not valid_barcode(barcode):
-        return jsonify({"status": "error", "message": "invalid barcode"})
+        return jsonify({"status": "error", "message": "invalid barcode"}), 405
 
     # check to ensure record for barcode does not exist in database
     match = Product.query.filter_by(product_barcode=barcode).first()
@@ -146,14 +146,14 @@ def update_product():
     price = r_data.get('price')
 
     if barcode is None:
-        return jsonify({"status": "error", "message": "barcode missing"})
+        return jsonify({"status": "error", "message": "barcode missing"}), 405
 
     with db_session() as session:
 
         updated_product = session.query(Product).filter_by(product_barcode=barcode).first()
 
         if updated_product is None:
-            return jsonify({"status": "error", "message": "product not found"})
+            return jsonify({"status": "error", "message": "product not found"}), 404
 
         if name is not None:
             updated_product.product_name = name
@@ -181,11 +181,11 @@ def delete_product(product_id=None):
     :return: json response corresponding to success / fail
     """
     if product_id is None:
-        return jsonify({"status": "error", "message": "product_id missing"})
+        return jsonify({"status": "error", "message": "product_id missing"}), 405
     with db_session() as session:
         _product = session.query(Product).get(product_id)
         if not _product:
-            return jsonify({"status": "error", "message": "product not found"})
+            return jsonify({"status": "error", "message": "product not found"}), 405
 
         session.delete(_product)
         session.commit()
@@ -197,17 +197,52 @@ def delete_product(product_id=None):
 def get_similar_product(product_id=None):
     """
     Return a list of products in the same category of the product_id parameter
-    :return: json containing a list of products with information or json with response corresponding to parameter missing / not found
+    :return: json containing a list of products with information containing is_starred attribute
+             or json with response corresponding to parameter missing / not found
     """
+    user_id = request.args.get('user_id')
+    if user_id is None:
+        return jsonify({"status": "error", "message": "user_id missing"}), 405
+    else:
+        # Get the specific user's starred products
+
+        match_user = User.query.get(user_id)
+        if match_user is None:
+            return jsonify({"status": "error", "message": "user not found"}), 404
+        with db_session() as session:
+            favourites = session.query(Favourite.product_id).filter_by(user_id=user_id).all()
+            if favourites is not None:
+                # unpack all the ids from the returned list of row tuples
+                favourites = [item[0] for item in favourites]
+
     if product_id is None:
-        return jsonify({"status": "error", "message": "product_id missing"})
+        return jsonify({"status": "error", "message": "product_id missing"}), 405
+
     with db_session() as session:
         _product = session.query(Product).get(product_id)
         if not _product:
-            return jsonify({"status": "error", "message": "product not found"})
+            return jsonify({"status": "error", "message": "product not found"}), 405
 
-        similar_product = session.query(Product).filter_by(product_cate=_product.product_cate).all()
-    return jsonify(similar_product)
+        similar_products = session.query(Product).filter_by(product_cate=_product.product_cate).all()
+
+        response = []  # the response is a list of product with info containing is_starred attribute
+
+        # Iterate over the products and insert the is_starred value
+        # TODO: implement this kind of serialisation using Marshmallow
+        for item in similar_products:
+            d = {'product_id': item.product_id,
+                 'product_barcode': item.product_barcode,
+                 'product_name': item.product_name,
+                 'product_cate': item.product_cate,
+                 'product_brand': item.product_brand,
+                 'product_price': item.product_price,
+                 'product_nutrition': item.product_nutrition}
+            if favourites is not None and item.product_id in favourites:
+                d['product_is_starred'] = True
+            else:
+                d['product_is_starred'] = False
+            response.append(d)
+        return jsonify(response)
 
 
 def valid_barcode(barcode):
