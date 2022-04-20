@@ -90,3 +90,19 @@ class Feedback(Base):
     feedback_description = Column(String(300),  nullable=False)
     feedback_date = Column(DateTime(timezone=True), default=func.now(), nullable=False)
     feedback_rating = Column(DECIMAL(2, 1), nullable=False)
+
+
+@dataclass
+class Review(Base):
+    review_id: int
+    user_id: int
+    product_id: int
+    review_date: str
+    review_description: str
+
+    __tablename__ = 'Review'
+    review_id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("User.user_id", ondelete='CASCADE'), nullable=False)
+    product_id = Column(Integer, ForeignKey("Product.product_id", ondelete='CASCADE'), nullable=False)
+    review_date = Column(DateTime(timezone=True), default=func.now(), nullable=False)
+    review_description = Column(String(300),  nullable=False)
