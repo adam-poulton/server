@@ -194,7 +194,7 @@ def delete_product(product_id=None):
 
 
 @product.route("/similar/<product_id>", methods=['GET'])
-def similar_product(product_id=None):
+def get_similar_product(product_id=None):
     """
     Return a list of products in the same category of the product_id parameter
     :return: json containing a list of products with information or json with response corresponding to parameter missing / not found
@@ -206,8 +206,9 @@ def similar_product(product_id=None):
         if not _product:
             return jsonify({"status": "error", "message": "product not found"})
 
-        similar_product = session.query(Product).filter_by(product_cate =_product.product_cate).all()
+        similar_product = session.query(Product).filter_by(product_cate=_product.product_cate).all()
     return jsonify(similar_product)
+
 
 def valid_barcode(barcode):
     """
