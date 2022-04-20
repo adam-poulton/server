@@ -1,7 +1,6 @@
 from datetime import datetime
-from werkzeug.utils import redirect
 from server.database import db_session
-from flask import Blueprint, render_template, url_for, request, jsonify
+from flask import Blueprint, request, jsonify
 from server.models import Feedback, User
 from pytz import timezone
 

@@ -1,6 +1,4 @@
-from flask import Blueprint, render_template, url_for, request, jsonify
-from werkzeug.utils import redirect, secure_filename
-
+from flask import Blueprint, render_template, request, jsonify
 from server.database import db_session
 from server.models import Favourite, Product, User
 
