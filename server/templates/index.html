@@ -169,12 +169,12 @@
                             </tr>
                             <tr>
                                 <th scope="row"><a href="/api/favourite/add">/api/favourite/add</a></th>
-                                <td>Sets a product starred given by 'user_id' key and 'product_id' in request form. <br>Return {JSON of the added starred product} or {"status": "error", "message": "already a favourite"} or {"status": "error", "message": "missing parameter(s)"} </td>
+                                <td>Sets a product starred given by 'user_id' key and 'product_id' in request form. <br><br>Return {JSON of the added starred product} or {"status": "error", "message": "already a favourite"} or {"status": "error", "message": "missing parameter(s)"} </td>
                                 <td>POST</td>
                             </tr>
                             <tr>
                                 <th scope="row"><a href="/api/favourite/remove">/api/favourite/remove</a></th>
-                                <td>Unsets a product starred given by 'user_id' key and 'product_id' in request form.  <br>Return {"status": "success", "message": "favourite removed"} or {"status": "error", "message": "already a favourite"} or {"status": "error", "message": "missing parameter(s)"}</td>
+                                <td>Unsets a product starred given by 'user_id' key and 'product_id' in request form.  <br><br>Return {"status": "success", "message": "favourite removed"} or {"status": "error", "message": "already a favourite"} or {"status": "error", "message": "missing parameter(s)"}</td>
                                 <td>POST</td>
                             </tr>
                             <tr>
@@ -189,9 +189,35 @@
                             </tr>
                             <tr>
                                 <th scope="row"><a href="/api/scan/get">/api/scan/get?user_id=14</a></th>
-                                <td>Fetch scan history for a specific user<br>Return {JSON of the scanned products with "product_is_starred" and "product_scan_timestamp"} or 405 {"status": "error", "message": "user not found"}</td>
+                                <td>Fetch scan history for a specific user<br><br>Return {JSON of the scanned products with "product_is_starred" and "product_scan_timestamp"} or 405 {"status": "error", "message": "user not found"}</td>
                                 <td>GET</td>
                             </tr>
+                            <tr>
+                                <td><h2>Review</h2></td>
+                                <td><br/></td>
+                                <td><br/></td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><a href="/api/review/get">/api/review/get</a></th>
+                                <td>Fetch all reviews in the database<br><br>Return list of {JSON of the review}</td>
+                                <td>GET</td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><a href="/api/review/get?user_id=14">/api/review/get?user_id=14</a></th>
+                                <td>Fetch review(s) for a specific user<br><br>Return {JSON of the review} or 405 {"status": "error", "message": "user not found"}</td>
+                                <td>GET</td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><a href="/api/review/new">/api/review/new</a></th>
+                                <td>Create a new review for a specific product given by 'user_id' and 'product_id' and all parameters needed for Review model in request form.
+                                    <br>
+                                    <br>Return {JSON of the newly created review}
+                                    <br> or 405 {"status": "error", "message": "user / product not found"}
+                                    <br> or 405 {"status": "error", "message": "user_id / product_id missing"}
+                                </td>
+                                <td>GET</td>
+                            </tr>
+
                         </tbody>
                     </table>
                 </div>
