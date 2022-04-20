@@ -1,4 +1,5 @@
 from sqlalchemy import Integer, Column, String, DateTime, DECIMAL, Float
+from sqlalchemy.orm import relationship, backref
 from sqlalchemy.sql import func
 from sqlalchemy.schema import ForeignKey
 from dataclasses import dataclass
@@ -29,6 +30,15 @@ class User(Base):
     user_pimg_url = Column(String(256))
     user_hash = Column(String(150), nullable=True)
 
+    review = relationship('Review', lazy='select',
+                          backref=backref('user', lazy='joined'))
+    feedback = relationship('Feedback', lazy='select',
+                            backref=backref('user', lazy='joined'))
+    scan = relationship('Scan', lazy='select',
+                        backref=backref('user', lazy='joined'))
+    favourite = relationship('Favourite', lazy='select',
+                             backref=backref('user', lazy='joined'))
+
 
 @dataclass
 class Product(Base):
@@ -49,6 +59,12 @@ class Product(Base):
     product_nutrition = Column(String(900), default="{}")
     product_price = Column(Float, default=0)
 
+    scan = relationship('Scan', lazy='select',
+                        backref=backref('product', lazy='joined'))
+    review = relationship('Review', lazy='select',
+                          backref=backref('product', lazy='joined'))
+    favourite = relationship('Favourite', lazy='select',
+                             backref=backref('product', lazy='joined'))
 
 @dataclass
 class Favourite(Base):
