@@ -1,7 +1,7 @@
 from datetime import datetime
 from server.database import db_session
 from flask import Blueprint, request, jsonify
-from server.models import Review, User
+from server.models import Review, User, Product
 from pytz import timezone
 
 review = Blueprint('review', __name__)
@@ -53,13 +53,13 @@ def query_all_review():
     parameters
     :return: json response containing a list of reviews joined with user table OR not found error
     """
-    user_id = request.args.get('user_id')
-    if user_id:
-        match_user = User.query.get(user_id)
+    product_id = request.args.get('product_id')
+    if product_id:
+        match_user = Product.query.get(product_id)
         if match_user is None:
-            return jsonify({"status": "error", "message": "user not found"}), 405
+            return jsonify({"status": "error", "message": "Product not found"}), 405
         with db_session() as session:
-            reviews = session.query(Review, User).join(User).filter(Review.user_id == user_id).all()
+            reviews = session.query(Review, User).join(User).filter(Review.product_id == product_id).all()
             # Review.query\
             # .join(User, User.user_id == Review.user_id)\
             # .add_columns(Review.review_date, Review.review_rating, Review.review_description, Review.product_id, Review.user_id,
