@@ -46,6 +46,8 @@ def new_feedback():
         match_user = User.query.get(user_id)
         if match_user is not None:
             with db_session() as session:
+                user = session.query(User).filter_by(user_id=user_id).first()
+
                 new_feedback = Feedback(
                     user_id=user_id,
                     feedback_description=description,
@@ -53,7 +55,7 @@ def new_feedback():
                     feedback_rating=rating,
                 )
 
-                match_user.user_contribution_score += 5   # Add 5 points to the user contribution
+                user.user_contribution_score += 5   # Add 5 points to the user contribution
                 session.add(new_feedback)
                 session.commit()
             return jsonify({"status": "success", "message": "feedback created"})
