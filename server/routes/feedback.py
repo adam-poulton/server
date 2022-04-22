@@ -52,6 +52,8 @@ def new_feedback():
                     feedback_date=now,
                     feedback_rating=rating,
                 )
+
+                match_user.user_contribution_score += 5   # Add 5 points to the user contribution
                 session.add(new_feedback)
                 session.commit()
             return jsonify({"status": "success", "message": "feedback created"})

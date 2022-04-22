@@ -37,6 +37,7 @@ def new_review():
                     review_date=date,
                     review_description=description,
                 )
+                match_user.user_contribution_score += 5   # Add 5 points to the user contribution
                 session.add(new_feedback)
                 session.commit()
             return jsonify({"status": "success", "message": "review created"})
@@ -58,8 +59,13 @@ def query_all_review():
         if match_user is None:
             return jsonify({"status": "error", "message": "user not found"}), 405
         with db_session() as session:
-            reviews = session.query(Review)\
-                .join(User).filter(User.user_id == user_id).all()
+            reviews = session.query(Review, User).join(User).filter(Review.user_id == user_id).all()
+            # Review.query\
+            # .join(User, User.user_id == Review.user_id)\
+            # .add_columns(Review.review_date, Review.review_rating, Review.review_description, Review.product_id, Review.user_id,
+            #              User.user_id, User.user_username, User.user_pimg_url)\
+            # .filter(User.user_id == Review.user_id)\
+            # .filter(User.user_id == user_id).all()
         return jsonify(reviews)
     else:
         results = Review.query.all()
