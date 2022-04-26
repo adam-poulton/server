@@ -1,4 +1,7 @@
 from datetime import datetime
+
+from sqlalchemy import desc, asc
+
 from server.database import db_session
 from flask import Blueprint, request, jsonify
 from server.models import Review, User, Product
@@ -37,7 +40,7 @@ def new_review():
                     review_date=date,
                     review_description=description,
                 )
-                match_user.user_contribution_score += 5   # Add 5 points to the user contribution
+                match_user.user_contribution_score += 5  # Add 5 points to the user contribution
                 session.add(new_feedback)
                 session.commit()
             return jsonify({"status": "success", "message": "review created"})
@@ -59,7 +62,9 @@ def query_all_review():
         if match_user is None:
             return jsonify({"status": "error", "message": "Product not found"}), 405
         with db_session() as session:
-            result = session.query(Review, User).join(User).filter(Review.product_id == product_id).all()
+            result = session.query(Review, User).join(User).filter(Review.product_id == product_id). \
+                order_by(desc(Review.review_date)). \
+                all()
             response = []
             for r, u in result:
                 d = {
@@ -74,7 +79,9 @@ def query_all_review():
     else:
         response = []
         with db_session() as session:
-            reviews = session.query(Review, User).join(User).all()
+            reviews = session.query(Review, User).join(User). \
+                order_by(desc(Review.review_date)). \
+                all()
 
             for r, u in reviews:
                 d = {
