@@ -232,7 +232,10 @@ def get_similar_product(product_id=None):
         if not _product:
             return jsonify({"status": "error", "message": "product not found"}), 405
 
-        similar_products = session.query(Product).filter_by(product_cate=_product.product_cate).all()
+        similar_products = session.query(Product).\
+            filter_by(product_cate=_product.product_cate).\
+            filter_by(product_id != _product.product_id).\
+            all()
 
         response = []  # the response is a list of product with info containing is_starred attribute
 
