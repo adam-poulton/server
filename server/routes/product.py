@@ -123,12 +123,12 @@ def new_product():
     if match is None:
         display_img_url = ""
         nutrition_img_url = ""
-        if display_img:
-            response = cloudinary.uploader.upload(display_img)
-            display_img_url = response['secure_url']
-        if nutrition_img:
-            response = cloudinary.uploader.upload(nutrition_img)
-            nutrition_img_url = response['secure_url']
+        # if display_img:
+        #     response = cloudinary.uploader.upload(display_img)
+        #     display_img_url = response['secure_url']
+        # if nutrition_img:
+        #     response = cloudinary.uploader.upload(nutrition_img)
+        #     nutrition_img_url = response['secure_url']
         with db_session() as session:
             new_prod = Product(
                 product_name=name,
