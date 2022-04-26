@@ -102,12 +102,12 @@ def new_product():
     """
     # parse the request data
     r_data = request.form
-    name = r_data.get('name')
-    brand = r_data.get('brand')
-    category = r_data.get('category')
-    barcode = r_data.get('barcode')
+    name = r_data.get('product_name')
+    brand = r_data.get('product_brand')
+    category = r_data.get('product_cate')
+    barcode = r_data.get('product_barcode')
     nutrition = r_data.get('nutrition')
-    price = r_data.get('price', 0)
+    price = r_data.get('product_price', 0)
 
     # parse the request images
     nutrition_img = request.files.get('nutrition_img')
@@ -155,12 +155,12 @@ def update_product():
     """
     # parse the request data
     r_data = request.form
-    name = r_data.get('name')
-    brand = r_data.get('brand')
-    category = r_data.get('category')
-    barcode = r_data.get('barcode')
+    name = r_data.get('product_name')
+    brand = r_data.get('product_brand')
+    category = r_data.get('product_cate')
+    barcode = r_data.get('product_barcode')
     nutrition = r_data.get('nutrition')
-    price = r_data.get('price')
+    price = r_data.get('product_price')
 
     if barcode is None:
         return jsonify({"status": "error", "message": "barcode missing"}), 405
