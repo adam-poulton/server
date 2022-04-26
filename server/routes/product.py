@@ -1,11 +1,17 @@
 import re
+import os
+import cloudinary
 from flask import Blueprint, render_template, url_for, request, jsonify
 from werkzeug.utils import redirect, secure_filename
+from PIL import Image
 
 from server.database import db_session
 from server.models import Product, Favourite, User
 
 product = Blueprint('products', __name__)
+
+basedir = os.getcwd()
+image_path = os.path.join(basedir, 'server', 'data', 'images')
 
 
 @product.route('/display')
@@ -104,6 +110,10 @@ def new_product():
     nutrition = r_data.get('nutrition')
     price = r_data.get('price', 0)
 
+    # parse the request images
+    nutrition_img = request.files.get('nutrition_img')
+    display_img = request.files.get('display_img')
+
     # check to ensure that there are no illegal characters in the barcode
     if not valid_barcode(barcode):
         return jsonify({"status": "error", "message": "invalid barcode"}), 405
@@ -111,6 +121,14 @@ def new_product():
     # check to ensure record for barcode does not exist in database
     match = Product.query.filter_by(product_barcode=barcode).first()
     if match is None:
+        display_img_url = ""
+        nutrition_img_url = ""
+        if display_img:
+            response = cloudinary.uploader.upload(display_img)
+            display_img_url = response['secure_url']
+        if nutrition_img:
+            response = cloudinary.uploader.upload(nutrition_img)
+            nutrition_img_url = response['secure_url']
         with db_session() as session:
             new_prod = Product(
                 product_name=name,
@@ -118,7 +136,10 @@ def new_product():
                 product_cate=category,
                 product_barcode=barcode,
                 product_price=price,
-                product_nutrition=nutrition)
+                product_nutrition=nutrition,
+                product_display_img=display_img_url,
+                product_nutrition_img=nutrition_img_url
+            )
             session.add(new_prod)
             session.commit()
 
@@ -251,8 +272,6 @@ def get_similar_product(product_id=None):
                 d['product_is_starred'] = False
             response.append(d)
         return jsonify(response)
-
-
 
 
 def valid_barcode(barcode):

@@ -43,6 +43,8 @@ class Product(Base):
     product_brand: str
     product_nutrition: str
     product_price: float
+    product_display_img: str
+    product_nutrition_img: str
 
     product_id = Column(Integer, primary_key=True)
     product_barcode = Column(String(20), unique=True, nullable=False)
@@ -51,7 +53,8 @@ class Product(Base):
     product_brand = Column(String(50), nullable=False)
     product_nutrition = Column(String(900), default="{}")
     product_price = Column(Float, default=0)
-
+    product_display_img = Column(String(200))
+    product_nutrition_img = Column(String(200))
 
 
 @dataclass
