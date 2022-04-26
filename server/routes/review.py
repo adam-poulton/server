@@ -59,14 +59,24 @@ def query_all_review():
         if match_user is None:
             return jsonify({"status": "error", "message": "Product not found"}), 405
         with db_session() as session:
-            reviews = session.query(Review, User).join(User).filter(Review.product_id == product_id).all()
-            # Review.query\
-            # .join(User, User.user_id == Review.user_id)\
-            # .add_columns(Review.review_date, Review.review_rating, Review.review_description, Review.product_id, Review.user_id,
-            #              User.user_id, User.user_username, User.user_pimg_url)\
-            # .filter(User.user_id == Review.user_id)\
-            # .filter(User.user_id == user_id).all()
-        return jsonify(reviews)
+            result = session.query(Review, User).join(User).filter(Review.product_id == product_id).all()
+            response = []
+            for r, u in result:
+                d = {
+                    "review_id": r.review_id,
+                    "user_id": r.user_id,
+                    "product_id": r.product_id,
+                    "review_rating": r.review_rating,
+                    "review_date": r.review_date,
+                    "review_description": r.review_description,
+                    "user_pimg_url": u.user_pimg_url,
+                    "user_username": u.user_username,
+                    "user_firstname": u.user_firstname,
+                    "user_lastname": u.user_lastname,
+                    "user_email": u.user_email
+                }
+                response.append(d)
+            return jsonify(response)
     else:
         results = Review.query.all()
         return jsonify(results)
