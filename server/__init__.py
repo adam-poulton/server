@@ -1,4 +1,5 @@
 from flask import Flask, render_template, Blueprint
+from dotenv import load_dotenv
 from server.database import db_session, init_db, drop_db
 from server.db_script import insert_products
 from server.routes.api import api
@@ -32,4 +33,5 @@ def create_app():
 
 
 if __name__ == "__main__":
+    load_dotenv()
     create_app().run(debug=True)
