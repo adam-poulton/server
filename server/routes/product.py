@@ -1,7 +1,7 @@
 import re
 import os
-import cloudinary
-import cloudinary.uploader
+import cloudinary as cloud
+import cloudinary.uploader as cloud_upload
 from flask import Blueprint, render_template, url_for, request, jsonify
 from werkzeug.utils import redirect, secure_filename
 
@@ -123,12 +123,12 @@ def new_product():
     if match is None:
         display_img_url = ""
         nutrition_img_url = ""
-        # if display_img:
-        #     response = cloudinary.uploader.upload(display_img)
-        #     display_img_url = response['secure_url']
-        # if nutrition_img:
-        #     response = cloudinary.uploader.upload(nutrition_img)
-        #     nutrition_img_url = response['secure_url']
+        if display_img:
+            response = cloud_upload.upload(display_img)
+            display_img_url = response['secure_url']
+        if nutrition_img:
+            response = cloud_upload.upload(nutrition_img)
+            nutrition_img_url = response['secure_url']
         with db_session() as session:
             new_prod = Product(
                 product_name=name,
