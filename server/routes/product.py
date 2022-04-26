@@ -1,5 +1,6 @@
 import re
 from flask import Blueprint, render_template, url_for, request, jsonify
+from sqlalchemy import func
 from werkzeug.utils import redirect, secure_filename
 
 from server.database import db_session
@@ -252,7 +253,21 @@ def get_similar_product(product_id=None):
             response.append(d)
         return jsonify(response)
 
-
+@product.route("/recommended", methods=['GET'])
+def get_recommended_product():
+    """
+    Return a list of products that are recommended for specific user with user_id provided in query parameter
+    :return: json containing a list of products
+             or json with response corresponding to parameter missing / not found
+    """
+    user_id = request.args.get('user_id')
+    if user_id is None:
+        return jsonify({"status": "error", "message": "user_id missing"}), 405
+    else:
+        match_user = User.query.get(user_id)   # Get the specific user
+        with db_session() as session:
+            recommended_product = session.query(Product).order_by(func.random()).limit(5).all()
+        return jsonify(recommended_product)
 
 
 def valid_barcode(barcode):
