@@ -63,17 +63,11 @@ def query_all_review():
             response = []
             for r, u in result:
                 d = {
-                    "review_id": r.review_id,
-                    "user_id": r.user_id,
-                    "product_id": r.product_id,
                     "review_rating": r.review_rating,
                     "review_date": r.review_date,
                     "review_description": r.review_description,
-                    "user_pimg_url": u.user_pimg_url,
-                    "user_username": u.user_username,
-                    "user_firstname": u.user_firstname,
-                    "user_lastname": u.user_lastname,
-                    "user_email": u.user_email
+                    "pimg_url": u.user_pimg_url,
+                    "username": u.user_username,
                 }
                 response.append(d)
             return jsonify(response)
@@ -84,17 +78,11 @@ def query_all_review():
 
             for r, u in reviews:
                 d = {
-                    "review_id": r.review_id,
-                    "user_id": r.user_id,
-                    "product_id": r.product_id,
                     "review_rating": r.review_rating,
                     "review_date": r.review_date,
                     "review_description": r.review_description,
-                    "user_pimg_url": u.user_pimg_url,
-                    "user_username": u.user_username,
-                    "user_firstname": u.user_firstname,
-                    "user_lastname": u.user_lastname,
-                    "user_email": u.user_email
+                    "pimg_url": u.user_pimg_url,
+                    "username": u.user_username,
                 }
                 response.append(d)
         return jsonify(response)
