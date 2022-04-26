@@ -1,6 +1,7 @@
 import re
 import os
 import cloudinary
+import cloudinary.uploader
 from flask import Blueprint, render_template, url_for, request, jsonify
 from werkzeug.utils import redirect, secure_filename
 
