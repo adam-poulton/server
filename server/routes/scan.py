@@ -31,7 +31,8 @@ def get_scan():
                      'product_brand': prod.product_brand,
                      'product_price': prod.product_price,
                      'product_scan_timestamp': s.timestamp,
-                     'product_nutrition': prod.product_nutrition}
+                     'product_nutrition': prod.product_nutrition,
+                     'product_display_img': prod.product_display_img}
                 if favourites is not None and prod.product_id in favourites:
                     d['product_is_starred'] = True
                 else:

@@ -41,7 +41,8 @@ def query_all_records():
                  'product_cate': item.product_cate,
                  'product_brand': item.product_brand,
                  'product_price': item.product_price,
-                 'product_nutrition': item.product_nutrition}
+                 'product_nutrition': item.product_nutrition,
+                 'product_display_img': prod.product_display_img}
             if favourites is not None and item.product_id in favourites:
                 d['product_is_starred'] = True
             else:
@@ -80,7 +81,8 @@ def get_product(barcode):
              'product_cate': prod.product_cate,
              'product_brand': prod.product_brand,
              'product_price': prod.product_price,
-             'product_nutrition': prod.product_nutrition}
+             'product_nutrition': prod.product_nutrition,
+             'product_display_img': prod.product_display_img}
         if favourites is not None and prod.product_id in favourites:
             d['product_is_starred'] = True
         else:
@@ -255,6 +257,7 @@ def get_similar_product(product_id=None):
             response.append(d)
         return jsonify(response)
 
+
 @product.route("/recommended", methods=['GET'])
 def get_recommended_product():
     """
@@ -270,7 +273,6 @@ def get_recommended_product():
         with db_session() as session:
             recommended_product = session.query(Product).order_by(func.random()).limit(5).all()
         return jsonify(recommended_product)
-
 
 
 def valid_barcode(barcode):
