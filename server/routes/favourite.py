@@ -29,7 +29,8 @@ def get_all_favourites():
                  'product_brand': item.product_brand,
                  'product_price': item.product_price,
                  'product_is_starred': True,
-                 'product_nutrition': item.product_nutrition}
+                 'product_nutrition': item.product_nutrition,
+                 'product_display_img': item.product_display_img}
             response.append(d)
         return jsonify(response)
     else:
