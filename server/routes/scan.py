@@ -67,6 +67,7 @@ def add_scan():
                 user_id=user_id,
                 timestamp=datetime.now(timezone('Australia/Sydney'))
             )
+            match_user.user_contribution_score += 10  # Add 5 points to the user contribution
             session.add(new_scan)
             # commit the changes
             session.commit()
