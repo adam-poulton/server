@@ -1,4 +1,7 @@
 import re
+import os
+import cloudinary as cloud
+import cloudinary.uploader as cloud_upload
 from flask import Blueprint, render_template, url_for, request, jsonify
 from sqlalchemy import func
 from werkzeug.utils import redirect, secure_filename
@@ -7,6 +10,9 @@ from server.database import db_session
 from server.models import Product, Favourite, User
 
 product = Blueprint('products', __name__)
+
+basedir = os.getcwd()
+image_path = os.path.join(basedir, 'server', 'data', 'images')
 
 
 @product.route('/display')
@@ -100,12 +106,16 @@ def new_product():
     """
     # parse the request data
     r_data = request.form
-    name = r_data.get('name')
-    brand = r_data.get('brand')
-    category = r_data.get('category')
-    barcode = r_data.get('barcode')
+    name = r_data.get('product_name')
+    brand = r_data.get('product_brand')
+    category = r_data.get('product_category')
+    barcode = r_data.get('product_barcode')
     nutrition = r_data.get('nutrition')
-    price = r_data.get('price', 0)
+    price = r_data.get('product_price', 0)
+
+    # parse the request images
+    nutrition_img = request.files.get('nutrition_img')
+    display_img = request.files.get('display_img')
 
     # check to ensure that there are no illegal characters in the barcode
     if not valid_barcode(barcode):
@@ -114,6 +124,14 @@ def new_product():
     # check to ensure record for barcode does not exist in database
     match = Product.query.filter_by(product_barcode=barcode).first()
     if match is None:
+        display_img_url = ""
+        nutrition_img_url = ""
+        if display_img:
+            response = cloud_upload.upload(display_img)
+            display_img_url = response['secure_url']
+        if nutrition_img:
+            response = cloud_upload.upload(nutrition_img)
+            nutrition_img_url = response['secure_url']
         with db_session() as session:
             new_prod = Product(
                 product_name=name,
@@ -121,7 +139,9 @@ def new_product():
                 product_cate=category,
                 product_barcode=barcode,
                 product_price=price,
-                product_nutrition=nutrition)
+                product_nutrition=nutrition,
+                product_display_img=display_img_url,
+                product_nutrition_img=nutrition_img_url)
             session.add(new_prod)
             session.commit()
 
@@ -138,12 +158,16 @@ def update_product():
     """
     # parse the request data
     r_data = request.form
-    name = r_data.get('name')
-    brand = r_data.get('brand')
-    category = r_data.get('category')
-    barcode = r_data.get('barcode')
+    name = r_data.get('product_name')
+    brand = r_data.get('product_brand')
+    category = r_data.get('product_cate')
+    barcode = r_data.get('product_barcode')
     nutrition = r_data.get('nutrition')
-    price = r_data.get('price')
+    price = r_data.get('product_price')
+
+    # parse the request images
+    nutrition_img = request.files.get('nutrition_img')
+    display_img = request.files.get('display_img')
 
     if barcode is None:
         return jsonify({"status": "error", "message": "barcode missing"}), 405
@@ -167,6 +191,12 @@ def update_product():
             updated_product.product_price = price
         if nutrition is not None:
             updated_product.product_nutrition = nutrition
+        if nutrition_img is not None:
+            response = cloud_upload.upload(nutrition_img)
+            updated_product.product_nutrition_img = response['secure_url']
+        if display_img is not None:
+            response = cloud_upload.upload(display_img)
+            updated_product.product_display_img = response['secure_url']
 
         session.commit()
 
@@ -249,7 +279,8 @@ def get_similar_product(product_id=None):
                  'product_cate': item.product_cate,
                  'product_brand': item.product_brand,
                  'product_price': item.product_price,
-                 'product_nutrition': item.product_nutrition}
+                 'product_nutrition': item.product_nutrition,
+                 'product_display_img': prod.product_display_img}
             if favourites is not None and item.product_id in favourites:
                 d['product_is_starred'] = True
             else:
@@ -270,9 +301,31 @@ def get_recommended_product():
         return jsonify({"status": "error", "message": "user_id missing"}), 405
     else:
         match_user = User.query.get(user_id)   # Get the specific user
+        if match_user is None:
+            return jsonify({"status": "error", "message": "user not found"}), 405
         with db_session() as session:
+            favourites = session.query(Favourite.product_id).filter_by(user_id=user_id).all()
+            if favourites is not None:
+                # unpack all the ids from the returned list of row tuples
+                favourites = [item[0] for item in favourites]
+
             recommended_product = session.query(Product).order_by(func.random()).limit(5).all()
-        return jsonify(recommended_product)
+
+        for item in recommended_product:
+            d = {'product_id': item.product_id,
+                 'product_barcode': item.product_barcode,
+                 'product_name': item.product_name,
+                 'product_cate': item.product_cate,
+                 'product_brand': item.product_brand,
+                 'product_price': item.product_price,
+                 'product_nutrition': item.product_nutrition,
+                 'product_display_img': prod.product_display_img}
+            if favourites is not None and item.product_id in favourites:
+                d['product_is_starred'] = True
+            else:
+                d['product_is_starred'] = False
+            response.append(d)
+        return jsonify(response)
 
 
 def valid_barcode(barcode):
