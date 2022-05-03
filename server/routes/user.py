@@ -278,7 +278,7 @@ def profile_img():
             if updated_user:
                 updated_user.user_pimg_url = profile_img_url
                 session.commit()
-                return jsonify({"status": "success", "message": "user profile image uploaded"})
+                return jsonify({"user_pimg_url": updated_user.user_pimg_url})
             else:
                 return jsonify({"status": "error", "message": "user not found"})
     else:
