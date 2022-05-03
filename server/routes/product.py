@@ -311,6 +311,7 @@ def get_recommended_product():
 
             recommended_product = session.query(Product).order_by(func.random()).limit(5).all()
 
+        response = []
         for item in recommended_product:
             d = {'product_id': item.product_id,
                  'product_barcode': item.product_barcode,
@@ -319,7 +320,7 @@ def get_recommended_product():
                  'product_brand': item.product_brand,
                  'product_price': item.product_price,
                  'product_nutrition': item.product_nutrition,
-                 'product_display_img': prod.product_display_img}
+                 'product_display_img': item.product_display_img}
             if favourites is not None and item.product_id in favourites:
                 d['product_is_starred'] = True
             else:
