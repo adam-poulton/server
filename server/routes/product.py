@@ -316,6 +316,7 @@ def get_recommended_product():
 
             recommended_product = session.query(Product).order_by(func.random()).limit(5).all()
 
+        response = []
         for item in recommended_product:
             d = {'product_id': item.product_id,
                  'product_barcode': item.product_barcode,
