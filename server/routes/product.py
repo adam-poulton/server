@@ -108,7 +108,7 @@ def new_product():
     r_data = request.form
     name = r_data.get('product_name')
     brand = r_data.get('product_brand')
-    category = r_data.get('product_category')
+    category = r_data.get('product_cate')
     barcode = r_data.get('product_barcode')
     nutrition = r_data.get('nutrition')
     price = r_data.get('product_price', 0)
