@@ -264,7 +264,7 @@ def delete_all():
     return redirect(url_for('api.user.get_users'))
 
 
-@user.route('/profileImg', methods=['POST'])
+@user.route('/profileImg', methods=['PUT'])
 def profile_img():
     """
     Upload user's profile image
