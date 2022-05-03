@@ -108,10 +108,11 @@ def new_product():
     r_data = request.form
     name = r_data.get('product_name')
     brand = r_data.get('product_brand')
-    category = r_data.get('product_category')
+    category = r_data.get('product_cate')
     barcode = r_data.get('product_barcode')
     nutrition = r_data.get('nutrition')
     price = r_data.get('product_price', 0)
+    user_id = r_data.get('user_id')
 
     # parse the request images
     nutrition_img = request.files.get('nutrition_img')
@@ -143,6 +144,10 @@ def new_product():
                 product_display_img=display_img_url,
                 product_nutrition_img=nutrition_img_url)
             session.add(new_prod)
+            if user_id:
+                current_user = session.query(User).get(user_id)
+                if current_user:
+                    current_user.user_contribution_score += 10
             session.commit()
 
             return redirect(url_for('api.products.get_product', barcode=barcode))
