@@ -285,7 +285,7 @@ def get_similar_product(product_id=None):
                  'product_brand': item.product_brand,
                  'product_price': item.product_price,
                  'product_nutrition': item.product_nutrition,
-                 'product_display_img': prod.product_display_img}
+                 'product_display_img': item.product_display_img}
             if favourites is not None and item.product_id in favourites:
                 d['product_is_starred'] = True
             else:
@@ -324,7 +324,7 @@ def get_recommended_product():
                  'product_brand': item.product_brand,
                  'product_price': item.product_price,
                  'product_nutrition': item.product_nutrition,
-                 'product_display_img': prod.product_display_img}
+                 'product_display_img': item.product_display_img}
             if favourites is not None and item.product_id in favourites:
                 d['product_is_starred'] = True
             else:
