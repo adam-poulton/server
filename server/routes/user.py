@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, url_for, request, jsonify, json, Response
 from werkzeug.utils import redirect
 import bcrypt
-
+import cloudinary.uploader as cloud_upload
 from server.database import db_session
 from server.models import User
 
@@ -257,3 +257,29 @@ def delete_all():
         session.commit()
     return redirect(url_for('api.user.get_users'))
 
+
+@user.route('/profileImg', methods=['POST'])
+def profile_img():
+    """
+    Upload user's profile image
+    """
+    data = request.form
+    user_id = data.get('user_id')
+
+    # parse the request images
+    pimg = request.files.get('profile_img')
+    if pimg:
+        response = cloud_upload.upload(pimg)
+        profile_img_url = response['secure_url']
+
+        with db_session() as session:
+            # get the user object to update
+            updated_user = session.query(User).get(user_id)
+            if updated_user:
+                updated_user.user_pimg_url = profile_img_url
+                session.commit()
+                return jsonify({"status": "success", "message": "user profile image uploaded"})
+            else:
+                return jsonify({"status": "error", "message": "user not found"})
+    else:
+        return jsonify({"status": "error", "message": "image not found"})
