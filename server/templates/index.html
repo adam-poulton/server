@@ -140,7 +140,11 @@
                                 <td>Deletes the user given by 'email' key in request form. Return {"success": "user deleted"} or {"error": "user not found"}.</td>
                                 <td>DELETE</td>
                             </tr>
-
+                            <tr>
+                                <th scope="row"><a href="/api/user/profileImg">/api/user/profileImg</a></th>
+                                <td>Upload profile image given by 'user_id' and 'profile_img' key in request form. Return {"user_pimg_url": (IMG_URL)} or {"error": "user not found"} or {"status": "error", "message": "image not found"}.</td>
+                                <td>PUT</td>
+                            </tr>
                             <tr>
                                 <td><h2>Feedback</h2></td>
                                 <td><br/></td>
