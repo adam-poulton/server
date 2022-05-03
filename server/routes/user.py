@@ -1,3 +1,5 @@
+import os
+
 from flask import Blueprint, render_template, url_for, request, jsonify, json, Response
 from werkzeug.utils import redirect
 import bcrypt
@@ -6,6 +8,10 @@ from server.database import db_session
 from server.models import User
 
 user = Blueprint('user', __name__)
+
+
+basedir = os.getcwd()
+image_path = os.path.join(basedir, 'server', 'data', 'images')
 
 
 @user.route('/display', methods=['GET'])
