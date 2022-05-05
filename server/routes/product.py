@@ -48,7 +48,7 @@ def query_all_records():
                  'product_brand': item.product_brand,
                  'product_price': item.product_price,
                  'product_nutrition': item.product_nutrition,
-                 'product_display_img': prod.product_display_img}
+                 'product_display_img': item.product_display_img}
             if favourites is not None and item.product_id in favourites:
                 d['product_is_starred'] = True
             else:
@@ -208,8 +208,7 @@ def update_product():
         session.commit()
 
         return redirect(url_for('api.products.get_product',
-                                barcode=updated_product.product_barcode,
-                                user_id=user_id))
+                                barcode=updated_product.product_barcode))
 
 
 @product.route("/delete/<product_id>", methods=['DELETE'])
