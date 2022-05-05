@@ -32,6 +32,7 @@ def get_all_favourites():
                  'product_nutrition': item.product_nutrition,
                  'product_display_img': item.product_display_img}
             response.append(d)
+            response.reverse()
         return jsonify(response)
     else:
         results = Favourite.query.all()
