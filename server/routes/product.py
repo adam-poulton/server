@@ -150,7 +150,9 @@ def new_product():
                     current_user.user_contribution_score += 10
             session.commit()
 
-            return redirect(url_for('api.products.get_product', barcode=barcode))
+            return redirect(url_for('api.products.get_product',
+                                    barcode=barcode,
+                                    user_id=user_id))
     else:
         return jsonify({"status": "error", "message": "barcode already exists"})
 
@@ -206,7 +208,8 @@ def update_product():
         session.commit()
 
         return redirect(url_for('api.products.get_product',
-                                barcode=updated_product.product_barcode))
+                                barcode=updated_product.product_barcode,
+                                user_id=user_id))
 
 
 @product.route("/delete/<product_id>", methods=['DELETE'])
