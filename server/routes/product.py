@@ -7,7 +7,7 @@ from sqlalchemy import func
 from werkzeug.utils import redirect, secure_filename
 
 from server.database import db_session
-from server.models import Product, Favourite, User
+from server.models import Product, Favourite, User, Scan
 
 product = Blueprint('products', __name__)
 
@@ -269,7 +269,7 @@ def get_similar_product(product_id=None):
         if not _product:
             return jsonify({"status": "error", "message": "product not found"}), 405
 
-        similar_products = session.query(Product).\
+        similar_products = session.query(Product). \
             filter(Product.product_cate == _product.product_cate,
                    Product.product_id != _product.product_id).all()
 
@@ -305,16 +305,27 @@ def get_recommended_product():
     if user_id is None:
         return jsonify({"status": "error", "message": "user_id missing"}), 405
     else:
-        match_user = User.query.get(user_id)   # Get the specific user
+        match_user = User.query.get(user_id)  # Get the specific user
         if match_user is None:
             return jsonify({"status": "error", "message": "user not found"}), 405
+
         with db_session() as session:
             favourites = session.query(Favourite.product_id).filter_by(user_id=user_id).all()
             if favourites is not None:
                 # unpack all the ids from the returned list of row tuples
                 favourites = [item[0] for item in favourites]
 
-            recommended_product = session.query(Product).order_by(func.random()).limit(5).all()
+            scans = session.query(Scan.product_id).filter_by(user_id=user_id).all()
+            if scans is not None:
+                scans = [item[0] for item in scans]
+
+            categories = session.query(Product.product_cate).filter(Product.product_id.in_(scans + favourites)).distinct()
+
+            if categories is not None:
+                categories = [item[0] for item in categories]
+
+                recommended_product = session.query(Product).filter(Product.product_cate.in_(categories)).all()
+
 
         response = []
         for item in recommended_product:
