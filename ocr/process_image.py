@@ -3,6 +3,13 @@ import cv2 as cv
 import pytesseract
 from PIL import Image
 
+if os.name == "nt":
+    # required for windows
+    pytesseract.pytesseract.tesseract_cmd = os.path.join('C:\\', 'Program Files', 'Tesseract-OCR', 'tesseract.exe')
+else:
+    # required for linux
+    pytesseract.pytesseract.tesseract_cmd = '/app/.apt/usr/bin/tesseract'
+
 
 def threshold(image):
     image = cv.cvtColor(image, cv.COLOR_BGR2GRAY)  # convert to greyscale
@@ -15,8 +22,6 @@ def threshold(image):
 
 
 def ocr(image, oem=1, psm=3):
-    # required for windows
-    pytesseract.pytesseract.tesseract_cmd = os.path.join('C:\\', 'Program Files', 'Tesseract-OCR', 'tesseract.exe')
     config = '--oem {oem} --psm {psm}'.format(oem=oem, psm=psm)
     image = Image.fromarray(image)
     text = pytesseract.image_to_string(image, lang='eng', config=config)
