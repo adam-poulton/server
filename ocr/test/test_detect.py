@@ -1,7 +1,7 @@
 import unittest
 import os
 from ocr.detect import NutritionDetectionPipeline
-from ocr.detect import extract_value_unit
+from ocr.detect import _extract_value_unit
 
 
 class TestDetectionPipeline(unittest.TestCase):
@@ -43,25 +43,25 @@ class TestExtractValueUnit(unittest.TestCase):
     def test_extract_value_unit_1(self):
         # value only
         text = "25.7g"
-        result = extract_value_unit(text)
+        result = _extract_value_unit(text)
         self.assertEqual((25.7, 'g'), result)
 
     def test_extract_value_unit_2(self):
         # value only
         text = "1,225.7mg"
-        result = extract_value_unit(text)
+        result = _extract_value_unit(text)
         self.assertEqual((1225.7, 'mg'), result)
 
     def test_extract_value_unit_3(self):
         # combination of label and value
         text = "energy 25.7g"
-        result = extract_value_unit(text)
+        result = _extract_value_unit(text)
         self.assertEqual((25.7, 'g'), result)
 
     def test_extract_value_unit_4(self):
         # combination of label and value
         text = "energy 1,560kJ 25.7g"
-        result = extract_value_unit(text)
+        result = _extract_value_unit(text)
         self.assertEqual((25.7, 'g'), result)
 
 

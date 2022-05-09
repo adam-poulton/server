@@ -1,18 +1,12 @@
 import re
-import os
-import cloudinary as cloud
 import cloudinary.uploader as cloud_upload
 from flask import Blueprint, render_template, url_for, request, jsonify
-from sqlalchemy import func
-from werkzeug.utils import redirect, secure_filename
+from werkzeug.utils import redirect
 
 from server.database import db_session
 from server.models import Product, Favourite, User, Scan
 
 product = Blueprint('products', __name__)
-
-basedir = os.getcwd()
-image_path = os.path.join(basedir, 'server', 'data', 'images')
 
 
 @product.route('/display')
@@ -327,7 +321,6 @@ def get_recommended_product():
                 categories = [item[0] for item in categories]
 
                 recommended_product = session.query(Product).filter(Product.product_cate.in_(categories)).all()
-
 
         response = []
         for item in recommended_product:

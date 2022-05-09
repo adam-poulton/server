@@ -51,12 +51,23 @@ class Cell:
         return any(char.isdigit() for char in self.text)
 
 
+def _url_to_image(url: str):
+    resp = requests.get(url, stream=True).raw
+    image = np.asarray(bytearray(resp.read()), dtype="uint8")
+    return cv.imdecode(image, -1)
+
+
+def _raw_to_image(data):
+    np_arr = np.frombuffer(data, dtype=np.uint8)
+    return cv.imdecode(np_arr, -1)
+
+
 class NutritionDetectionPipeline:
     def __init__(self):
         # initialise the models
-        self.table_model = NutritionTableDetector()
-        self.text_model = NutritionTextDetector()
-        self.text_detector = TextDetector()
+        self._table_model = NutritionTableDetector()
+        self._text_model = NutritionTextDetector()
+        self._text_detector = TextDetector()
         # specify directory for output when debug flag
         basedir = os.path.dirname(os.path.abspath(__file__))
         self.output_dir = os.path.join(basedir, 'data', 'result')
@@ -80,7 +91,18 @@ class NutritionDetectionPipeline:
         :param debug: set to True for writing debug files into self.output_dir
         :return: dict of nutritional info i.e {'energy': {'value': 1,278.0, 'unit': 'kJ'}, ...}
         """
-        image = url_to_image(img_url)
+        image = _url_to_image(img_url)
+        return self.from_cv_img(image, debug)
+
+    def from_raw(self, img, debug=False):
+        """
+        reads the nutritional table from a given image buffer
+        returns dict entry for each label - with value and unit from the right-most column (qty per 100g/mL)
+        :param img: image buffer
+        :param debug: set to True for writing debug files into self.output_dir
+        :return: dict of nutritional info i.e {'energy': {'value': 1,278.0, 'unit': 'kJ'}, ...}
+        """
+        image = _raw_to_image(img)
         return self.from_cv_img(image, debug)
 
     def from_cv_img(self, cv_image, debug=False):
@@ -146,7 +168,7 @@ class NutritionDetectionPipeline:
                 if row:
                     # get the cell on the far right (quantity per 100g)
                     v = sorted(row, key=lambda c: c.x2, reverse=True)[0]
-                    value, unit = extract_value_unit(v.text)
+                    value, unit = _extract_value_unit(v.text)
                     if not unit:
                         unit = label_mapper.default_unit(cell.text)
                     output.update({label: {'value': value, 'unit': unit}})
@@ -178,7 +200,7 @@ class NutritionDetectionPipeline:
 
     def _detect_table_box(self, image):
         # Get the bounding boxes from the nutritional table model
-        boxes, scores, classes, num = self.table_model.get_classification(image)
+        boxes, scores, classes, num = self._table_model.get_classification(image)
         # Get the dimensions of the image
         width = image.shape[1]
         height = image.shape[0]
@@ -197,12 +219,12 @@ class NutritionDetectionPipeline:
 
         blob = blobs['data']
         blobs['im_info'] = np.array([[blob.shape[1], blob.shape[2], scales[0]]], dtype=np.float32)
-        cls_prob, box_pred = self.text_model.get_text_classification(blobs=blobs)
+        cls_prob, box_pred = self._text_model.get_text_classification(blobs=blobs)
         rois, _ = proposal_layer(cls_prob, box_pred, blobs['im_info'])
 
         scores = rois[:, 0]
         boxes = rois[:, 1:5] / scales[0]
-        boxes = self.text_detector.detect(boxes, scores[:, np.newaxis], image.shape[:2])
+        boxes = self._text_detector.detect(boxes, scores[:, np.newaxis], image.shape[:2])
 
         blob_list = []
         for box in boxes:
@@ -216,30 +238,11 @@ class NutritionDetectionPipeline:
         return tuple(blob_list)
 
 
-def _string_type(string):
-    """
-    :param string: Type of the string to be checked
-    :return: An integer corresponding to type:
-        0 - name and value
-        1 - value only
-        2 - name only
-    """
-    if any(char.isdigit() for char in string):
-        if re.search(r'\D{3,}\s', string):
-            # Value and label
-            return 0
-        else:
-            # Value only
-            return 1
-    # Label only
-    return 2
-
-
 def _in_bounds(target, t_min, t_max):
     return t_min < target < t_max
 
 
-def extract_value_unit(string, debug=False):
+def _extract_value_unit(string, debug=False):
     """
     returns value-unit pair in given string
       i.e '24.3g' -> (24.3, 'g')
@@ -250,7 +253,7 @@ def extract_value_unit(string, debug=False):
     pat = r'((?:\d+,{0,1}){0,}\d+\.{0,1}\d*)([0-9a-z%]{0,3})'
     items = re.findall(pat, string)
     if not items:
-        return [0, 'g']
+        return 0, 'g'
     value, unit = items[-1]  # get the right most value-unit pair
     if unit == 'cal' and len(items) > 1:
         value, unit = items[-2]  # handles cases like '1670kJ (500Cal)'
@@ -300,10 +303,7 @@ def _fix_suffix(string: str):
     return string
 
 
-def url_to_image(url: str):
-    resp = requests.get(url, stream=True).raw
-    image = np.asarray(bytearray(resp.read()), dtype="uint8")
-    return cv.imdecode(image, -1)
+
 
 
 
