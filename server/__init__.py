@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, Blueprint
 from server.database import db_session, init_db, drop_db
 from server.db_script import insert_products
@@ -9,7 +10,8 @@ from ocr.detect import NutritionDetectionPipeline
 def create_app():
     app = Flask(__name__)
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Disable the event notification system since we don't need it
-    # and disable it for saving system resources
+    SECRET_KEY = os.urandom(32)
+    app.config['SECRET_KEY'] = SECRET_KEY
 
     app.register_blueprint(api, url_prefix='/api')  # Register a blueprint on an application at a URL prefix '/api/'
     app.register_blueprint(admin, url_prefix='/admin')
