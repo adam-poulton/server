@@ -1,8 +1,8 @@
 from flask import Flask, render_template, Blueprint
-from dotenv import load_dotenv
 from server.database import db_session, init_db, drop_db
 from server.db_script import insert_products
 from server.routes.api import api
+from ocr.detect import NutritionDetectionPipeline
 
 
 def create_app():
@@ -29,9 +29,11 @@ def create_app():
     # uncomment to populate product data from json (after drop_db)
     # insert_products()
 
+    # test that all requirements are met
+    detect = NutritionDetectionPipeline()
+
     return app
 
 
 if __name__ == "__main__":
-    load_dotenv()
     create_app().run(debug=True)

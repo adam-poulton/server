@@ -1,5 +1,5 @@
 from sqlalchemy import Integer, Column, String, DateTime, DECIMAL, Float
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from sqlalchemy.schema import ForeignKey
 from dataclasses import dataclass
