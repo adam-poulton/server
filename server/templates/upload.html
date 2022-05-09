@@ -10,8 +10,29 @@
             {{ form.image }}
         </p>
         <p>
-            <input type="submit" value="Add">
+            {{ form.submit }}
         </p>
     </form>
+{% if result %}
+<br>
+
+<table class="table">
+<thead>
+    <tr>
+        <th scope="col">Label</th>
+        <th scope="col">Value</th>
+        <th scope="col">Unit</th>
+    </tr>
+</thead>
+<tbody>
+{% for label, value in result %}
+    <tr>
+        <td><h2>{{ label }}</h2></td>
+        <td>{{ value.value }}</td>
+        <td>{{ value.unit }}</td>
+    </tr>
+</tbody>
+</table>
+{% endif %}
 </body>
 </html>
