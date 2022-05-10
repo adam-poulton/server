@@ -24,7 +24,7 @@
     </tr>
 </thead>
 <tbody>
-{% for label, value in result %}
+{% for label, value in result.items() %}
     <tr>
         <td><h2>{{ label }}</h2></td>
         <td>{{ value.value }}</td>
