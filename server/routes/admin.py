@@ -24,11 +24,9 @@ def upload():
               'fat-saturated': {'value': 3.9, 'unit': 'g'}}
 
     if form.validate_on_submit():
-        img = form.image.data
+        img = request.files.get('image')
         url = cloud_upload.upload(img)['secure_url']
-        print(f'{url}', file=sys.stderr)
         result = detect.from_url(url)
-        print(f'{result}', file=sys.stderr)
 
     return render_template('upload.html', form=form, result=result)
 
