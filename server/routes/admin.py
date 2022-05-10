@@ -3,6 +3,7 @@ from flask import Blueprint, jsonify, request, render_template
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired
 from wtforms import SubmitField
+import sys
 
 from server.services import nutrition_detector as detect
 
@@ -21,8 +22,10 @@ def upload():
 
     if form.validate_on_submit():
         img = form.image.data
-        response = cloud_upload.upload(img)
-        result = detect.from_url(response['secure_url'])
+        url = cloud_upload.upload(img)['secure_url']
+        print(f'{url}', file=sys.stderr)
+        result = detect.from_url(url)
+        print(f'{result}', file=sys.stderr)
 
     return render_template('upload.html', form=form, result=result)
 
