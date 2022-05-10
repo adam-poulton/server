@@ -6,9 +6,9 @@ from PIL import Image
 if os.name == "nt":
     # required for windows
     pytesseract.pytesseract.tesseract_cmd = os.path.join('C:\\', 'Program Files', 'Tesseract-OCR', 'tesseract.exe')
-else:
-    # required for linux
-    pytesseract.pytesseract.tesseract_cmd = '/app/.apt/usr/bin/tesseract'
+# else:
+#     # required for linux
+#     pytesseract.pytesseract.tesseract_cmd = '/app/.apt/usr/bin/tesseract'
 
 
 def threshold(image):
