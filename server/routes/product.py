@@ -5,6 +5,7 @@ from werkzeug.utils import redirect
 
 from server.database import db_session
 from server.models import Product, Favourite, User, Scan
+from server.services import nutrition_detector
 
 product = Blueprint('products', __name__)
 
@@ -127,6 +128,7 @@ def new_product():
         if nutrition_img:
             response = cloud_upload.upload(nutrition_img)
             nutrition_img_url = response['secure_url']
+            nutrition = nutrition_detector.from_url(nutrition_img_url)
         with db_session() as session:
             new_prod = Product(
                 product_name=name,
