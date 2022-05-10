@@ -18,24 +18,11 @@ class PhotoForm(FlaskForm):
 @admin.route('/upload', methods=['GET', 'POST'])
 def upload():
     form = PhotoForm()
-    result = {'sodium': {'value': 848.0, 'unit': 'mg'}, 'carbohydrate': {'value': 62.6, 'unit': 'g'},
-              'protein': {'value': 7.9, 'unit': 'g'}, 'energy': {'value': 1970.0, 'unit': 'kJ'},
-              'fat-total': {'value': 20.0, 'unit': 'g'}, 'sugars': {'value': 1.3, 'unit': 'g'},
-              'fat-saturated': {'value': 3.9, 'unit': 'g'}}
 
-    if form.validate_on_submit():
+    if request.method == 'POST':
         img = form.image.data.read()
         url = cloud_upload.upload(img)['secure_url']
         result = detect.from_url(url)
+        return render_template('upload.html', form=form, result=result)
 
-    return render_template('upload.html', form=form, result=result)
-
-
-def process():
-    if request.method == 'POST':
-        image = request.files.get('image')
-        url = request.form.get('url')
-        if image:
-            return jsonify(detect.from_raw(image))
-        elif url:
-            return jsonify(detect.from_url(url))
+    return render_template('upload.html', form=form)
