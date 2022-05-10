@@ -18,7 +18,10 @@ class PhotoForm(FlaskForm):
 @admin.route('/upload', methods=['GET', 'POST'])
 def upload():
     form = PhotoForm()
-    result = None
+    result = {'sodium': {'value': 848.0, 'unit': 'mg'}, 'carbohydrate': {'value': 62.6, 'unit': 'g'},
+              'protein': {'value': 7.9, 'unit': 'g'}, 'energy': {'value': 1970.0, 'unit': 'kJ'},
+              'fat-total': {'value': 20.0, 'unit': 'g'}, 'sugars': {'value': 1.3, 'unit': 'g'},
+              'fat-saturated': {'value': 3.9, 'unit': 'g'}}
 
     if form.validate_on_submit():
         img = form.image.data
