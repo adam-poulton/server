@@ -1,18 +1,16 @@
+import cloudinary.uploader as cloud_upload
 from flask import Blueprint, jsonify, request, render_template
 from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileRequired, FileAllowed
-from flask_uploads import UploadSet, IMAGES
+from flask_wtf.file import FileField, FileRequired
 from wtforms import SubmitField
 
 from server.services import nutrition_detector as detect
 
 admin = Blueprint('admin', __name__)
 
-images = UploadSet('images', IMAGES)
-
 
 class PhotoForm(FlaskForm):
-    image = FileField(validators=[FileAllowed(images, 'Images only!'), FileRequired('Select an image')])
+    image = FileField(validators=[FileRequired('Select an image')])
     submit = SubmitField('Scan Image')
 
 
@@ -23,7 +21,8 @@ def upload():
 
     if form.validate_on_submit():
         img = form.image.data
-        result = detect.from_raw(img)
+        response = cloud_upload.upload(img)
+        result = detect.from_url(response['secure_url'])
 
     return render_template('upload.html', form=form, result=result)
 

@@ -1,5 +1,4 @@
-import os
-from flask import Flask, render_template, Blueprint
+from flask import Flask, render_template
 from server.database import db_session, init_db, drop_db
 from server.db_script import insert_products
 from server.routes.api import api
