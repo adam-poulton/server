@@ -1,6 +1,7 @@
 import re
 import cloudinary.uploader as cloud_upload
 from flask import Blueprint, render_template, url_for, request, jsonify
+from sqlalchemy import func
 from werkzeug.utils import redirect
 
 from server.database import db_session
@@ -323,6 +324,9 @@ def get_recommended_product():
                 categories = [item[0] for item in categories]
 
                 recommended_product = session.query(Product).filter(Product.product_cate.in_(categories)).all()
+
+            if recommended_product is None:
+                recommended_product = session.query(Product).order_by(func.random()).limit(10).all()
 
         response = []
         for item in recommended_product:
