@@ -20,8 +20,7 @@ def upload():
     form = PhotoForm()
 
     if request.method == 'POST':
-        with form.image.data:
-            img = form.image.data.read()
+        img = form.image.data.read()
         url = cloud_upload.upload(img)['secure_url']
         result = detect.from_url(url)
         return render_template('upload.html', form=form, result=result, url=url)
