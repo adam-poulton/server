@@ -315,15 +315,14 @@ def get_recommended_product():
                 favourites = [item[0] for item in favourites]
 
             scans = session.query(Scan.product_id).filter_by(user_id=user_id).all()
-            if scans is not None:
-                scans = [item[0] for item in scans]
+
+            scans = [item[0] for item in scans] if scans else []
 
             categories = session.query(Product.product_cate).filter(Product.product_id.in_(scans + favourites)).distinct()
 
-            if categories is not None:
-                categories = [item[0] for item in categories]
+            categories = [item[0] for item in categories] if categories else []
 
-                recommended_product = session.query(Product).filter(Product.product_cate.in_(categories)).all()
+            recommended_product = session.query(Product).filter(Product.product_cate.in_(categories)).all()
 
             if recommended_product is None:
                 recommended_product = session.query(Product).order_by(func.random()).limit(10).all()
