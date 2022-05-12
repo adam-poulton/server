@@ -310,9 +310,9 @@ def get_recommended_product():
 
         with db_session() as session:
             favourites = session.query(Favourite.product_id).filter_by(user_id=user_id).all()
-            if favourites is not None:
-                # unpack all the ids from the returned list of row tuples
-                favourites = [item[0] for item in favourites]
+
+            # unpack all the ids from the returned list of row tuples
+            favourites = [item[0] for item in favourites] if favourites else []
 
             scans = session.query(Scan.product_id).filter_by(user_id=user_id).all()
 
