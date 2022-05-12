@@ -218,6 +218,7 @@ def update():
         return jsonify(updated_user)
 
 
+@user.route('/delete', methods=['DELETE'])
 @user.route('/delete/<user_id>', methods=['DELETE'])
 def delete(user_id=None):
     """
