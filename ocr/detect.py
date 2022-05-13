@@ -4,6 +4,8 @@ import numpy as np
 import re
 import requests
 import timeit
+from io import BytesIO
+from PIL import Image, ImageOps
 
 from ocr import process_image
 from ocr.nutrition_map import NutritionLabelMap
@@ -52,9 +54,10 @@ class Cell:
 
 
 def _url_to_image(url: str):
-    resp = requests.get(url, stream=True).raw
-    image = np.asarray(bytearray(resp.read()), dtype="uint8")
-    return cv.imdecode(image, -1)
+    resp = requests.get(url)
+    image = Image.open(BytesIO(resp.content))
+    image = ImageOps.exif_transpose(image)
+    return cv.cvtColor(np.array(image), cv.COLOR_RGB2BGR)
 
 
 def _raw_to_image(data):
