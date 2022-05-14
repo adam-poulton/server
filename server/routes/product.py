@@ -114,9 +114,15 @@ def new_product():
     nutrition_img = request.files.get('nutrition_img')
     display_img = request.files.get('display_img')
 
+    # test if any required fields are empty or not supplied
+    if not (barcode and name and brand and category):
+        return jsonify({"status": "error", "message": "missing required field(s)"})
+
     # check to ensure that there are no illegal characters in the barcode
     if not valid_barcode(barcode):
         return jsonify({"status": "error", "message": "invalid barcode"}), 405
+
+
 
     # check to ensure record for barcode does not exist in database
     match = Product.query.filter_by(product_barcode=barcode).first()
@@ -360,7 +366,10 @@ def valid_barcode(barcode):
     :return: True if the barcode string contains only numerical characters and is non-empty
                 otherwise, False
     """
-    if len(barcode) == 0:
+    if barcode is not None:
+        if len(barcode) == 0:
+            return False
+        barcode_num = re.sub('[^0-9]', '', barcode)
+        return 0 < len(barcode_num) == len(barcode)
+    else:
         return False
-    barcode_num = re.sub('[^0-9]', '', barcode)
-    return 0 < len(barcode_num) == len(barcode)

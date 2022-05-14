@@ -49,7 +49,7 @@ class Product(Base):
     product_id = Column(Integer, primary_key=True)
     product_barcode = Column(String(20), unique=True, nullable=False)
     product_name = Column(String(100), nullable=False)
-    product_cate = Column(String(50))
+    product_cate = Column(String(50), nullable=False)
     product_brand = Column(String(50), nullable=False)
     product_nutrition = Column(String(900), default="{}")
     product_price = Column(Float, default=0)
