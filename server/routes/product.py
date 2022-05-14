@@ -1,3 +1,4 @@
+import json
 import re
 import cloudinary.uploader as cloud_upload
 from flask import Blueprint, render_template, url_for, request, jsonify
@@ -143,27 +144,18 @@ def new_product():
                 product_cate=category,
                 product_barcode=barcode,
                 product_price=price,
-                product_nutrition=nutrition,
+                product_nutrition=json.dumps(nutrition),
                 product_display_img=display_img_url,
                 product_nutrition_img=nutrition_img_url)
             session.add(prod)
-            d = {'product_id': prod.product_id,
-                 'product_barcode': prod.product_barcode,
-                 'product_name': prod.product_name,
-                 'product_cate': prod.product_cate,
-                 'product_brand': prod.product_brand,
-                 'product_price': prod.product_price,
-                 'product_nutrition': prod.product_nutrition,
-                 'product_display_img': prod.product_display_img,
-                 'product_nutrition_img': prod.product_nutrition_img,
-                 'product_is_starred': False}
+
             if user_id:
                 current_user = session.query(User).get(user_id)
                 if current_user:
                     current_user.user_contribution_score += 10
             session.commit()
 
-            return jsonify(d)
+            return jsonify(prod)
     else:
         return jsonify({"status": "error", "message": "barcode already exists"})
 
