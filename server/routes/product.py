@@ -115,7 +115,7 @@ def new_product():
     display_img = request.files.get('display_img')
 
     # test if any required fields are empty or not supplied
-    if not (barcode and name and brand):
+    if not (barcode and name and brand and category):
         return jsonify({"status": "error", "message": "missing required field(s)"})
 
     # check to ensure that there are no illegal characters in the barcode
