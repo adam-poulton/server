@@ -131,7 +131,7 @@ def new_product():
             nutrition_img_url = response['secure_url']
             nutrition = nutrition_detector.from_url(nutrition_img_url)
         with db_session() as session:
-            new_prod = Product(
+            prod = Product(
                 product_name=name,
                 product_brand=brand,
                 product_cate=category,
@@ -140,17 +140,24 @@ def new_product():
                 product_nutrition=nutrition,
                 product_display_img=display_img_url,
                 product_nutrition_img=nutrition_img_url)
-            session.add(new_prod)
+            session.add(prod)
+            d = {'product_id': prod.product_id,
+                 'product_barcode': prod.product_barcode,
+                 'product_name': prod.product_name,
+                 'product_cate': prod.product_cate,
+                 'product_brand': prod.product_brand,
+                 'product_price': prod.product_price,
+                 'product_nutrition': prod.product_nutrition,
+                 'product_display_img': prod.product_display_img,
+                 'product_nutrition_img': prod.product_nutrition_img,
+                 'product_is_starred': False}
             if user_id:
                 current_user = session.query(User).get(user_id)
                 if current_user:
                     current_user.user_contribution_score += 10
             session.commit()
 
-            return redirect(url_for('api.products.get_product',
-                                    barcode=barcode,
-                                    user_id=user_id),
-                            code=200)
+            return jsonify(d)
     else:
         return jsonify({"status": "error", "message": "barcode already exists"})
 
