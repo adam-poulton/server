@@ -3,7 +3,7 @@
     "name" : "Savoy Original",
     "brand" : "Arnott's",
     "barcode" : "9310072026428",
-    "category": "",
+    "category": "Biscuits",
     "price": 2.50,
     "nutrition" :
       {
@@ -20,7 +20,7 @@
     "name" : "Lindor Extra Dark 18pc",
     "brand" : "Lindt",
     "barcode" : "7610400074193",
-    "category": "",
+    "category": "Chocolate",
     "price": 3.00,
     "nutrition" :
       {
@@ -37,7 +37,7 @@
     "name" : "Mi Goreng Fried Noodles Cup",
     "brand" : "Indo mie",
     "barcode" : "08968618065",
-    "category": "",
+    "category": "Noodles",
     "price": 0.75,
     "nutrition" :
       {
@@ -54,7 +54,7 @@
     "name" : "Sweet Potato & Roasted Cashews Dip",
     "brand" : "Yumi's",
     "barcode" : "93174440001168",
-    "category": "",
+    "category": "Dip",
     "price": 2.99,
     "nutrition" :
       {
@@ -71,7 +71,7 @@
     "name" : "Sea Salt & Balsamic Vinegar Flavoured Potato Chips",
     "brand" : "Red Rock Deli",
     "barcode" : "9310015240638",
-    "category": "",
+    "category": "Chips",
     "price": 3.50,
     "nutrition" :
       {
@@ -91,7 +91,7 @@
     "name" : "Spelt & Sprouted Grain Bread",
     "brand" : "Alpine Breads",
     "barcode" : "9312743010521",
-    "category": "",
+    "category": "Bread",
     "price": 4.70,
     "nutrition" :
       {
@@ -111,7 +111,7 @@
     "name" : "Peanut Butter Smooth",
     "brand" : "Bega",
     "barcode" : "9321582004899",
-    "category": "Peanut Butter",
+    "category": "Spreads",
     "price": 5.20,
     "nutrition" :
       {

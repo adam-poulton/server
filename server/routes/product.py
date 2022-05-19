@@ -1,4 +1,3 @@
-import json
 import re
 import cloudinary.uploader as cloud_upload
 from flask import Blueprint, render_template, url_for, request, jsonify
@@ -45,6 +44,7 @@ def query_all_records():
                  'product_brand': item.product_brand,
                  'product_price': item.product_price,
                  'product_nutrition': item.product_nutrition,
+                 'product_nutrition_img': item.product_nutrition_img,
                  'product_display_img': item.product_display_img}
             if favourites is not None and item.product_id in favourites:
                 d['product_is_starred'] = True
@@ -85,6 +85,7 @@ def get_product(barcode):
              'product_brand': prod.product_brand,
              'product_price': prod.product_price,
              'product_nutrition': prod.product_nutrition,
+             'product_nutrition_img': prod.product_nutrition_img,
              'product_display_img': prod.product_display_img}
         if favourites is not None and prod.product_id in favourites:
             d['product_is_starred'] = True
@@ -123,8 +124,6 @@ def new_product():
     if not valid_barcode(barcode):
         return jsonify({"status": "error", "message": "invalid barcode"}), 405
 
-
-
     # check to ensure record for barcode does not exist in database
     match = Product.query.filter_by(product_barcode=barcode).first()
     if match is None:
@@ -144,7 +143,7 @@ def new_product():
                 product_cate=category,
                 product_barcode=barcode,
                 product_price=price,
-                product_nutrition=json.dumps(nutrition),
+                product_nutrition=nutrition,
                 product_display_img=display_img_url,
                 product_nutrition_img=nutrition_img_url)
             session.add(prod)
