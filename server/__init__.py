@@ -23,13 +23,13 @@ def create_app():
         db_session.remove()
 
     # uncomment to drop all the db tables
-    drop_db()
+    # drop_db()
 
-    # initialises any db tables that aren't already created
+    # initialises any db tables that didn't already exist
     init_db()
 
     # uncomment to populate product data from json (after drop_db)
-    insert_products()
+    # insert_products()
 
     return app
 
