@@ -30,8 +30,6 @@ class User(Base):
     user_pimg_url = Column(String(256))
     user_hash = Column(String(150), nullable=True)
 
-    reviews = relationship('Review', back_populates="users", lazy='select')
-
 
 @dataclass
 class Product(Base):
@@ -115,5 +113,3 @@ class Review(Base):
     review_rating = Column(DECIMAL(2, 1), nullable=False)
     review_date = Column(DateTime(timezone=True), default=func.now(), nullable=False)
     review_description = Column(String(300), nullable=False)
-
-    users = relationship("User", back_populates="reviews", lazy='select')
