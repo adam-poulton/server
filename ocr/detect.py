@@ -3,7 +3,6 @@ import os
 import numpy as np
 import re
 import requests
-import timeit
 from io import BytesIO
 from PIL import Image, ImageOps
 
@@ -236,7 +235,7 @@ class NutritionDetectionPipeline:
 
 
 def _in_bounds(target, t_min, t_max):
-    return t_min < target < t_max
+    return t_min <= target <= t_max
 
 
 def _extract_value_unit(string, debug=False):
@@ -283,6 +282,7 @@ def _fix_suffix(string: str):
     """
     fixes:
      weight unit 'g' being misread as a '9'
+     weight unit 'g' being misread as a 'q'
      weight unit 'mg' being misread as 'mq'
     :param string: string to be checked and fixed
     :return: the fixed string
@@ -290,6 +290,11 @@ def _fix_suffix(string: str):
     line = re.search(r"\d\s|\d$", string)
     if line and line.group().strip() == "9":
         index = line.span()[0]
+        string = string[:index] + "g" + string[index + 1:]
+
+    line = re.search(r"\dq\s|\dq$", string)
+    if line:
+        index = line.span()[0] + 1
         string = string[:index] + "g" + string[index + 1:]
 
     line = re.search(r"\dmq\s|\dmq$", string)
