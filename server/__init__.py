@@ -11,7 +11,10 @@ def create_app():
     SECRET_KEY = b'\xed\xeeM\xaaK\r\xc0@xw@\xb6\xd0 S9[z\xde$\xc6\x9a\x13}\xa3\xfa\xdb[\xb1\x98\x08\xa9'
     app.config['SECRET_KEY'] = SECRET_KEY
 
+    # It uses blueprints to allow us to separate various endpoints into subdomains. Here we define the prefix of all
+    # API endpoints registered with the blueprint to be “api” and therefore our base API endpoint is “/api”
     app.register_blueprint(api, url_prefix='/api')  # Register a blueprint on an application at a URL prefix '/api/'
+
     app.register_blueprint(admin, url_prefix='/admin')
 
     @app.route('/')
